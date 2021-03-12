@@ -4,7 +4,7 @@
 func<WholeNewWorld> Wopslang(contributors) {
     int newIdea = 0
     for i in contributors {
-        newIdea += 10
+        newIdea += 100
     }
     return bindAll(newIdea, Whops)
 }
