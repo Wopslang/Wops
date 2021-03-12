@@ -1,4 +1,4 @@
-# :bulb: Wops Laboratory (Wops Corp. Since 2021)
+# :bulb: Wops Laboratory
 ```go
 func<WholeNewWorld> WopsLab(contributors) {
     int newIdea = 0
