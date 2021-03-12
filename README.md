@@ -9,8 +9,6 @@ func<WholeNewWorld> WopsLab(contributors) {
 }
 ```
 ## `#LanguageForAlgorithm` `#WorkingPseudo`
-### This lab-repository is for prototyping new ideas or releases
-
 
 ## Infomation
 Testing Version: **v0.1 Alpha**   
@@ -25,9 +23,7 @@ License: MIT License
 |@happybean4|@khanjhy|Planner of Grammar|
 |@jhhan128|@jonahan|Planner of Grammar, Library Developer|
 
-### Our Slack : https://wopslang.slack.com/
 ### Our Blog  : https://wopslang.tistory.com/
-
 
 # 🚀 Our Logo 
 
