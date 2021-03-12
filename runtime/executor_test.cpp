@@ -28,7 +28,7 @@ int main() {
     code = executor.callfunc("out", argv);
 
     // 4. modify variable
-    code2 = executor.modifyVar("name", "\"Wops\"+\"Lover\"");
+    code2 = executor.modifyVar("name", R"("Wops"+"Lover")");
     if (code2 != OK) return 1;
     argv = {"name", "\"\n\""};
     code = executor.callfunc("out", argv);
