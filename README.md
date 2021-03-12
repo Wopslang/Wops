@@ -1,4 +1,4 @@
-# :hammer: Working Pseudocode, Wopslang
+# :hammer_and_wrench: Working Pseudocode, Wopslang
 
 ```go
 func<WholeNewWorld> Wopslang(contributors) {
@@ -13,7 +13,7 @@ func<WholeNewWorld> Wopslang(contributors) {
 
 ## Infomation
 Testing Version: **v0.1 Alpha**   
-License: MIT License
+License: Apache License 2.0
 
 ## Contact Us
 |Github Username|Slack Username|Role|
