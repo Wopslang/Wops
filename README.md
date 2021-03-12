@@ -1,6 +1,7 @@
-# :bulb: Wops Laboratory
+# :hammer: Working Pseudocode, Wopslang
+
 ```go
-func<WholeNewWorld> WopsLab(contributors) {
+func<WholeNewWorld> Wopslang(contributors) {
     int newIdea = 0
     for i in contributors {
         newIdea += 10
