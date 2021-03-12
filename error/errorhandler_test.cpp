@@ -13,8 +13,7 @@
 
 int main() {
     try {
-        ErrorHandler errorhandler {};
-        errorhandler.ThrowError(NOT_EXIST_VARIABLE);
+        ErrorHandler::ThrowError(NOT_EXIST_VARIABLE);
     } catch (const char* e) {
         std::cout << "Error (" << e << ") Throwed" << std::endl;
         return 0;

@@ -29,7 +29,7 @@ enum ErrorCode {
 // 단순히 에러를 핸들링한다. 
 class ErrorHandler {
     public:
-        void ThrowError(ErrorCode e) {
+        static void ThrowError(ErrorCode e) {
             switch (e) {
                 case NO_VARIABLE_TO_MODIFY:
                     throw "RUNTIME ERROR: tried to modify not exist variable.";
@@ -51,6 +51,9 @@ class ErrorHandler {
                 
                 case STRANGE_DOUBLE:
                     throw "RUNTIME-SYNTAX ERROR: used strange double";
+
+                case OK:
+                    break;
             }
         }
 };
