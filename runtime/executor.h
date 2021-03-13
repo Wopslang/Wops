@@ -5,6 +5,8 @@
  * 2021, Wops Team
  * */
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCDFAInspection"
 #ifndef WOPSLANG_EXECUTOR_HEADER
 #define WOPSLANG_EXECUTOR_HEADER
 
@@ -108,7 +110,7 @@ class Executor {
 
         // ErrorCode createVar(Type type, string tag, string value=""): 자료형이 type인 변수(이름: tag, 값: value)를 선언하고
         //                                                              실행 결과를 반환하는 함수
-        ErrorCode createVar(Type type, std::string tag, std::string value="");
+        ErrorCode createVar(Type type, const std::string& tag, const std::string& value="");
 
         // ErrorCode modifyVar(string tag, string value): 이름이 tag인 변수의 값을 value로 바꾼 후 실행결과를 반환하는 함수
         ErrorCode modifyVar(const std::string& tag, const std::string& value);
@@ -428,7 +430,6 @@ ReturnValue Executor::modifyString(Type type, std::string value) {
             return ret;
         }
         value.replace(value.begin(), value.end(), memories[token_idx].value);
-        last_token = "";
     }
 
 
@@ -443,7 +444,7 @@ ReturnValue Executor::modifyString(Type type, std::string value) {
     return ret;
 }
 
-ErrorCode Executor::createVar(Type type, std::string tag, std::string value) {
+ErrorCode Executor::createVar(Type type, const std::string& tag, const std::string& value) {
     // 이미 변수가 존재하는 지 확인
     int idx = -1;
     for (int i = 0; i < memories.size(); i++) {
@@ -542,8 +543,8 @@ ErrorCode Executor::modifyVar(const std::string& tag, const std::string& value) 
             break;
 
         case BOOL:
-            for (int i = 0; i < modified.value.length(); i++) {
-                if (!isdigit(modified.value[i])) {
+            for (char i : modified.value) {
+                if (!isdigit(i)) {
                     return NOT_MATCHING_TYPE;
                 }
             }
