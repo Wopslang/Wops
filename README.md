@@ -22,9 +22,6 @@ License: Apache License 2.0
 |@sonjaewon0318|@pokmui|Programmer of Interpreter, Admin of Slack, Geometry|
 |@byunjaewoo|@byunjaewoo|Lead Programmer of Data Structure
 |@happybean4|@khanjhy|Planner of Grammar|
-|@jhhan128|@jonahan|Planner of Grammar, Library Developer|
-
-### Our Blog  : https://wopslang.tistory.com/
 
 # 🚀 Our Logo 
 
