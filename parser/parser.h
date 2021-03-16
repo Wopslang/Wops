@@ -84,6 +84,28 @@ string Parser::Parse(const string& codepath) {
             }
         }
 
+        else if (tokens[0] == "}") {
+            expression tmp = bracePair.top();
+            switch (tmp) {
+                case IF:
+                    bytecode += "ifend";
+                    break;
+                case ELIF:
+                    bytecode += "elifend";
+                    break;
+                case ELSE:
+                    bytecode += "elseend";
+                    break;
+                case FOR:
+                    bytecode += "forend";
+                    break;
+            }
+
+            bracePair.pop();
+            bytecode += "\n";
+            continue;
+        }
+
         // declare variable
         if (find(types, types+4, tokens[0]) != types+4) {
             // not initialize
@@ -205,25 +227,6 @@ string Parser::Parse(const string& codepath) {
             bytecode += "comment";
         }
 
-        else if (tokens[0] == "}") {
-            expression tmp = bracePair.top();
-            switch (tmp) {
-                case IF:
-                    bytecode += "ifend";
-                    break;
-                case ELIF:
-                    bytecode += "elifend";
-                    break;
-                case ELSE:
-                    bytecode += "elseend";
-                    break;
-                case FOR:
-                    bytecode += "forend";
-                    break;
-            }
-
-            bracePair.pop();
-        }
         bytecode += "\n";
     }
     return bytecode;
