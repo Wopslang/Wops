@@ -22,7 +22,10 @@ License: Apache License 2.0
 |@sonjaewon0318|@pokmui|Programmer of Interpreter, Admin of Slack, Geometry|
 |@byunjaewoo|@byunjaewoo|Lead Programmer of Data Structure
 |@happybean4|@khanjhy|Planner of Grammar|
+|@jhhan128|not in team anymore|Planner of Grammar, Library Developer|
 
 # 🚀 Our Logo 
 
 ![](https://emoji.slack-edge.com/T01MFM2TJ07/wopsfull/7fe35e7cbecd2d4d.png)
+
+> Note: This Language doesn't work. Stay tuned
