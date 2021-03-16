@@ -120,7 +120,7 @@ string Parser::Parse(const string& codepath) {
             }
         }
 
-            // declare constant
+        // declare constant
         else if (tokens[0] == "const") {
             string ret = " "  + tokens[4];
             for (int i = 5; i < tokens.size(); i++) {
@@ -129,7 +129,7 @@ string Parser::Parse(const string& codepath) {
             bytecode += "declconst " + tokens[2] + "(" + tokens[1] + ")" + " =>" + ret;
         }
 
-            // modify variable
+        // modify variable
         else if (tokens[1] == "=") {
             string ret = " " + tokens[2];
             for (int i = 3; i < tokens.size(); i++) {
@@ -139,7 +139,7 @@ string Parser::Parse(const string& codepath) {
             bytecode += "modify " + tokens[0] + " =>" + ret;
         }
 
-            // if
+        // if
         else if (tokens[0] == "if") {
             string k;
             int a = 0, b = 0;
@@ -155,7 +155,7 @@ string Parser::Parse(const string& codepath) {
             bracePair.push(IF);
         }
 
-            // else if
+        // else if
         else if (tokens[0] == "elif") {
             string k;
             int a = 0, b = 0;
@@ -171,13 +171,13 @@ string Parser::Parse(const string& codepath) {
             bracePair.push(ELIF);
         }
 
-            // else
+        // else
         else if (tokens[0] == "else") {
             bytecode += "elsestart";
             bracePair.push(ELSE);
         }
 
-            // for
+        // for
         else if (tokens[0] == "for") {
             // for range or list
             if (tokens[2] == "in") {
