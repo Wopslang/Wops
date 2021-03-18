@@ -5,6 +5,11 @@
  * 2021, Wops Team
  * */
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCDFAInspection"
+#ifndef WOPSLANG_PARSER_HEADER
+#define WOPSLANG_PARSER_HEADER
+
 // dependency
 #include <algorithm>
 #include <cstdio>
@@ -38,6 +43,12 @@ class Parser {
         // TODO: stringstream으로 변환
         static vector<string> split(const string& input, char delimiter);
     public:
+        // std::string PreFormat(std::string& plaincode)
+        // plaincode를 Parse하기 좋게 바꿔주는 포맷터
+        static string PreFormat(string& plaincode) {
+            // :TODO
+            return plaincode;
+        }
         // std::string Parse(std::string codepath)
         // 파일 경로 codepath가 가리키는 파일을 파싱함
         static string Parse(const string& codepath);
@@ -62,6 +73,7 @@ string Parser::Parse(const string& codepath) {
 
     while (file.peek() != EOF) {
         getline(file, code);
+        code = Parser::PreFormat(code);
 
         vector<string> tokens = split(code, ' ');
 
@@ -231,3 +243,5 @@ string Parser::Parse(const string& codepath) {
     }
     return bytecode;
 }
+
+#endif
