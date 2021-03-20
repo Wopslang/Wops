@@ -57,17 +57,17 @@ string Parser::PreFormat(string& plaincode) {
 	stringstream ss;
 	int sz = (int) plaincode.size();
 	for (int i = 0; i < sz; i++) {
-        char ch = plaincode[i];
-        if (ch == ' ' && i > 0 && plaincode[i-1] == ' ') continue;
-        if (ch == '=') {
-			if (i > 0 && plaincode[i-1] != '=' && plaincode[i-1] != ' ') ss << ' ';
-        }
-        else if (find(tokens, tokens+13, ch) != tokens+13 && i > 0 && plaincode[i-1] != ' ') ss << ' ';
-        ss << ch;
-        if (ch == '=') {
-			if (i < sz-1 && plaincode[i+1] != '=' && plaincode[i+1] != ' ') ss << ' ';
-        }
-        else if (find(tokens, tokens+12, ch) != tokens+12 && i < sz-1 && plaincode[i+1] != ' ') ss << ' ';
+		char ch = plaincode[i];
+		if (ch == ' ' && i > 0 && plaincode[i-1] == ' ') continue;
+		if (ch == '=') {
+				if (i > 0 && plaincode[i-1] != '=' && plaincode[i-1] != ' ') ss << ' ';
+		}
+		else if (find(tokens, tokens+13, ch) != tokens+13 && i > 0 && plaincode[i-1] != ' ') ss << ' ';
+		ss << ch;
+		if (ch == '=') {
+				if (i < sz-1 && plaincode[i+1] != '=' && plaincode[i+1] != ' ') ss << ' ';
+		}
+		else if (find(tokens, tokens+12, ch) != tokens+12 && i < sz-1 && plaincode[i+1] != ' ') ss << ' ';
 	}
 	return ss.str();
 }
