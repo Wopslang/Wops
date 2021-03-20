@@ -19,8 +19,6 @@
 #include <string>
 #include <stack>
 
-#include <iostream>
-
 using namespace std;
 
 // 타입들과 빌트인 펑션(Ref. runtime/executor.h)
