@@ -22,6 +22,7 @@ License: Apache License 2.0
 |@sonjaewon0318|@pokmui|Programmer of Interpreter, Admin of Slack, Geometry|
 |@byunjaewoo|@byunjaewoo|Lead Programmer of Data Structure
 |@happybean4|@khanjhy|Planner of Grammar|
+|@codenstory|@codenstory|Programmer of Interpreter|
 |@jhhan128|not in team anymore|Planner of Grammar, Library Developer|
 
 # 🚀 Our Logo 
