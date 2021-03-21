@@ -58,7 +58,7 @@ string Parser::PreFormat(string& plaincode) {
 	int sz = (int) plaincode.size();
 	for (int i = 0; i < sz; i++) {
 		char ch = plaincode[i];
-		if (ch == ' ' && i > 0 && plaincode[i-1] == ' ') continue;
+		if (ch == ' ' && ((i > 0 && plaincode[i-1] == ' ') || i == 0)) continue;
 		if (ch == '=') {
 				if (i > 0 && plaincode[i-1] != '=' && plaincode[i-1] != ' ') ss << ' ';
 		}
