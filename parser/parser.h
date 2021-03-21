@@ -24,6 +24,7 @@ using namespace std;
 // 타입들과 빌트인 펑션(Ref. runtime/executor.h)
 const string types[4] = {"int", "double", "bool", "string"};
 const string builtin_func[2] = {"out", "in"};
+const char tokens[13] = {'\"', '\'', '(', ')', '{', '}', '+', '-', '*', '/', '%', ',', '='};
 
 // enum expression
 // 어떤 유형의 코드인지 명시해주는 열거형
@@ -45,14 +46,31 @@ class Parser {
     public:
         // std::string PreFormat(std::string& plaincode)
         // plaincode를 Parse하기 좋게 바꿔주는 포맷터
-        static string PreFormat(string& plaincode) {
-            // :TODO
-            return plaincode;
-        }
+        static string PreFormat(string& plaincode);
         // std::string Parse(std::string codepath)
         // 파일 경로 codepath가 가리키는 파일을 파싱함
         static string Parse(const string& codepath);
 };
+
+string Parser::PreFormat(string& plaincode) {
+	string answer;
+	stringstream ss;
+	int sz = (int) plaincode.size();
+	for (int i = 0; i < sz; i++) {
+		char ch = plaincode[i];
+		if (ch == ' ' && ((i > 0 && plaincode[i-1] == ' ') || i == 0)) continue;
+		if (ch == '=') {
+				if (i > 0 && plaincode[i-1] != '=' && plaincode[i-1] != ' ') ss << ' ';
+		}
+		else if (find(tokens, tokens+13, ch) != tokens+13 && i > 0 && plaincode[i-1] != ' ') ss << ' ';
+		ss << ch;
+		if (ch == '=') {
+				if (i < sz-1 && plaincode[i+1] != '=' && plaincode[i+1] != ' ') ss << ' ';
+		}
+		else if (find(tokens, tokens+12, ch) != tokens+12 && i < sz-1 && plaincode[i+1] != ' ') ss << ' ';
+	}
+	return ss.str();
+}
 
 vector<string> Parser::split(const string& input, char delimiter) {
     vector<string> answer;
