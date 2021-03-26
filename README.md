@@ -1,5 +1,7 @@
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
+> 📣 **Announcement** : Because of studying for KOI, the contribution of wops team will decrease.  
+> Please make a pull requests about some bugs. We'll check it after KOI.
 ```go
 func<WholeNewWorld> Wopslang(contributors) {
     int newIdea = 0
