@@ -3,3 +3,9 @@ a.out
 .gch
 a.out.dSYM
 .idea
+
+# Outputs
+*.exe
+*.o
+*.obj
+*.gch
