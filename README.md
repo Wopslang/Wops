@@ -1,7 +1,5 @@
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
-> 📣 **Announcement** : Because of studying for KOI, the contribution of wops team will decrease.  
-> Please make a pull requests about some bugs. We'll check it after KOI.
 ```go
 func<WholeNewWorld> Wopslang(contributors) {
     int newIdea = 0
@@ -25,7 +23,7 @@ License: Apache License 2.0
 |@byunjaewoo|@byunjaewoo|Lead Programmer of Data Structure
 |@happybean4|@khanjhy|Planner of Grammar|
 |@codenstory|@codenstory|Programmer of Interpreter|
-|~@jhhan128~|not in team anymore|Planner of Grammar, Library Developer|
+Special Thanks to @jhhan128
 
 # 🚀 Our Logo 
 
