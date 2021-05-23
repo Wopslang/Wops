@@ -15,7 +15,7 @@ func<WholeNewWorld> Wopslang(contributors) {
 Testing Version: **v0.1 Alpha**   
 License: Apache License 2.0  
 [Hot News! The v0.1's Release Date was confirmed! :tada:](./UPDATE.md)  
-g
+
 ## Contact Us
 |Github Username|Slack Username|Role|
 |---|---|---|
