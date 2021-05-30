@@ -7,17 +7,20 @@
 
 #include <dlfcn.h>
 #include <iostream>
+#include "src/type/variable.h"
 
-template <typename ARG_T, typename RETURN_T>
-RETURN_T EExecFunc(std::string func, ARG_T argv) {
-    void* handle = dlopen("./library.so", RTLD_LAZY);
+VariableWithCode EExecFunc(std::string func, Variable argv) {
+    // VARIABLE
+    Variable null = {"_", "", INT};
+
+    void* handle = dlopen("./dll/library.so", RTLD_LAZY);
 
     if (!handle) {
         std::cerr << "Cannot open library: " << dlerror() << '\n';
-        return 1;
+        return {null, ERROR};
     }
 
-    typedef RETURN_T (*t)(ARG_T);
+    typedef VariableWithCode (*t)(Variable);
 
     // reset errors
     dlerror();
@@ -29,17 +32,17 @@ RETURN_T EExecFunc(std::string func, ARG_T argv) {
         std::cerr << "Cannot load symbol '" << func << "': " << dlsym_error <<
             '\n';
         dlclose(handle);
-        return 1;
+        return {null, ERROR};
     }
 
-    int ret = fptr(argv);
+    VariableWithCode ret = fptr(argv);
     dlclose(handle);
     return ret;
 }
 
 // unit test
 int main() {
-    std::string funcname = "print";
-    std::string s = "hello_world";
-    int result_code = EExecFunc<std::string, int>(funcname, s);
+    std::string funcname = "out";
+    Variable s("_", "Wopslang!", STRING);
+    VariableWithCode result_code = EExecFunc(funcname, s);
 }

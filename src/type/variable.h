@@ -33,9 +33,18 @@ class Variable {
         return OK;
     }
 
+    std::string GetValue() {
+        return value;
+    }
+
     std::string value;
     std::string token;
     TYPE _t;
+};
+
+struct VariableWithCode {
+    Variable var;
+    Err error;
 };
 
 #endif

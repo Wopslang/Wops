@@ -11,12 +11,12 @@
 #include <dlfcn.h>
 #include <iostream>
 #include <string>
+#include "src/type/variable.h"
 
 /*
-void EExecFunc(std::string func, ARG_T argv)
-call external function
+VariableWithCode EExecFunc(std::string func, Variable argv);
+Execute External Function
 */
-template <typename ARG_T, typename RETURN_T>
-RETURN_T EExecFunc(std::string func, ARG_T argv);
+VariableWithCode EExecFunc(std::string func, Variable argv);
 
 #endif
