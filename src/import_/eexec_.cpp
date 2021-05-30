@@ -1,3 +1,10 @@
+/*
+ * src/import_/eexec_.cpp
+ * Wopslang External Function Executor Sourcefile
+ *
+ * 2021, Wops Team
+ * */
+
 #include <dlfcn.h>
 #include <iostream>
 

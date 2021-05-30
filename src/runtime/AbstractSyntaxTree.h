@@ -1,3 +1,10 @@
+/*
+ * src/runtime/AbstractSyntaxTree.h
+ * Wopslang Impl AST Headerfile
+ *
+ * 2021, Wops Team
+ * */
+
 #ifndef WOPS_AST_IMPL_H
 #define WOPS_AST_IMPL_H
 

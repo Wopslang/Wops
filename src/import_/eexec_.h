@@ -1,3 +1,10 @@
+/*
+ * src/import_/eexec_.h
+ * Wopslang External Function Executor Headerfile
+ *
+ * 2021, Wops Team
+ * */
+
 #ifndef WOPS_EEXEC_H
 #define WOPS_EEXEC_H
 
