@@ -23,9 +23,9 @@ If you already have a solution for it, please make a PR.
 If you already have a solution for it, PR suits you.  
 Code style should satisfy these checklist.
 
-- [] [Google C++ Coding Style Guide #General Naming Rules](https://google.github.io/styleguide/cppguide.html#General_Naming_Rules)
-- [] K&R Indentation style
-- [] Boilerplate Code
+- [ ] [Google C++ Coding Style Guide #General Naming Rules](https://google.github.io/styleguide/cppguide.html#General_Naming_Rules)
+- [ ] K&R Indentation style
+- [ ] Boilerplate Code
 
 ```c++
 /*
