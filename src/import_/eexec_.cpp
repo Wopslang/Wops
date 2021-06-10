@@ -47,5 +47,5 @@ VariableWithCode EExecFunc(std::string func, Variable argv) {
 int main() {
     std::string funcname = "out";
     Variable s = Variable("_", "Wopslang!", STRING);
-    VariableWithCode result_code = EExecFunc(funcname, s);
+    VariableWithCode _ = EExecFunc(funcname, s);
 }
