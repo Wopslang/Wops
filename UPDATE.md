@@ -13,10 +13,10 @@
 
 ### :pencil: **update feature**
 
-- add basic STL container
+- add basic STL container  
 
 ## v0.25 minor update
 
 ### :arrow_up: **update**
 
-- function declare available
+- function declare available  

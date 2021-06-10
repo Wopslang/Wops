@@ -9,14 +9,17 @@ func<WholeNewWorld> Wopslang(contributors) {
     return bindAll(newIdea, Whops)
 }
 ```
+
 ## `#LanguageForAlgorithm` `#WorkingPseudo`
 
 ## Infomation
-Testing Version: **v0.1 Alpha**   
+
+Testing Version: **v0.1 Alpha**  
 License: Apache License 2.0  
 [Hot News! The v0.1's Release Date was confirmed! :tada:](./UPDATE.md)  
 
 ## Contact Us
+
 |Github Username|Slack Username|Role|
 |---|---|---|
 |@RedoC-github|@RedoC|Lead Programmer of Interpreter|
@@ -26,8 +29,8 @@ License: Apache License 2.0
 |@codenstory|@codenstory|Programmer of Interpreter|
 Special Thanks to @jhhan128
 
-# 🚀 Our Logo 
+## 🚀 Our Logo
 
-![](https://emoji.slack-edge.com/T01MFM2TJ07/wopsfull/7fe35e7cbecd2d4d.png)
+![Wopslang Logo](https://emoji.slack-edge.com/T01MFM2TJ07/wopsfull/7fe35e7cbecd2d4d.png)
 
 > Note: This Language doesn't work. Stay tuned
