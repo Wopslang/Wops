@@ -46,6 +46,7 @@ Code style should satisfy these checklist.
 
 Also, your branch's name should be like
 `patch-[username]-[number]`.
+
 ## :white_check_mark: TODO
 
 **Contributes about things in TODO list will have higher priority than normal one.**  
@@ -53,4 +54,3 @@ Also, your branch's name should be like
 - Parser (the highest priority)
 - Array Class using Variable class (defined src/type/variable.h)
 - Comment Translation (the lowest priority)
-
