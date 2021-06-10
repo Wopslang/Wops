@@ -7,11 +7,11 @@
 
 #include <dlfcn.h>
 #include <iostream>
-#include "src/type/variable.h"
+#include "../type/variable.h"
 
 VariableWithCode EExecFunc(std::string func, Variable argv) {
     // VARIABLE
-    Variable null = {"_", "", INT};
+    Variable null = Variable("_", "", INT);
 
     void* handle = dlopen("./dll/library.so", RTLD_LAZY);
 
@@ -43,6 +43,6 @@ VariableWithCode EExecFunc(std::string func, Variable argv) {
 // unit test
 int main() {
     std::string funcname = "out";
-    Variable s("_", "Wopslang!", STRING);
+    Variable s = Variable("_", "Wopslang!", STRING);
     VariableWithCode result_code = EExecFunc(funcname, s);
 }

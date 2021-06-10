@@ -6,9 +6,9 @@
  * */
 
 #ifndef WOPS_VARIABLE_H
-#define WOPS_VARAIBLE_H
+#define WOPS_VARIABLE_H
 #include <string>
-#include "src/error/signal.h"
+#include "../error/signal.h"
 
 enum TYPE {
     INT,
