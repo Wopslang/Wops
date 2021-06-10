@@ -6,8 +6,8 @@
 
 ### :pencil: **feature**
 
-- support basic function, type(int, double, string, bool)
-- if, for available
+- support basic function, type(int, double, string, bool)  
+- if, for available  
 
 ## v0.2 alpha
 
