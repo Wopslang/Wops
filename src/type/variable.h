@@ -10,6 +10,8 @@
 #include <string>
 #include "../error/signal.h"
 
+// enum TYPE {INT, DOUBLE, STRING, BOOL}
+// Wopslang 데이터타입 열거형
 enum TYPE {
     INT,
     DOUBLE,
@@ -17,23 +19,34 @@ enum TYPE {
     BOOL,
 };
 
+/** 
+ * class Variable
+ * 변수 컨테이너 클래스: 변수는 물론 모든 단일 값을 저장한다.
+ * 
+ * Structure
+ * 
+ * Variable
+ *   - value
+ *   - token (=variable name)
+ *   - type
+*/
 class Variable {
     private:
     public:
-    Variable(std::string varname, std::string val, TYPE t) {
-        assert(varname != "");
+    Variable(std::string varname, std::string val, TYPE t) { // constructor
+        assert(varname != ""); 
         value = val;
         token = varname;
         _t = t;
     }
 
-    Err Substitute(std::string newval) {
+    Err Substitute(std::string newval) { // substitute
         // :TODO add type checker
         value = newval;
         return OK;
     }
 
-    std::string GetValue() {
+    std::string GetValue() { // extract value
         return value;
     }
 
@@ -42,6 +55,8 @@ class Variable {
     TYPE _t;
 };
 
+// struct VariableWithCode
+// Variable 컨테이너와 오류 메시지를 동시에 지니고 있는 구조체. 변환값에 자주 사용
 struct VariableWithCode {
     Variable var;
     Err error;

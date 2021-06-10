@@ -5,12 +5,14 @@
  * 2021, Wops Team
  * */
 
-#include <dlfcn.h>
+#include <dlfcn.h> // to load dll
 #include <iostream>
 #include "../type/variable.h"
 
+// VariableWithCode EExecFunc(std::string func, Variable argv)
+// 함수 이름이 func인 함수에 argv를 매개변수로 두어 호출하는 함수
 VariableWithCode EExecFunc(std::string func, Variable argv) {
-    // VARIABLE
+    // EMPTY VARIABLE
     Variable null = Variable("_", "", INT);
 
     void* handle = dlopen("./dll/library.so", RTLD_LAZY);
@@ -20,6 +22,7 @@ VariableWithCode EExecFunc(std::string func, Variable argv) {
         return {null, ERROR};
     }
 
+    // function pointer
     typedef VariableWithCode (*t)(Variable);
 
     // reset errors
@@ -40,7 +43,7 @@ VariableWithCode EExecFunc(std::string func, Variable argv) {
     return ret;
 }
 
-// unit test
+// unit test: out("Wopslang!")
 int main() {
     std::string funcname = "out";
     Variable s = Variable("_", "Wopslang!", STRING);

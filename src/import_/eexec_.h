@@ -11,11 +11,11 @@
 #include <dlfcn.h>
 #include <iostream>
 #include <string>
-#include "src/type/variable.h"
+#include "../type/variable.h"
 
 /*
-VariableWithCode EExecFunc(std::string func, Variable argv);
-Execute External Function
+VariableWithCode EExecFunc(std::string func, Variable argv)
+함수 이름이 func인 함수에 argv를 매개변수로 두어 호출하는 함수
 */
 VariableWithCode EExecFunc(std::string func, Variable argv);
 
