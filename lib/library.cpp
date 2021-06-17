@@ -24,3 +24,16 @@ extern "C" VariableWithCode out(Variable s) {
     std::cout << s.GetValue();
     return {null, OK};
 }
+
+/*
+* 함수 정보
+* 이름: in
+* 매개변수: none
+* 반환형: string s
+* 띄어쓰기 혹은 줄바꿈 시 입력이 종료됩니다
+*/
+extern "C" VariableWithCode in(Variable _) { 
+    std::string s; std::cin >> s;
+    Variable ret = Variable("_", s, STRING);
+    return {ret, OK};
+}
