@@ -7,12 +7,8 @@
   - support basic function, type(int, double, string, bool)  
   - if, for available  
 
-## v0.2 alpha  
-
-- :pencil: **update feature**  
-  - add basic STL container  
-
-## v0.25 minor update  
+## v0.15 minor update  
 
 - :arrow_up: **update**  
-  - function declare available  
+  - support Array(based on `std::vector`)  
+  - add more function  

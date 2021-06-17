@@ -10,6 +10,10 @@
 #include <string>
 #include "../error/signal.h"
 
+// 추후 변경시 Refactor을 줄이기 위한 Alias
+using Int=signed int;
+using Double=double;
+
 // enum TYPE {INT, DOUBLE, STRING, BOOL}
 // Wopslang 데이터타입 열거형
 enum TYPE {
