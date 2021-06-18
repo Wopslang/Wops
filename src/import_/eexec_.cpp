@@ -8,12 +8,13 @@
 #include <dlfcn.h> // to load dll
 #include <iostream>
 #include "../type/variable.h"
+#include "../type/array.h"
 
-// VariableWithCode EExecFunc(std::string func, Variable argv)
+// ArrayWithCode EExecFunc(std::string func, Array argv)
 // 함수 이름이 func인 함수에 argv를 매개변수로 두어 호출하는 함수
-VariableWithCode EExecFunc(std::string func, Variable argv) {
+ArrayWithCode EExecFunc(std::string func, Array argv) {
     // EMPTY VARIABLE
-    Variable null = Variable("_", "", INT);
+    Array null(Variable("_", "", INT));
 
     void* handle = dlopen("./dll/library.so", RTLD_LAZY);
 
@@ -23,7 +24,7 @@ VariableWithCode EExecFunc(std::string func, Variable argv) {
     }
 
     // function pointer
-    typedef VariableWithCode (*t)(Variable);
+    typedef ArrayWithCode (*t)(Array);
 
     // reset errors
     dlerror();
@@ -38,14 +39,13 @@ VariableWithCode EExecFunc(std::string func, Variable argv) {
         return {null, ERROR};
     }
 
-    VariableWithCode ret = fptr(argv);
+    ArrayWithCode ret = fptr(argv);
     dlclose(handle);
     return ret;
 }
 
 // unit test: out(in())
 int main() {
-    Variable s = Variable("_", "", STRING);
-    VariableWithCode inp = EExecFunc("in", s);
-    VariableWithCode _ = EExecFunc("out", inp.var);
+    ArrayWithCode inp = EExecFunc("in", Array(Variable("_", "", STRING)));
+    ArrayWithCode _ = EExecFunc("out", inp.var);
 }

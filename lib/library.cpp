@@ -7,22 +7,25 @@
 
 #include <iostream>
 #include <string>
+#include "../src/type/array.h"
 #include "../src/type/variable.h"
 
 // 표준 I/O 함수
 
 /**
-* @brief out(any s): 표준 출력
+* @brief out([any s]): 표준 출력
 * 함수 정보
 * 이름: out
-* 매개변수: (any s)
+* 매개변수: [any s]
 * 반환형: none
 */
-extern "C" VariableWithCode out(Variable s) { 
+extern "C" ArrayWithCode out(Array s) { 
     // EMPTY VARIABLE
-    Variable null = Variable("_", "", INT);
+    Array null(Variable("_", "", INT));
     
-    std::cout << s.GetValue();
+    for (Variable e: s.container) {
+        std::cout << e.GetValue();
+    }
     return {null, OK};
 }
 
@@ -33,9 +36,9 @@ extern "C" VariableWithCode out(Variable s) {
 * 반환형: string s
 * 띄어쓰기 혹은 줄바꿈 시 입력이 종료됩니다
 */
-extern "C" VariableWithCode in(Variable _) { 
+extern "C" ArrayWithCode in(Array _) { 
     std::string s; std::cin >> s;
-    Variable ret = Variable("_", s, STRING);
+    Array ret(Variable("_", s, STRING));
     return {ret, OK};
 }
 
@@ -47,11 +50,14 @@ extern "C" VariableWithCode in(Variable _) {
  * 매개변수: int a
  * 반환형: int a
  */
-extern "C" VariableWithCode phi(Variable a) { 
-    Variable err("_", "", INT);
-    if (a._t != INT) return {err, ERROR};
+extern "C" ArrayWithCode phi(Array a) { 
+    Array err(Variable("_", "", INT));
+    if (a.container.size() != 1) return {err, ERROR};
 
-    Int n = stoi(a.GetValue());
+    Variable e = a.container[0];
+    if (e._t != INT) return {err, ERROR};
+
+    Int n = stoi(e.GetValue());
     if (n < 0) return {err, ERROR};
 
     Int ret = n;
@@ -64,6 +70,6 @@ extern "C" VariableWithCode phi(Variable a) {
     
     ret = (n > 1 ? ret - (ret / n) : ret);
 
-    Variable res("_", std::to_string(ret), INT);
+    Array res(Variable("_", std::to_string(ret), INT));
     return {res, OK};
 }

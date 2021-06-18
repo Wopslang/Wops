@@ -13,6 +13,8 @@
 // 추후 변경시 Refactor을 줄이기 위한 Alias
 using Int=signed int;
 using Double=double;
+using String=std::string;
+using Bool=bool;
 
 // enum TYPE {INT, DOUBLE, STRING, BOOL}
 // Wopslang 데이터타입 열거형
