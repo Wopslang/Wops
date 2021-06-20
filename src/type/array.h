@@ -13,7 +13,7 @@
 #include <cstdarg>
 
 // class Array
-// 다변수가 할당, 저장 등 사용되는 경우 이용할 임시 클래스
+// Temporary class is used to store multiple variables
 class Array {
     private:
     public:
@@ -33,8 +33,8 @@ class Array {
     }
 };
 
-// struct ArrayWithCode 
-// Array와 오류 메시지를 동시에 지니고 있는 구조체. 변환값에 자주 사용
+// struct ArrayWithCode
+// Has Array class and Err enum as elements.
 struct ArrayWithCode {
     Array var;
     Err error;

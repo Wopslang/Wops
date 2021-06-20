@@ -10,19 +10,17 @@
 #include "../src/type/array.h"
 #include "../src/type/variable.h"
 
-// 표준 I/O 함수
+// Standard I/O Functions
 
 /**
-* @brief out([any s]): 표준 출력
-* 함수 정보
-* 이름: out
-* 매개변수: [any s]
-* 반환형: none
+* @brief out([any s]): Standard output
+* @name out
+* @param [any s]
+* @return none
 */
-extern "C" ArrayWithCode out(Array s) { 
+extern "C" ArrayWithCode out(Array s) {
     // EMPTY VARIABLE
     Array null(Variable("_", "", INT));
-    
     for (Variable e: s.container) {
         std::cout << e.GetValue();
     }
@@ -30,11 +28,11 @@ extern "C" ArrayWithCode out(Array s) {
 }
 
 /**
-* @brief string in(): 표준 입력
-* 이름: in
-* 매개변수: none
-* 반환형: string s
-* 띄어쓰기 혹은 줄바꿈 시 입력이 종료됩니다
+* @brief string in(): Standard input
+* @name in
+* @param none
+* @return string s
+* Terminates inputting when space or new line character is entered
 */
 extern "C" ArrayWithCode in(Array _) { 
     std::string s; std::cin >> s;
@@ -42,15 +40,15 @@ extern "C" ArrayWithCode in(Array _) {
     return {ret, OK};
 }
 
-// 수학 함수
+// Mathematics Functions
 
 /**
- * @brief int phi(int a): a에 대한 오일러 파이값
- * 이름: phi
- * 매개변수: int a
- * 반환형: int a
+ * @brief int phi(int a): Euler's totient of a
+ * @name phi
+ * @param int a
+ * @return int a
  */
-extern "C" ArrayWithCode phi(Array a) { 
+extern "C" ArrayWithCode phi(Array a) {
     Array err(Variable("_", "", INT));
     if (a.container.size() != 1) return {err, ERROR};
 
@@ -67,7 +65,7 @@ extern "C" ArrayWithCode phi(Array a) {
             while (!(n % i)) n /= i;
         }
     }
-    
+
     ret = (n > 1 ? ret - (ret / n) : ret);
 
     Array res(Variable("_", std::to_string(ret), INT));

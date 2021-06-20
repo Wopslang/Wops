@@ -11,7 +11,7 @@
 #include "../type/array.h"
 
 // ArrayWithCode EExecFunc(std::string func, Array argv)
-// 함수 이름이 func인 함수에 argv를 매개변수로 두어 호출하는 함수
+// Calls a function with argv as a parameter and func as a name.
 ArrayWithCode EExecFunc(std::string func, Array argv) {
     // EMPTY VARIABLE
     Array null(Variable("_", "", INT));
