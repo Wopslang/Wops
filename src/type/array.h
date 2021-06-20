@@ -13,7 +13,7 @@
 #include <cstdarg>
 
 // class Array
-// Temporary class used to store multiple variables
+// Temporary class is used to store multiple variables
 class Array {
     private:
     public:
