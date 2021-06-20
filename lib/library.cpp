@@ -18,10 +18,9 @@
 * @param [any s]
 * @return none
 */
-extern "C" ArrayWithCode out(Arry s) {
+extern "C" ArrayWithCode out(Array s) {
     // EMPTY VARIABLE
     Array null(Variable("_", "", INT));
-
     for (Variable e: s.container) {
         std::cout << e.GetValue();
     }
@@ -35,7 +34,7 @@ extern "C" ArrayWithCode out(Arry s) {
 * @return string s
 * Terminates inputting when space or new line character is entered
 */
-extern "C" ArrayWithCode in(Array _) {
+extern "C" ArrayWithCode in(Array _) { 
     std::string s; std::cin >> s;
     Array ret(Variable("_", s, STRING));
     return {ret, OK};
@@ -69,6 +68,6 @@ extern "C" ArrayWithCode phi(Array a) {
 
     ret = (n > 1 ? ret - (ret / n) : ret);
 
-    Variable res("_", std::to_string(ret), INT);
+    Array res(Variable("_", std::to_string(ret), INT));
     return {res, OK};
 }
