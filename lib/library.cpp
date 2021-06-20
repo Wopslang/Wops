@@ -7,21 +7,24 @@
 
 #include <iostream>
 #include <string>
+#include "../src/type/array.h"
 #include "../src/type/variable.h"
 
 // Standard I/O Functions
 
 /**
-* @brief out(any s): Standard output
+* @brief out([any s]): Standard output
 * @name out
-* @param (any s)
+* @param [any s]
 * @return none
 */
-extern "C" VariableWithCode out(Variable s) {
+extern "C" ArrayWithCode out(Arry s) {
     // EMPTY VARIABLE
-    Variable null = Variable("_", "", INT);
+    Array null(Variable("_", "", INT));
 
-    std::cout << s.GetValue();
+    for (Variable e: s.container) {
+        std::cout << e.GetValue();
+    }
     return {null, OK};
 }
 
@@ -32,9 +35,9 @@ extern "C" VariableWithCode out(Variable s) {
 * @return string s
 * Terminates inputting when space or new line character is entered
 */
-extern "C" VariableWithCode in(Variable _) {
+extern "C" ArrayWithCode in(Array _) {
     std::string s; std::cin >> s;
-    Variable ret = Variable("_", s, STRING);
+    Array ret(Variable("_", s, STRING));
     return {ret, OK};
 }
 
@@ -46,11 +49,14 @@ extern "C" VariableWithCode in(Variable _) {
  * @param int a
  * @return int a
  */
-extern "C" VariableWithCode phi(Variable a) {
-    Variable err("_", "", INT);
-    if (a._t != INT) return {err, ERROR};
+extern "C" ArrayWithCode phi(Array a) {
+    Array err(Variable("_", "", INT));
+    if (a.container.size() != 1) return {err, ERROR};
 
-    Int n = stoi(a.GetValue());
+    Variable e = a.container[0];
+    if (e._t != INT) return {err, ERROR};
+
+    Int n = stoi(e.GetValue());
     if (n < 0) return {err, ERROR};
 
     Int ret = n;

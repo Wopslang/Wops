@@ -12,6 +12,8 @@
 
 using Int=signed int;
 using Double=double;
+using String=std::string;
+using Bool=bool;
 
 // enum TYPE {INT, DOUBLE, STRING, BOOL}
 // Enumeration of data types

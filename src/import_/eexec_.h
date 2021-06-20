@@ -12,11 +12,12 @@
 #include <iostream>
 #include <string>
 #include "../type/variable.h"
+#include "../type/array.h"
 
 /*
-VariableWithCode EExecFunc(std::string func, Variable argv)
+ArrayWithCode EExecFunc(std::string func, Array argv)
 Calls a function with argv as a parameter and func as a name.
 */
-VariableWithCode EExecFunc(std::string func, Variable argv);
+ArrayWithCode EExecFunc(std::string func, Array argv);
 
 #endif
