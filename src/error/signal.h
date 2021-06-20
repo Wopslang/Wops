@@ -9,11 +9,11 @@
 #define WOPS_ERRORSIGNAL_H
 
 // enum Err {OK, ERROR}
-// 에러 메시지의 열거형
+// Enumeration of error types
 enum Err {
     OK,
-    ERROR, 
-    // :TODO 추후에 추가 바람
+    ERROR,
+    // :TODO
 };
 
 #endif
