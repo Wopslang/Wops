@@ -10,12 +10,13 @@
 #include <string>
 #include "../error/signal.h"
 
-// 추후 변경시 Refactor을 줄이기 위한 Alias
 using Int=signed int;
 using Double=double;
+using String=std::string;
+using Bool=bool;
 
 // enum TYPE {INT, DOUBLE, STRING, BOOL}
-// Wopslang 데이터타입 열거형
+// Enumeration of data types
 enum TYPE {
     INT,
     DOUBLE,
@@ -23,12 +24,12 @@ enum TYPE {
     BOOL,
 };
 
-/** 
+/**
  * class Variable
- * 변수 컨테이너 클래스: 변수는 물론 모든 단일 값을 저장한다.
- * 
+ * Variable container class: each variable has a single value.
+ *
  * Structure
- * 
+ *
  * Variable
  *   - value
  *   - token (=variable name)
@@ -38,7 +39,7 @@ class Variable {
     private:
     public:
     Variable(std::string varname, std::string val, TYPE t) { // constructor
-        assert(varname != ""); 
+        assert(varname != "");
         value = val;
         token = varname;
         _t = t;
@@ -60,7 +61,7 @@ class Variable {
 };
 
 // struct VariableWithCode
-// Variable 컨테이너와 오류 메시지를 동시에 지니고 있는 구조체. 변환값에 자주 사용
+// Has Variable class and Err enum as elements.
 struct VariableWithCode {
     Variable var;
     Err error;
