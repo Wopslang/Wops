@@ -51,6 +51,4 @@ Also, your branch's name should be like
 
 **Contributes about things in TODO list will have higher priority than normal one.**  
 
-- Parser (the highest priority)  
-- Array Class using Variable class (defined src/type/variable.h)  
-- Comment Translation (the lowest priority)  
+- Parser  
