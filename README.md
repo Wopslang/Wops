@@ -27,6 +27,7 @@ License: Apache License 2.0
 |@byunjaewoo|@byunjaewoo|Lead Programmer of Data Structure
 |@happybean4|@khanjhy|Planner of Grammar|
 |@codenstory|@codenstory|Programmer of Interpreter|
+|@dddddd1234-creator|@dddddd|Lead Programmer of Builtin Function|
 Special Thanks to @jhhan128
 
 ## 🚀 Our Logo
