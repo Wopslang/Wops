@@ -2,7 +2,7 @@
 
 ## v0.1 alpha  
 
-> :mega: Hot News! The Release Date was confirmed: ~~June 28th~~ on July
+> :mega: Hot News! The Release Date was confirmed: ~~June 28th~~ **on July**
 
 - :pencil: **feature**  
   - support basic function, type(int, double, string, bool)  
