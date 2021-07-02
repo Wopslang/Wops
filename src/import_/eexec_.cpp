@@ -47,5 +47,6 @@ ArrayWithCode EExecFunc(std::string func, Array argv) {
 // unit test: out(in())
 int main() {
     ArrayWithCode inp = EExecFunc("in", Array(Variable("_", "", STRING)));
-    ArrayWithCode _ = EExecFunc("out", inp.var);
+    Variable temp = Variable("_", "\"Hello, \"", STRING) + inp.var.container[0];
+    ArrayWithCode _ = EExecFunc("out", Array(temp));
 }

@@ -38,27 +38,84 @@ enum TYPE {
 class Variable {
     private:
     public:
-    Variable(std::string varname, std::string val, TYPE t) { // constructor
+    std::string value;
+    std::string token;
+    TYPE _t;
+
+    // constructor
+    Variable(std::string varname, std::string val, TYPE t) {
         assert(varname != "");
+
         value = val;
         token = varname;
         _t = t;
     }
 
-    Err Substitute(std::string newval) { // substitute
-        // :TODO add type checker
-        value = newval;
-        return OK;
+    // operation
+    Variable operator + (Variable& operand) {
+        Variable res = Variable("_", "", _t);
+
+        switch (_t) {
+            case BOOL:
+            case INT:
+                assert(operand._t != STRING);
+                if (operand._t == DOUBLE)
+                    res.Substitute(std::to_string(std::stoi(value)+std::stod(operand.value)));
+                else
+                    res.Substitute(std::to_string(std::stoi(value)+std::stoi(operand.value)));
+                break;
+            case DOUBLE:
+                assert(operand._t != STRING);
+                if (operand._t == DOUBLE)
+                    res.Substitute(std::to_string(std::stod(value)+std::stod(operand.value)));
+                else
+                    res.Substitute(std::to_string(std::stod(value)+std::stoi(operand.value)));
+                break;
+            case STRING:
+                assert(operand._t == STRING);
+                res.Substitute("\""+trim(value)+trim(operand.value)+"\"");
+                break;
+        }
+        return res;
+    }
+    
+    Variable operator - (Variable& operand) {
+        Variable res = Variable("_", "", _t);
+
+        assert(operand._t != STRING || _t != STRING);
+        switch (_t) {
+            case BOOL:
+            case INT:
+                if (operand._t == DOUBLE)
+                    res.Substitute(std::to_string(std::stoi(value)-std::stod(operand.value)));
+                else
+                    res.Substitute(std::to_string(std::stoi(value)-std::stoi(operand.value)));
+                break;
+            case DOUBLE:
+                if (operand._t == DOUBLE)
+                    res.Substitute(std::to_string(std::stod(value)-std::stod(operand.value)));
+                else
+                    res.Substitute(std::to_string(std::stod(value)-std::stoi(operand.value)));
+                break;
+        }
+        return res;
     }
 
-    std::string GetValue() { // extract value
-        return value;
-    }
+    // management
+    Err Substitute(std::string newval); // substitute
+    std::string GetValue(); // extract
 
-    std::string value;
-    std::string token;
-    TYPE _t;
+    // utility
+    std::string trim(std::string s) { return s.erase(0,1).erase(s.length()-1, 1); }
 };
+
+Err Variable::Substitute(std::string newval) {
+    // :TODO add type checker
+    value = newval;
+    return OK;
+}
+
+std::string Variable::GetValue() { return value; }
 
 // struct VariableWithCode
 // Has Variable class and Err enum as elements.

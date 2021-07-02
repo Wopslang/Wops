@@ -2,6 +2,11 @@
  * lib/library,cpp
  * Wopslang Library DLL Sourcefile
  *
+ * Announcement
+ * ---
+ * We'll put only I/O functions in Ver 0.1 alpha.
+ * Built-in function development is on the way. Stay tuned.
+ * 
  * 2021, Wops Team
  * */
 
@@ -22,7 +27,7 @@ extern "C" ArrayWithCode out(Array s) {
     // EMPTY VARIABLE
     Array null(Variable("_", "", INT));
     for (Variable e: s.container) {
-        std::cout << e.GetValue();
+        std::cout << e.trim(e.GetValue());
     }
     return {null, OK};
 }
@@ -36,17 +41,19 @@ extern "C" ArrayWithCode out(Array s) {
 */
 extern "C" ArrayWithCode in(Array _) { 
     std::string s; std::cin >> s;
-    Array ret(Variable("_", s, STRING));
+    Array ret(Variable("_", "\""+s+"\"", STRING));
     return {ret, OK};
 }
 
 // Mathematics Functions
+// These functions will be with v0.15. Check the announcement for detail.
 
 /**
  * @brief int phi(int a): Euler's totient of a
  * @name phi
  * @param int a
  * @return int a
+ * @remark This is just a demo code. It'll be with v0.15. 
  */
 extern "C" ArrayWithCode phi(Array a) {
     Array err(Variable("_", "", INT));
