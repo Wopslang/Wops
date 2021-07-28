@@ -46,9 +46,9 @@ class Variable {
     Variable(std::string varname, std::string val, TYPE t) {
         assert(varname != "");
 
-        value = val;
-        token = varname;
         _t = t;
+        token = varname;
+        Substitute(val);
     }
 
     // operation
@@ -60,7 +60,7 @@ class Variable {
             case INT:
                 assert(operand._t != STRING);
                 if (operand._t == DOUBLE)
-                    res.Substitute(std::to_string(std::stoi(value)+std::stod(operand.value)));
+                    res.Substitute(std::to_string((Int)(std::stoi(value)+std::stod(operand.value))));
                 else
                     res.Substitute(std::to_string(std::stoi(value)+std::stoi(operand.value)));
                 break;
@@ -82,12 +82,12 @@ class Variable {
     Variable operator - (Variable& operand) {
         Variable res = Variable("_", "", _t);
 
-        assert(operand._t != STRING || _t != STRING);
+        assert(operand._t != STRING && _t != STRING);
         switch (_t) {
             case BOOL:
             case INT:
                 if (operand._t == DOUBLE)
-                    res.Substitute(std::to_string(std::stoi(value)-std::stod(operand.value)));
+                    res.Substitute(std::to_string((Int)(std::stoi(value)-std::stod(operand.value))));
                 else
                     res.Substitute(std::to_string(std::stoi(value)-std::stoi(operand.value)));
                 break;
@@ -101,6 +101,160 @@ class Variable {
         return res;
     }
 
+    Variable operator * (Variable& operand) {
+        Variable res = Variable("_", "", _t);
+
+        assert(operand._t != STRING && _t != STRING);
+        switch (_t) {
+            case BOOL:
+            case INT:
+                if (operand._t == DOUBLE)
+                    res.Substitute(std::to_string((Int)(std::stoi(value)*std::stod(operand.value))));
+                else
+                    res.Substitute(std::to_string(std::stoi(value)*std::stoi(operand.value)));
+                break;
+            case DOUBLE:
+                if (operand._t == DOUBLE)
+                    res.Substitute(std::to_string(std::stod(value)*std::stod(operand.value)));
+                else
+                    res.Substitute(std::to_string(std::stod(value)*std::stoi(operand.value)));
+                break;
+        }
+        return res;
+    }
+
+    Variable operator / (Variable& operand) {
+        Variable res = Variable("_", "", _t);
+
+        assert(operand._t != STRING && _t != STRING && operand.GetValue() != "0");
+        switch (_t) {
+            case BOOL:
+            case INT:
+                if (operand._t == DOUBLE)
+                    res.Substitute(std::to_string((Int)(std::stoi(value)/std::stod(operand.value))));
+                else
+                    res.Substitute(std::to_string(std::stoi(value)/std::stoi(operand.value)));
+                break;
+            case DOUBLE:
+                if (operand._t == DOUBLE)
+                    res.Substitute(std::to_string(std::stod(value)/std::stod(operand.value)));
+                else
+                    res.Substitute(std::to_string(std::stod(value)/std::stoi(operand.value)));
+                break;
+        }
+        return res;
+    }
+
+    Variable operator % (Variable& operand) {
+        Variable res = Variable("_", "", _t);
+
+        assert(operand._t == INT && _t == INT && operand.GetValue() != "0");
+        switch (_t) {
+            case INT:
+                res.Substitute(std::to_string(std::stoi(value)%std::stoi(operand.value)));
+                break;
+        }
+        return res;
+    }
+
+    Variable operator == (Variable& operand) {
+        Variable res = Variable("_", "", BOOL);
+
+        assert(operand._t == _t);
+        res.Substitute(std::to_string(operand.GetValue()==GetValue()));
+
+        return res;
+    }
+
+    Variable operator != (Variable& operand) {
+        Variable res = Variable("_", "", BOOL);
+
+        assert(operand._t == _t);
+        res.Substitute(std::to_string(operand.GetValue()!=GetValue()));
+
+        return res;
+    }
+
+    Variable operator > (Variable& operand) {
+        Variable res = Variable("_", "", BOOL);
+
+        try {
+            res.Substitute(std::to_string(operand.GetValue()>GetValue()));
+        }
+        catch(const std::exception& e) {
+            assert(0);
+        }
+
+        return res;
+    }
+
+    Variable operator < (Variable& operand) {
+        Variable res = Variable("_", "", BOOL);
+
+        try {
+            res.Substitute(std::to_string(operand.GetValue()<GetValue()));
+        }
+        catch(const std::exception& e) {
+            assert(0);
+        }
+
+        return res;
+    }
+
+    Variable operator >= (Variable& operand) {
+        Variable res = Variable("_", "", BOOL);
+
+        try {
+            res.Substitute(std::to_string(operand.GetValue()>=GetValue()));
+        }
+        catch(const std::exception& e) {
+            assert(0);
+        }
+
+        return res;
+    }
+
+    Variable operator <= (Variable& operand) {
+        Variable res = Variable("_", "", BOOL);
+
+        try {
+            res.Substitute(std::to_string(operand.GetValue()<=GetValue()));
+        }
+        catch(const std::exception& e) {
+            assert(0);
+        }
+
+        return res;
+    }
+
+    Variable operator ! () {
+        Variable res = Variable("_", "", BOOL);
+
+        assert(_t == BOOL);
+        res.Substitute(std::to_string(
+            !(std::stoi(GetValue()))
+        ));
+        return res;
+    }
+
+    Variable operator && (Variable& operand) {
+        Variable res = Variable("_", "", BOOL);
+        assert(_t == BOOL && operand._t == BOOL);
+
+        res.Substitute(std::to_string(std::stoi(operand.GetValue())&&std::stoi(GetValue())));
+
+        return res;
+    }
+
+    Variable operator || (Variable& operand) {
+        Variable res = Variable("_", "", BOOL);
+        assert(_t == BOOL && operand._t == BOOL);
+
+        res.Substitute(std::to_string(std::stoi(operand.GetValue())||std::stoi(GetValue())));
+
+        return res;
+    }
+
     // management
     Err Substitute(std::string newval); // substitute
     std::string GetValue(); // extract
@@ -110,8 +264,27 @@ class Variable {
 };
 
 Err Variable::Substitute(std::string newval) {
-    // :TODO add type checker
-    value = newval;
+    try {
+        switch (_t) {
+            case INT:
+                value = std::to_string(std::stoi(newval));
+                break;
+            case DOUBLE:
+                value = std::to_string(std::stod(newval));
+                break;
+            case BOOL:
+                value = std::to_string(std::stoi(newval));
+                break;
+            case STRING:
+                if (*newval.begin() != '"' || *newval.end() != '"' || newval.length() < 2) return ERROR;
+                value = newval;
+                break;
+        }
+    }
+    catch(const std::exception& e) {
+        return ERROR;
+    }
+
     return OK;
 }
 
