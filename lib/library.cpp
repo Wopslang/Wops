@@ -76,6 +76,21 @@ extern "C" ArrayWithCode toint(Array s) {
     return {ret, OK};
 }
 
+/**
+* @brief string tostring(any s): Change datatype to string 
+* @name tostring
+* @param any s
+* @return string r
+*/
+extern "C" ArrayWithCode tostring(Array s) { 
+    Array ret;
+    if (s.container.size() != 1) return {ret, ERROR};
+
+    Variable e = s.container[0];
+    ret.container.push_back(Variable("_", "\""+e.GetValue()+"\n", STRING));
+    return {ret, OK};
+}
+
 // Mathematics Functions
 // These functions will be with v0.15. Check the announcement for detail.
 
