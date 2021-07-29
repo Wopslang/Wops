@@ -2,5 +2,8 @@
 .DS_Store
 .gch
 a.out.dSYM
+eexec_.dSYM
 .idea
 eexec_
+test.cpp
+test

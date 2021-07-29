@@ -44,9 +44,20 @@ ArrayWithCode EExecFunc(std::string func, Array argv) {
     return ret;
 }
 
-// unit test: out(in())
+// unit test: out(toint(in())+toint(in()))
+// YOU SHOULD INPUT ONLY INTEGER!
 int main() {
     ArrayWithCode inp = EExecFunc("in", Array(Variable("_", "", STRING)));
-    Variable temp = Variable("_", "\"Hello, \"", STRING) + inp.var.container[0];
-    ArrayWithCode _ = EExecFunc("out", Array(temp));
+    ArrayWithCode inp2 = EExecFunc("in", Array(Variable("_", "", STRING)));
+    inp = EExecFunc(
+        "toint",
+        inp.var
+    );
+    inp2 = EExecFunc(
+        "toint",
+        inp2.var
+    );
+    assert(inp.error == OK && inp2.error == OK && "I told you should input only integer :(");
+    Variable pipe = inp.var.container[0] + inp2.var.container[0];
+    ArrayWithCode _ = EExecFunc("out", Array(pipe));
 }
