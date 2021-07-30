@@ -3,5 +3,6 @@
 .gch
 a.out.dSYM
 eexec_.dSYM
+test.cpp
 .idea
 eexec_

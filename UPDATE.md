@@ -2,7 +2,7 @@
 
 ## v0.1 alpha  
 
-> :mega: Hot News! The Release Date was confirmed: ~~June 28th~~ **on July**
+> Sorry for delaying release. We're trying our best to release it as possible as soon.
 
 - :pencil: **feature**  
   - support basic function, type(int, double, string, bool)  
@@ -11,6 +11,6 @@
 ## v0.15 minor update  
 
 - :arrow_up: **update**  
-  - support Array(based on `std::vector`)  
   - add more function  
+  - support Array(based on `std::vector`)  
   
