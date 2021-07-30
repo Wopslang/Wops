@@ -1,6 +1,7 @@
 .out
 .DS_Store
 .gch
+a.out
 a.out.dSYM
 eexec_.dSYM
 test.cpp
