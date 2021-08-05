@@ -1,4 +1,4 @@
-# 🛠 Official Wopslang Language Reference `v0.1`
+# Official Wopslang Language Reference `v0.1`
 
 ## Index
 
@@ -230,6 +230,7 @@ Example:
 ```
 
 > 👷‍♂️ We're on working now. Stay tuned.
+
 ## Types
 
 ## Variables
