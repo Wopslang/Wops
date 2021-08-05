@@ -44,7 +44,7 @@ class Variable {
 
     // constructor
     Variable(std::string varname, std::string val, TYPE t) {
-        assert(varname != "");
+        assert(varname != "" && "Name of variable should not be blank. How about using '_'?");
 
         _t = t;
         token = varname;
@@ -52,37 +52,39 @@ class Variable {
     }
 
     // operation
-    Variable operator + (Variable& operand) {
+    Variable operator + (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", _t);
 
         switch (_t) {
             case BOOL:
             case INT:
-                assert(operand._t != STRING);
+                assert(operand._t != STRING && "No matching operation between int and string was found.");
                 if (operand._t == DOUBLE)
                     res.Substitute(std::to_string((Int)(std::stoi(value)+std::stod(operand.value))));
                 else
                     res.Substitute(std::to_string(std::stoi(value)+std::stoi(operand.value)));
                 break;
             case DOUBLE:
-                assert(operand._t != STRING);
+                assert(operand._t != STRING && "No matching operation between double and string was found.");
                 if (operand._t == DOUBLE)
                     res.Substitute(std::to_string(std::stod(value)+std::stod(operand.value)));
                 else
                     res.Substitute(std::to_string(std::stod(value)+std::stoi(operand.value)));
                 break;
             case STRING:
-                assert(operand._t == STRING);
+                assert(operand._t == STRING && "The only string can operate with string.");
                 res.Substitute("\""+trim(value)+trim(operand.value)+"\"");
                 break;
         }
         return res;
     }
     
-    Variable operator - (Variable& operand) {
+    Variable operator - (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", _t);
 
-        assert(operand._t != STRING && _t != STRING);
+        assert(operand._t != STRING && _t != STRING && "No matching operation with string and any was found.");
         switch (_t) {
             case BOOL:
             case INT:
@@ -101,10 +103,11 @@ class Variable {
         return res;
     }
 
-    Variable operator * (Variable& operand) {
+    Variable operator * (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", _t);
 
-        assert(operand._t != STRING && _t != STRING);
+        assert(operand._t != STRING && _t != STRING && "No matching operation with string and any was found.");
         switch (_t) {
             case BOOL:
             case INT:
@@ -123,10 +126,12 @@ class Variable {
         return res;
     }
 
-    Variable operator / (Variable& operand) {
+    Variable operator / (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", _t);
 
-        assert(operand._t != STRING && _t != STRING && operand.GetValue() != "0");
+        assert(operand._t != STRING && _t != STRING && "No matching operation with string and any was found.");
+        assert(operand.GetValue() != "0" && "Not allowed to divide with zero(Are you sure wanting infinity?).");
         switch (_t) {
             case BOOL:
             case INT:
@@ -145,10 +150,12 @@ class Variable {
         return res;
     }
 
-    Variable operator % (Variable& operand) {
+    Variable operator % (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", _t);
 
-        assert(operand._t == INT && _t == INT && operand.GetValue() != "0");
+        assert(operand._t != STRING && _t != STRING && "No matching operation with string and any was found.");
+        assert(operand.GetValue() != "0" && "Not allowed to divide with zero(Are you sure wanting infinity?).");
         switch (_t) {
             case INT:
                 res.Substitute(std::to_string(std::stoi(value)%std::stoi(operand.value)));
@@ -157,71 +164,77 @@ class Variable {
         return res;
     }
 
-    Variable operator == (Variable& operand) {
+    Variable operator == (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", BOOL);
 
-        assert(operand._t == _t);
+        assert(operand._t == _t && "Not allowed to compare between different type variables.");
         res.Substitute(std::to_string(operand.GetValue()==GetValue()));
 
         return res;
     }
 
-    Variable operator != (Variable& operand) {
+    Variable operator != (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", BOOL);
 
-        assert(operand._t == _t);
+        assert(operand._t == _t && "Not allowed to compare between different type variables.");
         res.Substitute(std::to_string(operand.GetValue()!=GetValue()));
 
         return res;
     }
 
-    Variable operator > (Variable& operand) {
+    Variable operator > (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", BOOL);
 
         try {
             res.Substitute(std::to_string(operand.GetValue()>GetValue()));
         }
         catch(const std::exception& e) {
-            assert(0);
+            assert(0 && "Something went wrong :(");
         }
 
         return res;
     }
 
-    Variable operator < (Variable& operand) {
+    Variable operator < (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", BOOL);
 
         try {
             res.Substitute(std::to_string(operand.GetValue()<GetValue()));
         }
         catch(const std::exception& e) {
-            assert(0);
+            assert(0 && "Something went wrong :(");
         }
 
         return res;
     }
 
-    Variable operator >= (Variable& operand) {
+    Variable operator >= (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", BOOL);
 
         try {
             res.Substitute(std::to_string(operand.GetValue()>=GetValue()));
         }
         catch(const std::exception& e) {
-            assert(0);
+            assert(0 && "Something went wrong :(");
         }
 
         return res;
     }
 
-    Variable operator <= (Variable& operand) {
+    Variable operator <= (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", BOOL);
 
         try {
             res.Substitute(std::to_string(operand.GetValue()<=GetValue()));
         }
         catch(const std::exception& e) {
-            assert(0);
+            assert(0 && "Something went wrong :(");
         }
 
         return res;
@@ -230,25 +243,27 @@ class Variable {
     Variable operator ! () {
         Variable res = Variable("_", "", BOOL);
 
-        assert(_t == BOOL);
+        assert(_t == BOOL && "Operation ! allows only boolean variables.");
         res.Substitute(std::to_string(
             !(std::stoi(GetValue()))
         ));
         return res;
     }
 
-    Variable operator && (Variable& operand) {
+    Variable operator && (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", BOOL);
-        assert(_t == BOOL && operand._t == BOOL);
+        assert(_t == BOOL && operand._t == BOOL && "Operation && allows only boolean variables.");
 
         res.Substitute(std::to_string(std::stoi(operand.GetValue())&&std::stoi(GetValue())));
 
         return res;
     }
 
-    Variable operator || (Variable& operand) {
+    Variable operator || (Variable operand) {
+        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
         Variable res = Variable("_", "", BOOL);
-        assert(_t == BOOL && operand._t == BOOL);
+        assert(_t == BOOL && operand._t == BOOL && "Operation || allows only boolean variables.");
 
         res.Substitute(std::to_string(std::stoi(operand.GetValue())||std::stoi(GetValue())));
 
@@ -276,7 +291,8 @@ Err Variable::Substitute(std::string newval) {
                 value = std::to_string(std::stoi(newval));
                 break;
             case STRING:
-                if (*newval.begin() != '"' || *newval.end() != '"' || newval.length() < 2) return ERROR;
+                if (newval == "") {value = newval; break;}
+                if (newval[0] != '"' || newval[newval.length()-1] != '"' || newval.length() < 2) return ERROR;
                 value = newval;
                 break;
         }

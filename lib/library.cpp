@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "../src/type/array.h"
 #include "../src/type/variable.h"
 
@@ -27,7 +28,11 @@ extern "C" ArrayWithCode out(Array s) {
     // EMPTY VARIABLE
     Array null(Variable("_", "", INT));
     for (Variable e: s.container) {
-        std::cout << e.trim(e.GetValue());
+        if (e.GetValue() == "") continue;
+        if (e._t == STRING)
+            std::cout << e.trim(e.GetValue());
+        else 
+            std::cout << e.GetValue();
     }
     return {null, OK};
 }
@@ -42,6 +47,47 @@ extern "C" ArrayWithCode out(Array s) {
 extern "C" ArrayWithCode in(Array _) { 
     std::string s; std::cin >> s;
     Array ret(Variable("_", "\""+s+"\"", STRING));
+    return {ret, OK};
+}
+
+// Type Function
+/**
+* @brief int toint(any s): Change datatype to integer
+* @name toint
+* @param any s
+* @return int r
+*/
+extern "C" ArrayWithCode toint(Array s) { 
+    Array ret;
+    if (s.container.size() != 1) return {ret, ERROR};
+
+    Variable e = s.container[0];
+    if (e._t == STRING) {
+        if (e.GetValue()[0] != '"'
+            || e.GetValue()[e.value.length()-1] != '"'
+            || e.value.length() < 2
+            || e.trim(e.value).find_first_not_of("0123456789") != std::string::npos) {
+                return {ret, ERROR};
+        }
+        ret.container.push_back(Variable("_", std::to_string(std::stoi(e.trim(e.value))), INT));
+        return {ret, OK};
+    }
+    ret.container.push_back(Variable("_", std::to_string(std::stoi(e.value)), INT));
+    return {ret, OK};
+}
+
+/**
+* @brief string tostring(any s): Change datatype to string 
+* @name tostring
+* @param any s
+* @return string r
+*/
+extern "C" ArrayWithCode tostring(Array s) { 
+    Array ret;
+    if (s.container.size() != 1) return {ret, ERROR};
+
+    Variable e = s.container[0];
+    ret.container.push_back(Variable("_", "\""+e.GetValue()+"\n", STRING));
     return {ret, OK};
 }
 
