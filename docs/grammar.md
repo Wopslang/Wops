@@ -4,6 +4,10 @@
     font-weight: 400;
   }
 
+  .main-content {
+    font-weight: 600;
+  }
+
   h1 {
     font-weight: 600;
   }
