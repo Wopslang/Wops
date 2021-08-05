@@ -4,6 +4,7 @@
     font-weight: 400;
   }
 .main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
+    color: black;
     font-weight: 600;
 }
 </style>
