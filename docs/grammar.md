@@ -1,4 +1,4 @@
-# :hammer_and_wrench: Official Wopslang Language Reference `v0.1`
+# 🛠 Official Wopslang Language Reference `v0.1`
 
 ## Index
 
@@ -229,7 +229,7 @@ Example:
 "\"" // Same with '"'
 ```
 
-> :construction_worker: We're on working now. Stay tuned.
+> 👷‍♂️ We're on working now. Stay tuned.
 ## Types
 
 ## Variables

@@ -1,4 +1,4 @@
-# :book: Documentation
+# 📔 Documentation
 
 ```go
 func<Answer> Documentation(question) {
@@ -7,10 +7,10 @@ func<Answer> Documentation(question) {
 }
 ```
 
-## :scroll: Reference
+## 📜 Reference
 
 *[Official Reference for v0.1](grammar.md)*
 
-## :notebook: Guidebook
+## 📓 Guidebook
 
 *[Comming Soon...]()*
