@@ -3,20 +3,9 @@
     font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
     font-weight: 400;
   }
-
-  .main-content {
+.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
     font-weight: 600;
-  }
-
-  h1 {
-    font-weight: 600;
-  }
-  h2 {
-    font-weight: 600;
-  }
-  h3 {
-    font-weight: 600;
-  }
+}
 </style>
 
 # Official Wopslang Language Reference `v0.1`
