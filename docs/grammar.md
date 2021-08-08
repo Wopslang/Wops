@@ -1,4 +1,3 @@
-
 # Official Wopslang Language Reference `v0.1`
 
 ## Index
@@ -276,16 +275,3 @@ Example:
 [Floating-point Literal]: https://wopslang.github.io/Wops/grammar.html#floating-point-literal
 [Rune Literal]: https://wopslang.github.io/Wops/grammar.html#rune-lineral
 [String Literal]: https://wopslang.github.io/Wops/grammar.html#string-lineral
-
-### 🎨 STYLE SHEET
-<style>
-  body {
-    font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
-    color: #212121;
-    font-weight: 400;
-  }
-.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
-    color: #212121;
-    font-weight: 600;
-}
-</style>
