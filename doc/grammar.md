@@ -304,30 +304,30 @@ To find syntax defination of `Expression`, see [Operators] for more.
 
 <!-- Link -->
 
-[Introduction]: https://wopslang.github.io/Wops/grammar.html#introduction
-[Notation]: https://wopslang.github.io/Wops/grammar.html#notation
-[Source Code Representation]: https://wopslang.github.io/Wops/grammar.html#source-code-representation
-[Lexical Elements]: https://wopslang.github.io/Wops/grammar.html#lexical-elements
-[Types]: https://wopslang.github.io/Wops/grammar.html#types
-[Variables]: https://wopslang.github.io/Wops/grammar.html#variables
-[Expressions]: https://wopslang.github.io/Wops/grammar.html#expressions
-[Statesments]: https://wopslang.github.io/Wops/grammar.html#statesments
-[if]: https://wopslang.github.io/Wops/grammar.html#if
-[for]: https://wopslang.github.io/Wops/grammar.html#for
-[Builtin functions]: https://wopslang.github.io/Wops/grammar.html#builtin-functions
-[Error Handling]: https://wopslang.github.io/Wops/grammar.html#error-handling
-[Tokens]: https://wopslang.github.io/Wops/grammar.html#tokens
-[Predeclared Identifiers]: https://wopslang.github.io/Wops/grammar.html#predeclared-identifiers
+[Introduction]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#introduction
+[Notation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#notation
+[Source Code Representation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#source-code-representation
+[Lexical Elements]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#lexical-elements
+[Types]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#types
+[Variables]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#variables
+[Expressions]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#expressions
+[Statesments]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#statesments
+[if]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if
+[for]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#for
+[Builtin functions]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#builtin-functions
+[Error Handling]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#error-handling
+[Tokens]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#tokens
+[Predeclared Identifiers]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#predeclared-identifiers
 [UTF-8]: https://en.wikipedia.org/wiki/UTF-8
-[Characters]: https://wopslang.github.io/Wops/grammar.html#characters
-[Letter and Digits]: https://wopslang.github.io/Wops/grammar.html#letter-and-digits
-[Comments]: https://wopslang.github.io/Wops/grammar.html#comments
-[Semicolons]: https://wopslang.github.io/Wops/grammar.html#semicolons
-[Identifiers]: https://wopslang.github.io/Wops/grammar.html#identifiers
-[Keywords]: https://wopslang.github.io/Wops/grammar.html#keywords
-[Operators and Punctuation]: https://wopslang.github.io/Wops/grammar.html#operators-and-punctuation
-[Integer Literal]: https://wopslang.github.io/Wops/grammar.html#integer-literal
-[Floating-point Literal]: https://wopslang.github.io/Wops/grammar.html#floating-point-literal
-[Rune Literal]: https://wopslang.github.io/Wops/grammar.html#rune-literal
-[String Literal]: https://wopslang.github.io/Wops/grammar.html#string-literal
-[Boolean Literal]: https://wopslang.github.io/Wops/grammar.html#boolean-literal
+[Characters]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#characters
+[Letter and Digits]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#letter-and-digits
+[Comments]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#comments
+[Semicolons]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#semicolons
+[Identifiers]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#identifiers
+[Keywords]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#keywords
+[Operators and Punctuation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#operators-and-punctuation
+[Integer Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#integer-literal
+[Floating-point Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#floating-point-literal
+[Rune Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#rune-literal
+[String Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#string-literal
+[Boolean Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#boolean-literal
