@@ -102,7 +102,7 @@ A newline or end of file may be trigger by the insertion of a semicolon(`;`). Se
 Identifiers name program entities such as variables and types. An identifier is a sequence of one or more letters and digits. The first character in an identifier must be a letter.
 
 ```ebnf
-identifiers ::= letter { letter | uni_digit } .
+identifiers = letter { letter | uni_digit } .
 ```
 
 Example:
@@ -145,7 +145,7 @@ The following character sequences represent operators (including assignment oper
 
 An integer literal is a sequence of digits representing an integer constant.
 
-> In version v0.1, only decimal can be allowed.
+> In version v0.1, only decimal is allowed to use.
 
 ```ebnf
 integer_lit    = "0" | ( "1" … "9" ) [ decimal_digits ] .
@@ -164,6 +164,14 @@ Example:
 01 // (x)
 34-5 // (x)
 a56bc // (x)
+```
+
+### Boolean Literal
+
+boolean literal is a bit representing boolean constant: *true, and false*.
+
+```ebnf
+bool_lit = "0" |  "1".
 ```
 
 ### Floating-point Literal
@@ -229,13 +237,60 @@ Example:
 "\"" // Same with '"'
 ```
 
-> 👷‍♂️ We're on working now. Stay tuned.
-
 ## Types
+
+A data type or simply type is an attribute which notate a particular kind of data item.  
+There are four kind of type: *Integer, Floating-Point, String, and Boolean*. And it can be notated with these [predeclared identifiers][Predeclared Identifiers]:
+
+|Identifier|Matching Type|Description|
+|---|---|--|
+|int|Integer|signed 32-bit integers (-2147483648 ~ 2147483647)|
+|double|Floating-Point|IEEE-754 64-bit floating-point numbers|
+|string|String|[same with string literal][String Literal]|
+|bool|Boolean|[same with boolean literal][Boolean Literal]|
+
+```ebnf
+Type = "int" | "double" | "string" | "bool" .
+```
 
 ## Variables
 
+A variable is a storage for holding a value. The set of available values is determined by the variable's [type][Types].
+There are two types of variable which can be used in Wopslang v0.1: *constant variable, modifiable variable*. You can declare constant variable as adding const keyword in variable declare expression. Also, you should add initial value to declare constant variable and you won't be able to reassign its value. Interpreter can emit the error if value's representing type doesn't match with variable's type.
+
+```go
+int woo = toint(in())
+int ooo = -1
+
+string poo = "result: " + tostring(woo + ooo)
+string soo = poo
+```
+
 ## Expressions
+
+### Blocks
+
+A block is an empty sequence of declarations and statements within matching brace({,})s.
+
+```ebnf
+Block = "{" Statements "}" .
+Statements = { Statement } .
+```
+
+if and for expression is considered to be in its own block.
+
+### Declarations
+
+A declaration bind *identifiers* and *value* to a constant or [variable][Variables].
+Every identifier in a program must be declared, and no identifier may be declared twice in the same block. See [Variables] to get more information.
+
+```ebnf
+Declaration = ConstDel | VarDel .
+ConstDel = "const" Type identifiers "=" Expression .
+VarDel = Type identifiers [ "=" Expression ] .
+```
+
+To find syntax defination of `Expression`, see [Operators] for more.
 
 ### If Expression
 
@@ -273,5 +328,6 @@ Example:
 [Operators and Punctuation]: https://wopslang.github.io/Wops/grammar.html#operators-and-punctuation
 [Integer Literal]: https://wopslang.github.io/Wops/grammar.html#integer-literal
 [Floating-point Literal]: https://wopslang.github.io/Wops/grammar.html#floating-point-literal
-[Rune Literal]: https://wopslang.github.io/Wops/grammar.html#rune-lineral
-[String Literal]: https://wopslang.github.io/Wops/grammar.html#string-lineral
+[Rune Literal]: https://wopslang.github.io/Wops/grammar.html#rune-literal
+[String Literal]: https://wopslang.github.io/Wops/grammar.html#string-literal
+[Boolean Literal]: https://wopslang.github.io/Wops/grammar.html#boolean-literal
