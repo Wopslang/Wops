@@ -18,9 +18,12 @@
   - [Floating-point Literal]
   - [Rune Literal]
   - [String Literal]
+  - [Boolean Literal]
 - [Types]
 - [Variables]
 - [Expressions]
+  - [Blocks]
+  - [Declarations]
 - [Statesments]
   - [if]
   - [for]
@@ -331,3 +334,5 @@ To find syntax defination of `Expression`, see [Operators] for more.
 [Rune Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#rune-literal
 [String Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#string-literal
 [Boolean Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#boolean-literal
+[Blocks]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#blocks
+[Declarations]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#declarations
