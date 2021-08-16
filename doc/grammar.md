@@ -24,9 +24,14 @@
 - [Expressions]
   - [Blocks]
   - [Declarations]
-- [Statesments]
-  - [if]
-  - [for]
+  - [Operands]
+  - [Calls]
+  - [Operators]
+  - [Arithmetic Operators]
+  - [Conversion]
+- [Statement]
+  - [If Statement]
+  - [For Statement]
 - [Builtin functions]
 - [Error Handling]
 
@@ -295,11 +300,101 @@ VarDel = Type identifiers [ "=" Expression ] .
 
 To find syntax defination of `Expression`, see [Operators] for more.
 
-### If Expression
+### Operands
 
-### For Expression
+Operands represent the elementary values in an expression. It can be a *literal*, a *function*, or a *variable*.
 
-## Statesments
+```ebnf
+Operand = Literal | OpndName | "(" Expression ")" .
+Literal = integer_lit | float_lit | rune_lit | string_lit .
+OpndName = identifier .
+```
+
+Also, there are some unit expression groups:
+
+```ebnf
+UnitExpr = Operand |
+           UnitExpr Arguments .
+
+Arguments = "(" ([Expression] | { Expression "," } Expression ) ")" .
+```
+
+For example:
+
+```go
+foo
+boo
+(3 + 0.25)
+out("Hello, World!\n", "Nice to meet you :D")
+```
+
+### Calls
+
+> We'll support user-made function very soon (maybe next version). Stay tuned.
+
+Here is the basic formation of function:
+
+```go
+f(a1, a2, a3, ...)
+```
+
+You can call a function by passing some arguments. If the function which you want to use has fixed arguments(such as `out` function; it doesn't have any arguments(0 argument)), you must follow that formation.
+
+```go
+out("Hello, Wopslang!")
+in()
+toint("352")
+toint("abc") // it emits error
+```
+
+### Operators
+
+Operators bind operands into expressions.
+
+```go
+Expression = UnaryExpr | Expression BinaryExpr Expression .
+UnaryExpr  = UnitExpr | unary_op UnaryExpr .
+
+binary_op  = "||" | "&&" | rel_op | add_op | mul_op .
+rel_op     = "==" | "!=" | "<" | "<=" | ">" | ">=" .
+add_op     = "+" | "-"  .
+mul_op     = "*" | "/" | "%" .
+unary_op   = "+" | "-" | "!" .
+```
+
+Each operator has a different priority for parsing. For instance, unary operators have the highest priority.
+
+|Priority|Operators|
+|--------|---------|
+|5|`*`, `/`, `%`|
+|4|`+`, `-`|
+|3|`==`, `!=`, `<`, `<=`, `>`, `>=`|
+|2|`&&`|
+|1|`||`|
+
+The leftmost operator in the same priority has a higher priority. For instance, a+b-c is the same with (a+b)-c.
+
+### Arithmetic Operators
+
+|Operator|Matching Literals|
+|--------|-----------------|
+|+|integer, float, string|
+|-|integer, float|
+|*|integer, float|
+|/|integer, float|
+|%|integer|
+
+If you divide by zero(A/0 or A%0, A:expression), interpreter will emit the error.
+
+### Conversion
+
+You can change the [type][Types] of expression by using conversion function: `toint()` and `tostring()`. See [Builtin Functions] for more information.
+
+## Statements
+
+### If Statement
+
+### For Statement
 
 ## Builtin Functions
 
@@ -314,9 +409,9 @@ To find syntax defination of `Expression`, see [Operators] for more.
 [Types]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#types
 [Variables]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#variables
 [Expressions]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#expressions
-[Statesments]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#statesments
-[if]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if
-[for]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#for
+[Statements]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#statements
+[If Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if-statement
+[For Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#for-statement
 [Builtin functions]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#builtin-functions
 [Error Handling]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#error-handling
 [Tokens]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#tokens
@@ -336,3 +431,8 @@ To find syntax defination of `Expression`, see [Operators] for more.
 [Boolean Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#boolean-literal
 [Blocks]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#blocks
 [Declarations]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#declarations
+[Operands]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#operands
+[Calls]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#calls
+[Operators]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#operators
+[Arithmetic Operators]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#arithmetic-operators
+[Conversion]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#conversion
