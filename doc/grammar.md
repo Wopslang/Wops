@@ -334,7 +334,7 @@ out("Hello, World!\n", "Nice to meet you :D")
 
 Here is the basic formation of function:
 
-```go
+```ebnf
 f(a1, a2, a3, ...)
 ```
 
@@ -351,7 +351,7 @@ toint("abc") // it emits error
 
 Operators bind operands into expressions.
 
-```go
+```ebnf
 Expression = UnaryExpr | Expression BinaryExpr Expression .
 UnaryExpr  = UnitExpr | unary_op UnaryExpr .
 
@@ -370,7 +370,9 @@ Each operator has a different priority for parsing. For instance, unary operator
 |4|`+`, `-`|
 |3|`==`, `!=`, `<`, `<=`, `>`, `>=`|
 |2|`&&`|
-|1|`||`|
+|1|binary_op OR |
+
+> binary_op OR : `||`
 
 The leftmost operator in the same priority has a higher priority. For instance, a+b-c is the same with (a+b)-c.
 
