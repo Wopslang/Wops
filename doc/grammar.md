@@ -29,7 +29,7 @@
   - [Operators]
   - [Arithmetic Operators]
   - [Conversion]
-- [Statement]
+- [Statements]
   - [If Statement]
   - [For Statement]
 - [Builtin functions]
