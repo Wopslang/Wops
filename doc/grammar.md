@@ -30,8 +30,11 @@
   - [Arithmetic Operators]
   - [Conversion]
 - [Statements]
+  - [Blank Statement]
+  - [Assignment]
   - [If Statement]
   - [For Statement]
+  - [Break and Continue Statement]
 - [Builtin functions]
 - [Error Handling]
 
@@ -133,7 +136,7 @@ The following keywords are reserved and may not be used as identifiers.
 ```text
 break        const        continue
 elif         else         for
-if           range        return
+if           range        
 ```
 
 ### Operators and Punctuation
@@ -386,7 +389,7 @@ The leftmost operator in the same priority has a higher priority. For instance, 
 |/|integer, float|
 |%|integer|
 
-If you divide by zero(A/0 or A%0, A:expression), interpreter will emit the error.
+If you divide by zero(A/0 or A%0, A:expression), interpreter will emit the error. Also, ***If you divide with integers, the result will be integer, too.***
 
 ### Conversion
 
@@ -394,9 +397,115 @@ You can change the [type][Types] of expression by using conversion function: `to
 
 ## Statements
 
+Statements control execution.
+
+```ebnf
+Statement =
+         Declaration | SimpleStmt |
+         BreakStmt | ContinueStmt | Block |
+         IfStmt | ForStmt .
+
+SimpleStmt = Blank | Expression | Assignment .
+```
+
+### Blank Statement
+
+The blank statement does nothing.
+
+```ebnf
+Blank = .
+```
+
+### Assignment
+
+The assignment statement assigns a value to the specified variable.
+
+```ebnf
+Assignment = identifiers "=" Expression .
+```
+
+Left-side operand should be lvalue. Also, left-side and right-side operand should share matching type(same type, double-int, ...).
+
+```go
+a = "Hello, " + in()
+b = 30 * (50 / 27)  <- b = 30
+c = 0.5 - 1.3
+```
+
 ### If Statement
 
+*If* statements specify the conditional execution of more than two branches according to the value of a boolean expression. If value is true, "if" branches will be executed, otherwise, highest "elif" branches will be executed. If every "if" and "elif" branches' expression is false, "else" branch will be executed.  
+
+For example:
+
+```python
+if (a == 1) {
+    // A
+} elif (a > 1) {
+    // B
+} elif (a < 2) {
+    // C
+} else {
+    // D
+}
+```
+
+If a is 1, `A`'ll be executed. If a is larger than 1, `B`'ll be executed. For `C`, if a is smaller than 2 and larger than 1, `C` won't be executed. `C` will be executed if a is smaller than 1. `D` won't be executed ever.
+
+```ebnf
+IfStmt = "if" "(" Expression ")" Block
+      { "elif" "(" Expression ")" Block }
+      ["else" Block]
+```
+
 ### For Statement
+
+*For* statement represent repeating execution of a block. There are three forms: *a single condition, a "for" clause*.
+
+> Note: there isn't a "range" clause because there isn't any array system in Wopslang v0.1.
+
+```ebnf
+ForStmt = "for" ( "(" Expression ")" | ForClause ) Block .
+```
+
+#### For statement with single condition
+
+A *for* statement with single condition represent repeating execution of a block as long as a boolean condition evaluates to true. The condition is evaluated before each iteration.
+
+```go
+for (a % 2) {
+    out(tostring(a) + "\n")
+}
+```
+
+#### For statement with for clause
+
+A *for* statement with for clause is based on `range` function. There are three arguments of `range` function: *start, end, and step*. Then, `range` function create an array which is [start, end) when step is one(it's almost same with *python's range function*). Finally, *for* statement repeat execution of a block with that array. **Remember that range function doesn't include end index's element**
+
+```ebnf
+ForClause = identifiers "in" "range" "(" Expression "," Expression "," Expression ")" .
+```
+
+```ebnf
+for i in range(0, 6, 2) {
+    out(tostring(i) + "\n")
+}
+```
+
+Output:
+
+```text
+0
+2
+4
+```
+
+### Break and Continue Statement
+
+```ebnf
+BreakStmt = "break" .
+ContinueStmt = "continue" .
+```
 
 ## Builtin Functions
 
@@ -438,3 +547,8 @@ You can change the [type][Types] of expression by using conversion function: `to
 [Operators]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#operators
 [Arithmetic Operators]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#arithmetic-operators
 [Conversion]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#conversion
+[Blank Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#blank-statement
+[Assignment]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#assignment
+[If Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if-statement
+[For Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#for-statement
+[Break and Continue Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#break-and-continue-statement
