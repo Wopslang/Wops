@@ -13,7 +13,7 @@ func<Answer> Documentation(question) {
 
 ## ⚡️ Built-in Function
 
-*[Wopslang Builtin Functions for v0.1](https://github.com/Wopslang/Wops/blob/main/lib/functions.md)
+*[Wopslang Builtin Functions for v0.1](https://github.com/Wopslang/Wops/blob/main/lib/functions.md)*
 
 ## 📓 How to
 
