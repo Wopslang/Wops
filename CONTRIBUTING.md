@@ -52,3 +52,5 @@ Also, your branch's name should be like
 **Contributes about things in TODO list will have higher priority than normal one.**  
 
 - Parser  
+
+2021, Wops Team

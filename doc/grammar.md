@@ -36,7 +36,6 @@
   - [For Statement]
   - [Break and Continue Statement]
 - [Builtin functions]
-- [Error Handling]
 
 ## Introduction
 
@@ -502,6 +501,8 @@ Output:
 
 ### Break and Continue Statement
 
+A *break* or *continue* statement terminates or passes execution of innermost `for` statement.
+
 ```ebnf
 BreakStmt = "break" .
 ContinueStmt = "continue" .
@@ -509,7 +510,9 @@ ContinueStmt = "continue" .
 
 ## Builtin Functions
 
-## Error Handling
+> Note: there are only four basic functions in Wopslang v0.1. We'll add more function very soon.
+
+Redirect to [here][ext-link-1]
 
 <!-- Link -->
 
@@ -524,7 +527,6 @@ ContinueStmt = "continue" .
 [If Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if-statement
 [For Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#for-statement
 [Builtin functions]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#builtin-functions
-[Error Handling]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#error-handling
 [Tokens]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#tokens
 [Predeclared Identifiers]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#predeclared-identifiers
 [UTF-8]: https://en.wikipedia.org/wiki/UTF-8
@@ -552,3 +554,6 @@ ContinueStmt = "continue" .
 [If Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if-statement
 [For Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#for-statement
 [Break and Continue Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#break-and-continue-statement
+[ext-link-1]: https://github.com/Wopslang/Wops/blob/main/lib/functions.md
+
+© 2021 Wops Team
