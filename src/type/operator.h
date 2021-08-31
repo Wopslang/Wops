@@ -39,13 +39,6 @@ enum op_ {
 	BXOR, // ^
 	BLSH, // <<
 	BRSH, // >>
-
-	// Special Operator
-	DECLAREVAR, // ex) int a (can be combined with ASSIGN)
-	CONSTANT, // ex) 1, 100, 3.14
-	CALLFUNC, // ex) toint(), in()
-	RANGE, // ex) range(0, a, 1) [0. a)
-	NONE,
 };
 
 

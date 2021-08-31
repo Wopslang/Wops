@@ -5,14 +5,14 @@
  * 2021, Wops Team
  * */
 
-#ifndef WOPS_EEXEC_H
-#define WOPS_EEXEC_H
-
 #include <dlfcn.h>
 #include <iostream>
-#include <string>
 #include "../type/variable.h"
 #include "../type/array.h"
+#include "../error/signal.h"
+
+#ifndef WOPS_EEXEC_H
+#define WOPS_EEXEC_H
 
 /*
 ArrayWithCode EExecFunc(std::string func, Array argv)
