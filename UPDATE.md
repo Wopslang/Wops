@@ -2,11 +2,21 @@
 
 ## v0.1 alpha  
 
-> Sorry for delaying release. We're trying our best to release it as possible as soon.
-
 - :pencil: **feature**  
   - support basic function, type(int, double, string, bool)  
   - if, for available  
+
+### Dev v1
+
+- :hammer_and_wrench: **feature**
+  - AST for v0.1 alpha
+  - Some Adapters which helps you to try AST
+
+### Dev v2
+
+- :hammer_and_wrench: **feature**
+  - Parser for v0.1 alpha
+  - Final check for release
 
 ## v0.15 minor update  
 
