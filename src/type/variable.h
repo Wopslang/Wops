@@ -41,14 +41,16 @@ class Variable {
     public:
     std::string value;
     std::string token;
+    bool constant = 0;
     TYPE _t;
 
     // constructor
-    Variable(std::string varname = "_", std::string val = "", TYPE t = INT) {
+    Variable(std::string varname = "_", std::string val = "", TYPE t = INT, bool con = 0) {
         if (varname == "") ErrHandler().CallErr("Name of variable should not be blank. How about using '_'?");
 
         _t = t;
         token = varname;
+        constant = con;
         Substitute(val);
     }
 
