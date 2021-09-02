@@ -231,6 +231,19 @@ class AST {
 			}
 
 			case ForClauseStmt: {
+				Storage local = storage;
+				for (int idx = std::stoi(argument[1].GetValue()); idx < std::stoi(argument[2].GetValue()); idx += std::stoi(argument[3].GetValue())) {
+					local[argument[0].GetValue()] = Variable("_", std::to_string(idx), INT);
+					for (AST *ast: childStmt) {
+						std::pair<bool, bool> res = ast->Execute(local);
+						if (res.first) break;
+						if (res.second) continue;
+					}
+				}
+				for (auto iter = local.begin(); iter != local.end(); iter++) {
+					if (storage.find(iter->first) == storage.end()) local.erase(iter);
+				}
+				storage = local;
 				break;
 			}
 
