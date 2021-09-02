@@ -236,7 +236,7 @@ class AST {
 			}
 
 			case ForSCStmt: {
-				// :TODO #15 make local storage
+				// :TODO #18 make local storage
 				while (1) {
 					Variable condition = expression[0].Execute(storage);
 					if (condition._t != BOOL)
