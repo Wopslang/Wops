@@ -231,23 +231,26 @@ class AST {
 			}
 
 			case ForClauseStmt: {
-				// :TODO impl it later, too
 				break;
 			}
 
 			case ForSCStmt: {
-				// :TODO #18 make local storage
+				Storage local = storage;
 				while (1) {
-					Variable condition = expression[0].Execute(storage);
+					Variable condition = expression[0].Execute(local);
 					if (condition._t != BOOL)
 						ErrHandler().CallErr("For Statement allows only boolean condition expression.");
 					if (condition.GetValue() == "0") break;
 					for (AST *ast: childStmt) {
-						std::pair<bool, bool> res = ast->Execute(storage);
+						std::pair<bool, bool> res = ast->Execute(local);
 						if (res.first) break;
 						if (res.second) continue;
 					}
 				}
+				for (auto iter = local.begin(); iter != local.end(); iter++) {
+					if (storage.find(iter->first) == storage.end()) local.erase(iter);
+				}
+				storage = local;
 				break;
 			}
 		}
