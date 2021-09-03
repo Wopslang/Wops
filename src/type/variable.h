@@ -62,21 +62,21 @@ class Variable {
         switch (_t) {
             case BOOL:
             case INT:
-                assert(operand._t != STRING && "No matching operation between int and string was found.");
+                if (operand._t == STRING) ErrHandler().CallErr("No matching operation between int and string was found.");
                 if (operand._t == DOUBLE)
                     res.Substitute(std::to_string((Int)(std::stoi(value)+std::stod(operand.value))));
                 else
                     res.Substitute(std::to_string(std::stoi(value)+std::stoi(operand.value)));
                 break;
             case DOUBLE:
-                assert(operand._t != STRING && "No matching operation between double and string was found.");
+                if (operand._t == STRING) ErrHandler().CallErr("No matching operation between double and string was found.");
                 if (operand._t == DOUBLE)
                     res.Substitute(std::to_string(std::stod(value)+std::stod(operand.value)));
                 else
                     res.Substitute(std::to_string(std::stod(value)+std::stoi(operand.value)));
                 break;
             case STRING:
-                assert(operand._t == STRING && "The only string can operate with string.");
+                if (operand._t != STRING) ErrHandler().CallErr("The only string can operate with string.");
                 res.Substitute("\""+trim(value)+trim(operand.value)+"\"");
                 break;
         }
@@ -84,10 +84,10 @@ class Variable {
     }
     
     Variable operator - (Variable operand) {
-        assert(operand.GetValue() != "" && GetValue() != "" && "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr("Operand should not be blank.");
         Variable res = Variable("_", "", _t);
 
-        assert(operand._t != STRING && _t != STRING && "No matching operation with string and any was found.");
+        if (operand._t == STRING || _t == STRING) ErrHandler().CallErr("No matching operation with string and any was found.");
         switch (_t) {
             case BOOL:
             case INT:
