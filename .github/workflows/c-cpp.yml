@@ -16,6 +16,6 @@ jobs:
     - name: make
       run: make
     - name: run
-      run: ./test.out < ci-test.txt
+      run: ./test < ci-test.txt
     - name: clear
       run: make clean
