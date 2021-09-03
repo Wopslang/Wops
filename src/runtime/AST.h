@@ -17,6 +17,8 @@
 #include "../type/array.h"
 #include "../type/operator.h"
 
+// enum TYPE {...}
+// Enumeration of statement types
 enum StmtType {
 	Main,
 	ConstDel,
@@ -26,11 +28,23 @@ enum StmtType {
 	BreakStmt,
 	ContinueStmt,
 	IfStmt,
+	ElifStmt,
+	ElseStmt,
 	ForClauseStmt,
 	ForSCStmt, // For statement with single condition
 };
 
-// :TODO Add some comments
+/**
+ * class Expr
+ * Expression Syntax Tree class
+ * 
+ * Structure
+ * 
+ * private
+ *   - bool constant, variable, call (token's type)
+ *   - Variable token
+ *   - std::vector<Expr> children 
+ */
 class Expr {
 	private:
 	bool constant = 0, variable = 0, call = 0;
@@ -38,6 +52,7 @@ class Expr {
 	std::vector<Expr> children;
 
 	public:
+	// constructor
 	Expr(std::vector<bool> t, Variable tkn) {
 		token = tkn, constant = t[0], variable = t[1], call = t[2];
 	}
@@ -50,12 +65,13 @@ class Expr {
 		children.push_back(child);
 	}
 
+	// execute from the tree root
 	Variable Execute(std::unordered_map<std::string, Variable> storage) {
 		std::string tkn = token.GetValue();
 
 		if (variable) {
 			auto iter = storage.find(tkn);
-			if (iter == storage.end())
+			if (iter == storage.end())  // has variable declared?
 				ErrHandler().CallErr(tkn + " has not declared yet");
 			return iter->second;
 		}
@@ -117,6 +133,43 @@ class Expr {
 
 typedef std::unordered_map<std::string, Variable> Storage;
 
+/**
+ * class AST 
+ * Abstract Syntax Tree class
+ * 
+ * Structure
+ * 
+ * private
+ *   - StmtType _t
+ *	 - std::vector<AST *> childStmt
+ *	 - std::vector<Expr> expression
+ *	 - std::vector<Variable> argument
+ * 
+ * expression
+ * 
+ * if AST's type is one of these:
+ *   - ConstDel
+ *   - VarDel
+ *   - Expression
+ *   - Assignment
+ *   - IfStmt
+ *   - ElifStmt
+ *   - ElseStmt
+ *   - ForClauseStmt
+ *   - ForSCStmt
+ * 
+ * expression will not be blank. (length 1)
+ * 
+ * argument
+ * 
+ * argument can have different formation.
+ *   - _t = ConstDel or VarDel: argument[2] = {TYPE, IDENTIFIER}
+ *   - _t = Assignment: argument[1] = {IDENTIFIER}
+ *   - _t = ForClauseStmt: argument[4] = {VARIABLE, START, END, STEP}
+ *   - others: argument[0] = {}
+ * 
+ * every argument's type(Variable::_t) should be OPERATOR.
+ */
 class AST {
 	private:
 	StmtType _t;
@@ -125,6 +178,7 @@ class AST {
 	std::vector<Variable> argument;
 
 	public:
+	// constructor
 	AST(StmtType t, std::vector<Variable> argv, std::vector<Expr> expr) {
 		_t = t, argument = argv, expression = expr;
 	}
@@ -226,7 +280,14 @@ class AST {
 				return {false, true};
 
 			case IfStmt: {
-				// :TODO impl it later
+				break;
+			}
+
+			case ElifStmt: {
+				break;
+			}
+
+			case ElseStmt: {
 				break;
 			}
 
