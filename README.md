@@ -22,12 +22,14 @@ License: Apache License 2.0
 
 |Github Username|Slack Username|Role|
 |---|---|---|
-|@RedoC-github|@RedoC|Lead Programmer of Interpreter|
+|**@RedoC-github**|**@RedoC**|**Lead Programmer of Interpreter**|
 |@sonjaewon0318|@pokmui|Programmer of Interpreter, Admin of Slack, Geometry|
 |@byunjaewoo|@byunjaewoo|Lead Programmer of Data Structure
 |@happybean4|@khanjhy|Planner of Grammar|
-|@codenstory|@codenstory|Programmer of Interpreter|
+|**@codenstory**|**@codenstory**|**Programmer of Interpreter**|
 |@dddddd1234-creator|@dddddd|Lead Programmer of Builtin Function|
+
+**Bold user** is the Wopslang manager.  
 Special Thanks to @jhhan128
 
 ## 🚀 Our Logo
