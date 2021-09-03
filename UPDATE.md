@@ -6,7 +6,7 @@
   - support basic function, type(int, double, string, bool)  
   - if, for available  
 
-### Dev v1
+### :white_check_mark: Dev v1
 
 - :hammer_and_wrench: **feature**
   - AST for v0.1 alpha
