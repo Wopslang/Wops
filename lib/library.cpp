@@ -87,7 +87,7 @@ extern "C" ArrayWithCode tostring(Array s) {
     if (s.container.size() != 1) return {ret, ERROR};
 
     Variable e = s.container[0];
-    ret.container.push_back(Variable("_", "\""+e.GetValue()+"\n", STRING));
+    ret.container.push_back(Variable("_", "\""+e.GetValue()+"\"", STRING));
     return {ret, OK};
 }
 

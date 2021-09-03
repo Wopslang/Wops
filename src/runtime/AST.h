@@ -17,6 +17,8 @@
 #include "../type/array.h"
 #include "../type/operator.h"
 
+// enum TYPE {...}
+// Enumeration of statement types
 enum StmtType {
 	Main,
 	ConstDel,
@@ -26,11 +28,23 @@ enum StmtType {
 	BreakStmt,
 	ContinueStmt,
 	IfStmt,
+	ElifStmt,
+	ElseStmt,
 	ForClauseStmt,
 	ForSCStmt, // For statement with single condition
 };
 
-// :TODO Add some comments
+/**
+ * class Expr
+ * Expression Syntax Tree class
+ * 
+ * Structure
+ * 
+ * private
+ *   - bool constant, variable, call (token's type)
+ *   - Variable token
+ *   - std::vector<Expr> children 
+ */
 class Expr {
 	private:
 	bool constant = 0, variable = 0, call = 0;
@@ -38,6 +52,7 @@ class Expr {
 	std::vector<Expr> children;
 
 	public:
+	// constructor
 	Expr(std::vector<bool> t, Variable tkn) {
 		token = tkn, constant = t[0], variable = t[1], call = t[2];
 	}
@@ -50,12 +65,13 @@ class Expr {
 		children.push_back(child);
 	}
 
+	// execute from the tree root
 	Variable Execute(std::unordered_map<std::string, Variable> storage) {
 		std::string tkn = token.GetValue();
 
 		if (variable) {
 			auto iter = storage.find(tkn);
-			if (iter == storage.end())
+			if (iter == storage.end())  // has variable declared?
 				ErrHandler().CallErr(tkn + " has not declared yet");
 			return iter->second;
 		}
@@ -70,6 +86,7 @@ class Expr {
 			ArrayWithCode res = EExecFunc(tkn, arg);
 			if (res.error == ERROR)
 				ErrHandler().CallErr("Error occured while calling " + tkn);
+			
 			return res.var.container[0];
 		}
 
@@ -87,7 +104,7 @@ class Expr {
 			return children[0].Execute(storage) / children[1].Execute(storage);
 		}
 		if (tkn == "%") {
-			return children[0].Execute(storage) - children[1].Execute(storage);
+			return children[0].Execute(storage) % children[1].Execute(storage);
 		}
 		if (tkn == "==") {
 			return children[0].Execute(storage) == children[1].Execute(storage);
@@ -117,6 +134,43 @@ class Expr {
 
 typedef std::unordered_map<std::string, Variable> Storage;
 
+/**
+ * class AST 
+ * Abstract Syntax Tree class
+ * 
+ * Structure
+ * 
+ * private
+ *   - StmtType _t
+ *	 - std::vector<AST *> childStmt
+ *	 - std::vector<Expr> expression
+ *	 - std::vector<Variable> argument
+ * 
+ * expression
+ * 
+ * if AST's type is one of these:
+ *   - ConstDel
+ *   - VarDel
+ *   - Expression
+ *   - Assignment
+ *   - IfStmt
+ *   - ElifStmt
+ *   - ElseStmt
+ *   - ForClauseStmt
+ *   - ForSCStmt
+ * 
+ * expression will not be blank. (length 1)
+ * 
+ * argument
+ * 
+ * argument can have different formation.
+ *   - _t = ConstDel or VarDel: argument[2] = {TYPE, IDENTIFIER}
+ *   - _t = Assignment: argument[1] = {IDENTIFIER}
+ *   - _t = ForClauseStmt: argument[4] = {VARIABLE, START, END, STEP}
+ *   - others: argument[0] = {}
+ * 
+ * every argument's type(Variable::_t) should be OPERATOR.
+ */
 class AST {
 	private:
 	StmtType _t;
@@ -125,6 +179,7 @@ class AST {
 	std::vector<Variable> argument;
 
 	public:
+	// constructor
 	AST(StmtType t, std::vector<Variable> argv, std::vector<Expr> expr) {
 		_t = t, argument = argv, expression = expr;
 	}
@@ -153,13 +208,26 @@ class AST {
 		argument.push_back(argv);
 	}
 
-	std::pair<bool, bool> Execute(Storage& storage) {
+	std::pair<int, bool> Execute(Storage& storage) {
 		switch (_t) {
-			case Main:
-				for (AST *child: childStmt) {
-					child->Execute(storage);
+			case Main: {
+				bool ignoreif = 0;
+				for (AST *ast: childStmt) {
+					std::pair<int, bool> res = ast->Execute(storage);
+					if (res.first >= 1)
+						ErrHandler().CallErr("break and continue statement only allowed to be used in for statements");
+
+					if (res.second) {
+						ignoreif = 1;
+						continue;
+					}
+					if (ignoreif) {
+						if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+						ignoreif = 0;
+					}
 				}
 				break;
+			}
 
 			case ConstDel: {
 				Variable v_type = argument[0], v_identifier = argument[1];
@@ -220,24 +288,112 @@ class AST {
 			}
 
 			case BreakStmt:
-				return {true, false};
+				return {2, false};
 
 			case ContinueStmt:
-				return {false, true};
+				return {1, false};
 
 			case IfStmt: {
-				// :TODO impl it later
-				break;
+				Storage local = storage;
+				Variable condition = expression[0].Execute(local);
+				if (condition._t != BOOL)
+					ErrHandler().CallErr("If Statement allows only boolean condition expression.");
+				if (condition.GetValue() == "0") {
+					return {0, false};
+				}
+				bool ignoreif = 0;
+				for (AST *ast: childStmt) {
+					std::pair<int, bool> res = ast->Execute(local);
+					if (res.first >= 1) {
+						ErrHandler().CallErr("If Statement doesn't allow to use break or continue statement.");
+					}
+					if (res.second) {
+						ignoreif = 1;
+						continue;
+					}
+					if (ignoreif) {
+						if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+						ignoreif = 0;
+					}
+				}
+				for (auto iter = local.begin(); iter != local.end(); iter++) {
+					if (storage.find(iter->first) == storage.end()) local.erase(iter);
+				}
+				storage = local;
+				return {0, true};
+			}
+
+			case ElifStmt: {
+				Storage local = storage;
+				Variable condition = expression[0].Execute(local);
+				if (condition._t != BOOL)
+					ErrHandler().CallErr("Elif Statement allows only boolean condition expression.");
+				if (condition.GetValue() == "0") {
+					return {0, false};
+				}
+				bool ignoreif = 0;
+				for (AST *ast: childStmt) {
+					std::pair<int, bool> res = ast->Execute(local);
+					if (res.first >= 1) {
+						ErrHandler().CallErr("Elif Statement doesn't allow to use break or continue statement.");
+					}
+					if (res.second) {
+						ignoreif = 1;
+						continue;
+					}
+					if (ignoreif) {
+						if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+						ignoreif = 0;
+					}
+				}
+				for (auto iter = local.begin(); iter != local.end(); iter++) {
+					if (storage.find(iter->first) == storage.end()) local.erase(iter);
+				}
+				storage = local;
+				return {0, true};
+			}
+
+			case ElseStmt: {
+				Storage local = storage;
+				bool ignoreif = 0;
+				for (AST *ast: childStmt) {
+					std::pair<int, bool> res = ast->Execute(local);
+					if (res.first >= 1) {
+						ErrHandler().CallErr("Else Statement doesn't allow to use break or continue statement.");
+					}
+					if (res.second) {
+						ignoreif = 1;
+						continue;
+					}
+					if (ignoreif) {
+						if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+						ignoreif = 0;
+					}
+				}
+				for (auto iter = local.begin(); iter != local.end(); iter++) {
+					if (storage.find(iter->first) == storage.end()) local.erase(iter);
+				}
+				storage = local;
+				return {0, true};
 			}
 
 			case ForClauseStmt: {
 				Storage local = storage;
 				for (int idx = std::stoi(argument[1].GetValue()); idx < std::stoi(argument[2].GetValue()); idx += std::stoi(argument[3].GetValue())) {
 					local[argument[0].GetValue()] = Variable("_", std::to_string(idx), INT);
+					bool ignoreif = 1;
 					for (AST *ast: childStmt) {
-						std::pair<bool, bool> res = ast->Execute(local);
-						if (res.first) break;
-						if (res.second) continue;
+						std::pair<int, bool> res = ast->Execute(local);
+						if (res.first == 2) break;
+						if (res.first == 1) continue;
+						if (res.second) {
+							ignoreif = 1;
+							continue;
+						}
+						if (ignoreif) {
+							if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+							ignoreif = 0;
+						}
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
@@ -254,10 +410,21 @@ class AST {
 					if (condition._t != BOOL)
 						ErrHandler().CallErr("For Statement allows only boolean condition expression.");
 					if (condition.GetValue() == "0") break;
+
+					bool ignoreif = 0;
 					for (AST *ast: childStmt) {
-						std::pair<bool, bool> res = ast->Execute(local);
-						if (res.first) break;
-						if (res.second) continue;
+						if (ignoreif) {
+							if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+							ignoreif = 0;
+						}
+						std::pair<int, bool> res = ast->Execute(local);
+						if (res.first == 2) break;
+						if (res.first == 1) continue;
+						
+						if (res.second) {
+							ignoreif = 1;
+							continue;
+						}
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
@@ -267,6 +434,7 @@ class AST {
 				break;
 			}
 		}
+		return {0, false};
 	}
 };
 
