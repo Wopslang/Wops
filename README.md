@@ -19,6 +19,9 @@ Testing Version: **v0.1 Alpha**
 License: Apache License 2.0  
 [⚒️ Official Documentation](./doc/README.md)  
 
+### :mega: Test Wopslang Runtime System
+
+Read [this section](https://github.com/Wopslang/Wops/blob/main/CONTRIBUTING.md#computer-wopslang-runtime-system-test) and contribute to Wopslang!
 ## Contact Us
 
 |Github Username|Slack Username|Role|
