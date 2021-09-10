@@ -47,8 +47,8 @@ So, make sure to check this page when you updated Wopslang to the newest version
 > Our language is based on an idea: simple, but powerful.
 > And because our grammar was also designed with this idea, we developed only the most important expressions.
 > However, we know that our standard of *importance* can be different from your standard.
-> So, please tell us your idea is good to put into Wopslang.
-> We love to hear your voice.
+> So, please tell us your idea of what to put into Wopslang.
+> We would love to hear your voice.
 
 ## Notation
 
