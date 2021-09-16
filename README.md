@@ -1,3 +1,6 @@
+<script src="https://climateclock.world/widget-v2.js" async></script>
+<climate-clock />
+
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
 ```go
