@@ -17,7 +17,7 @@ ArrayWithCode EExecFunc(std::string func, Array argv) {
     void* handle = dlopen("./src/import_/dll/library.so", RTLD_LAZY);
 
     if (!handle) {
-        ErrHandler().CallErr("Cannot load library");
+        ErrHandler().CallErr("Cannot load library: " + std::string(dlerror()));
         return {null, ERROR};
     }
 

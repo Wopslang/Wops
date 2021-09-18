@@ -7,6 +7,7 @@
 
 #include <dlfcn.h>
 #include <iostream>
+#include <string>
 #include "../type/variable.h"
 #include "../type/array.h"
 #include "../error/signal.h"
