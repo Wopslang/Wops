@@ -14,7 +14,7 @@ ArrayWithCode EExecFunc(std::string func, Array argv) {
     // EMPTY VARIABLE
     Array null(Variable("_", "", INT));
 
-    void* handle = dlopen("src/import_/dll/library.so", RTLD_LAZY);
+    void* handle = dlopen("./src/import_/dll/library.so", RTLD_LAZY);
 
     if (!handle) {
         ErrHandler().CallErr("Cannot load library");
