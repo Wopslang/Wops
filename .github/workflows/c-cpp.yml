@@ -14,10 +14,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: prepare
-      run: git clone https://github.com/Wopslang/Wops.git; cd Wops
+      run: git clone https://github.com/Wopslang/Wops.git cd Wops
     - name: make
       run: make
     - name: run
       run: ./test < ci-test.txt
     - name: clear
-      run: make clean
+      run: make clean cd .. rm -rf Wops
