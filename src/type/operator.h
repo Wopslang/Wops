@@ -40,6 +40,4 @@ enum op_ {
 	BLSH, // <<
 	BRSH, // >>
 };
-
-
 #endif
