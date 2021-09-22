@@ -397,7 +397,7 @@ Statements control execution.
 ```ebnf
 Statement =
          Declaration | SimpleStmt |
-         BreakStmt | ContinueStmt | Block |
+         BreakStmt | ContinueStmt |
          IfStmt | ForStmt .
 
 SimpleStmt = Blank | Expression | Assignment .
