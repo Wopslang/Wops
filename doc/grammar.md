@@ -101,11 +101,7 @@ out(":(")  // Bad :(
 
 ### Tokens
 
-Token is the word which can be used in Wopslang. There are four types: *Identifiers, Keywords, Operators, Punctuation, and Literals*. White space, formed from spaces (U+0020), horizontal tabs (U+0009), carriage returns (U+000D), and newlines (U+000A), is ignored except as it separates tokens that would otherwise combine into a single token. Also, the semicolon can split tokens as triggering newline or EOF(End of File).
-
-### Semicolons
-
-A newline or end of file may be trigger by the insertion of a semicolon(`;`). See [Tokens] to get information about breaking tokens.
+Token is the word which can be used in Wopslang. There are four types: *Identifiers, Keywords, Operators, Punctuation, and Literals*. White space, formed from spaces (U+0020), horizontal tabs (U+0009), carriage returns (U+000D), and newlines (U+000A), is ignored except as it separates tokens that would otherwise combine into a single token.
 
 ### Identifiers
 
