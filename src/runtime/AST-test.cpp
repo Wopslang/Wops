@@ -82,10 +82,10 @@ int main() {
 	line6.SetExpr({tkn11});
 	line8.SetExpr({tkn2});
 	
-	line3.AddChild(&line4);
-	line5.AddChild(&line6);
-	line2.SetChildren({&line3, &line5, &line8});
-	main_code.SetChildren({&line1, &line2});
+	line3.AddChild(line4);
+	line5.AddChild(line6);
+	line2.SetChildren({line3, line5, line8});
+	main_code.SetChildren({line1, line2});
 
 	// 4.
 	Storage empty;

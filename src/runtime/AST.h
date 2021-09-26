@@ -124,6 +124,12 @@ class Expr {
 		if (tkn == "<=") {
 			return children[0].Execute(storage) <= children[1].Execute(storage);
 		}
+		if (tkn == "||") {
+			return children[0].Execute(storage) || children[1].Execute(storage);
+		}
+		if (tkn == "&&") {
+			return children[0].Execute(storage) && children[1].Execute(storage);
+		}
 
 		// Unary Operation
 		if (tkn == "!") {
@@ -174,7 +180,7 @@ typedef std::unordered_map<std::string, Variable> Storage;
 class AST {
 	private:
 	StmtType _t;
-	std::vector<AST *> childStmt;
+	std::vector<AST> childStmt;
 	std::vector<Expr> expression;
 	std::vector<Variable> argument;
 
@@ -184,11 +190,11 @@ class AST {
 		_t = t, argument = argv, expression = expr;
 	}
 
-	void SetChildren(std::vector<AST *> rplcment) {
+	void SetChildren(std::vector<AST> rplcment) {
 		childStmt = rplcment;
 	}
 
-	void AddChild(AST *child) {
+	void AddChild(AST child) {
 		childStmt.push_back(child);
 	}
 
@@ -212,8 +218,8 @@ class AST {
 		switch (_t) {
 			case Main: {
 				bool ignoreif = 0;
-				for (AST *ast: childStmt) {
-					std::pair<int, bool> res = ast->Execute(storage);
+				for (AST ast: childStmt) {
+					std::pair<int, bool> res = ast.Execute(storage);
 					if (res.first >= 1)
 						ErrHandler().CallErr("break and continue statement only allowed to be used in for statements");
 
@@ -222,7 +228,7 @@ class AST {
 						continue;
 					}
 					if (ignoreif) {
-						if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+						if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 						ignoreif = 0;
 					}
 				}
@@ -302,8 +308,8 @@ class AST {
 					return {0, false};
 				}
 				bool ignoreif = 0;
-				for (AST *ast: childStmt) {
-					std::pair<int, bool> res = ast->Execute(local);
+				for (AST ast: childStmt) {
+					std::pair<int, bool> res = ast.Execute(local);
 					if (res.first >= 1) {
 						ErrHandler().CallErr("If Statement doesn't allow to use break or continue statement.");
 					}
@@ -312,7 +318,7 @@ class AST {
 						continue;
 					}
 					if (ignoreif) {
-						if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+						if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 						ignoreif = 0;
 					}
 				}
@@ -332,8 +338,8 @@ class AST {
 					return {0, false};
 				}
 				bool ignoreif = 0;
-				for (AST *ast: childStmt) {
-					std::pair<int, bool> res = ast->Execute(local);
+				for (AST ast: childStmt) {
+					std::pair<int, bool> res = ast.Execute(local);
 					if (res.first >= 1) {
 						ErrHandler().CallErr("Elif Statement doesn't allow to use break or continue statement.");
 					}
@@ -342,7 +348,7 @@ class AST {
 						continue;
 					}
 					if (ignoreif) {
-						if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+						if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 						ignoreif = 0;
 					}
 				}
@@ -356,8 +362,8 @@ class AST {
 			case ElseStmt: {
 				Storage local = storage;
 				bool ignoreif = 0;
-				for (AST *ast: childStmt) {
-					std::pair<int, bool> res = ast->Execute(local);
+				for (AST ast: childStmt) {
+					std::pair<int, bool> res = ast.Execute(local);
 					if (res.first >= 1) {
 						ErrHandler().CallErr("Else Statement doesn't allow to use break or continue statement.");
 					}
@@ -366,7 +372,7 @@ class AST {
 						continue;
 					}
 					if (ignoreif) {
-						if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+						if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 						ignoreif = 0;
 					}
 				}
@@ -382,8 +388,8 @@ class AST {
 				for (int idx = std::stoi(argument[1].GetValue()); idx < std::stoi(argument[2].GetValue()); idx += std::stoi(argument[3].GetValue())) {
 					local[argument[0].GetValue()] = Variable("_", std::to_string(idx), INT);
 					bool ignoreif = 1;
-					for (AST *ast: childStmt) {
-						std::pair<int, bool> res = ast->Execute(local);
+					for (AST ast: childStmt) {
+						std::pair<int, bool> res = ast.Execute(local);
 						if (res.first == 2) break;
 						if (res.first == 1) continue;
 						if (res.second) {
@@ -391,7 +397,7 @@ class AST {
 							continue;
 						}
 						if (ignoreif) {
-							if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+							if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 							ignoreif = 0;
 						}
 					}
@@ -412,12 +418,12 @@ class AST {
 					if (condition.GetValue() == "0") break;
 
 					bool ignoreif = 0;
-					for (AST *ast: childStmt) {
+					for (AST ast: childStmt) {
 						if (ignoreif) {
-							if (ast->_t == ElifStmt || ast->_t == ElseStmt) continue;
+							if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 							ignoreif = 0;
 						}
-						std::pair<int, bool> res = ast->Execute(local);
+						std::pair<int, bool> res = ast.Execute(local);
 						if (res.first == 2) break;
 						if (res.first == 1) continue;
 						

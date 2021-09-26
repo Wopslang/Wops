@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 #include <string>
+#include <regex>
+#include <queue>
 #include "../runtime/AST.h"
 #include "../error/signal.h"
 
@@ -15,5 +17,6 @@
 #define WOPS_PARSE_H
 
 AST Parse(std::vector<std::string> codes);
+Expr ParseExpr(std::vector<std::string> tokens);
 
 #endif
