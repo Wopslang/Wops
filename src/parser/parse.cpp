@@ -19,7 +19,33 @@ std::vector<String> funcs {"in", "out", "tostring", "toint"};
 Expr ParseExpr(std::vector<String> tokens) {
     Expr head({0,0,0}, Variable("_", "", INT));
 
-    // TODO: func calling expr
+    if (tokens.size() >= 3 && std::find(funcs.begin(), funcs.end(), tokens[0]) != funcs.end() && 
+            tokens[1] == "(" && tokens[tokens.size()-1] == ")") {
+        int level = 0; bool isSuitable = 1;
+        for (int idx = 1; idx < tokens.size(); idx++) {
+            String token = tokens[idx];
+            if (token == "(") level++;
+            else if (token == ")") level--;
+            else if (!level) isSuitable = 0;
+        }
+        if (isSuitable) {
+            head = Expr({0,0,1}, Variable("_", tokens[0], OPERATOR));
+            std::vector<String> parameter;
+            for (int idx = 2; idx < tokens.size()-1; idx++) {
+                if (tokens[idx] == ",") {
+                    if (parameter.size() == 0) ErrHandler().CallErr("Blank parameter");
+                    head.AddChild(ParseExpr(parameter));
+                    parameter.clear();
+                    continue;
+                }
+                parameter.push_back(tokens[idx]);
+            }
+            if (parameter.size() != 0)
+                head.AddChild(ParseExpr(parameter));
+            return head;
+        }
+    }
+
     if (tokens[0] == "(" && tokens[tokens.size()-1] == ")") {
         int level = 0; bool isSuitable = 1;
         for (int idx = 0; idx < tokens.size(); idx++) {
@@ -348,7 +374,7 @@ int main() {
     std::unordered_map<String, Variable> stor;
     stor["a"] = Variable("a", "2", INT);
     std::cout << ParseExpr(
-            {"(", "3", "+", "5", ")", "/", "(", "a", "*", "2", ")"}
+            {"toint", "(", "in", "(", ")", ")", "*", "(", "1", "+", "1", ")"}
     ).Execute(stor).GetValue();
 //    AST codeAST(Main, {}, {});
 //    Parse(codeAST, {"string a = \"Hello, \" + in()"});
