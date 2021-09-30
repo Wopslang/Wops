@@ -172,7 +172,7 @@ typedef std::unordered_map<std::string, Variable> Storage;
  * argument can have different formation.
  *   - _t = ConstDel or VarDel: argument[2] = {TYPE, IDENTIFIER}
  *   - _t = Assignment: argument[1] = {IDENTIFIER}
- *   - _t = ForClauseStmt: argument[4] = {VARIABLE, START, END, STEP}
+ *   - _t = ForClauseStmt: argument[1] = {VARIABLE} (+ START, STOP, STEP expr)
  *   - others: argument[0] = {}
  * 
  * every argument's type(Variable::_t) should be OPERATOR.
@@ -385,7 +385,7 @@ class AST {
 
 			case ForClauseStmt: {
 				Storage local = storage;
-				for (int idx = std::stoi(argument[1].GetValue()); idx < std::stoi(argument[2].GetValue()); idx += std::stoi(argument[3].GetValue())) {
+				for (int idx = std::stoi(expression[0].Execute(storage).GetValue()); idx < std::stoi(expression[1].Execute(storage).GetValue()); idx += std::stoi(expression[2].Execute(storage).GetValue())) {
 					local[argument[0].GetValue()] = Variable("_", std::to_string(idx), INT);
 					bool ignoreif = 1;
 					for (AST ast: childStmt) {

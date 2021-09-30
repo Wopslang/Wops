@@ -16,7 +16,7 @@
 #ifndef WOPS_PARSE_H
 #define WOPS_PARSE_H
 
-AST Parse(std::vector<std::string> codes);
+void Parse(AST& head, std::vector<String> codes);
 Expr ParseExpr(std::vector<std::string> tokens);
 
 #endif

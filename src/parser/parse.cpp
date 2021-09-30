@@ -4,8 +4,6 @@
  *
  * 2021, Wops Team
  *
- * now in test.
- *
  * */
 
 #include "parse.h"
@@ -64,7 +62,7 @@ Expr ParseExpr(std::vector<String> tokens) {
             head = Expr({1, 0, 0}, Variable("_", tokens[0], INT));
         } else if (std::regex_match(tokens[0], std::regex("[0-9]+.[0-9]"))) {
             head = Expr({1, 0, 0}, Variable("_", tokens[0], DOUBLE));
-        } else if (std::regex_match(tokens[0], std::regex("^\"(\\w+|\\W+)\"$"))) {
+        } else if (tokens[0][0] == '\"' && tokens[0][tokens[0].length()-1] == '\"') {
             head = Expr({1, 0, 0}, Variable("_", tokens[0], STRING));
         } else {
             head = Expr({0, 1, 0}, Variable("_", tokens[0], OPERATOR));
@@ -245,6 +243,7 @@ Expr ParseExpr(std::vector<String> tokens) {
 }
 
 void Parse(AST& head, std::vector<String> codes) {
+    std::vector<std::vector<String>> tokenss(codes.size());
     for (int idx = 0; idx < codes.size(); idx++) {
         String code = codes[idx];
 
@@ -254,10 +253,9 @@ void Parse(AST& head, std::vector<String> codes) {
         size_t rwhitespace = code.find_last_not_of(" \n\r\t\f\v");
         code = (rwhitespace == String::npos) ? "" : code.substr(0, rwhitespace+1);
 
-        std::vector<String> tokens;
+        std::vector<String> &tokens = tokenss[idx];
         bool isParsingString = 0;
         String cache = "";
-        
 
         for (int lidx = 0; lidx < code.length(); lidx++) {
             char letter = code[lidx];
@@ -336,46 +334,231 @@ void Parse(AST& head, std::vector<String> codes) {
             }
             cache += letter;
         }
+        if (cache.size())
+            tokens.push_back(cache);
+    }
+
+    for (int idx = 0; idx < tokenss.size(); idx++) {
+        std::vector<String> tokens = tokenss[idx];
         switch (std::count(tokens.begin(), tokens.end(), "=")) {
-            case 0: // break, continue, if, for stmt
+            case 0: { // expression, break, continue, if, for stmt
                 if (tokens.size() == 0) break;
-                if (tokens.size() == 1 && tokens[0] == "//") break;
+                if (tokens.size() >= 1 && tokens[0] == "//") break;
                 if (tokens.size() == 1 && tokens[0] == "break") {
                     AST ast(BreakStmt, {}, {}); head.AddChild(ast);
                     break;
                 }
                 if (tokens.size() == 1 && tokens[0] == "continue") {
                     AST ast(ContinueStmt, {}, {}); head.AddChild(ast);
+                    break;
                 }
-                if (tokens.size() == 1 && tokens[0] == "{") {
+                if (tokens.size() == 1 && tokens[0] == "}") {
                     return;
                 }
                 if (tokens[0] == "if") {
                     if (tokens.size() < 4 || tokens[1] != "(" || tokens[tokens.size()-2] != ")"
                             || tokens[tokens.size()-1] != "{")
-                        ErrHandler().CallErr("No matching pattern: if");
+                        ErrHandler().CallErr("No matching syntax: if");
+
                     AST ast(IfStmt, {},
                         {
                             ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()-2))
                         }
                     );
-                    Parse(ast, std::vector<String>(codes.begin()+idx, codes.end()));
+
+                    int level = 0, iidx;
+                    for (iidx = idx; iidx < tokenss.size(); iidx++) {
+                        std::vector<String> ttokens = tokenss[iidx];
+                        if (ttokens[0] == "for" || ttokens[0] == "if" || ttokens[0] == "elif" || ttokens[0] == "else")
+                            level++;
+                        if (ttokens[0] == "}") level--;
+                        if (!level) break;
+                    }
+                    Parse(ast, std::vector<String>(codes.begin()+idx+1, codes.begin()+iidx));
+                    head.AddChild(ast);
+                    idx = iidx;
+                    break;
                 }
+                if (tokens[0] == "elif") {
+                    if (tokens.size() < 4 || tokens[1] != "(" || tokens[tokens.size()-2] != ")"
+                            || tokens[tokens.size()-1] != "{")
+                        ErrHandler().CallErr("No matching syntax: elif");
+
+                    AST ast(ElifStmt, {},
+                        {
+                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()-2))
+                        }
+                    );
+
+                    int level = 0, iidx;
+                    for (iidx = idx; iidx < tokenss.size(); iidx++) {
+                        std::vector<String> ttokens = tokenss[iidx];
+                        if (ttokens[0] == "for" || ttokens[0] == "if" || ttokens[0] == "elif" || ttokens[0] == "else")
+                            level++;
+                        if (ttokens[0] == "}") level--;
+                        if (!level) break;
+                    }
+                    Parse(ast, std::vector<String>(codes.begin()+idx+1, codes.begin()+iidx));
+                    head.AddChild(ast);
+                    idx = iidx;
+                    break;
+                }
+                if (tokens[0] == "else") {
+                    if (tokens.size() != 2 || tokens[1] != "{")
+                        ErrHandler().CallErr("No matching syntax: else");
+
+                    AST ast(ElseStmt, {}, {});
+
+                    int level = 0, iidx;
+                    for (iidx = idx; iidx < tokenss.size(); iidx++) {
+                        std::vector<String> ttokens = tokenss[iidx];
+                        if (ttokens[0] == "for" || ttokens[0] == "if" || ttokens[0] == "elif" || ttokens[0] == "else")
+                            level++;
+                        if (ttokens[0] == "}") level--;
+                        if (!level) break;
+                    }
+                    Parse(ast, std::vector<String>(codes.begin()+idx+1, codes.begin()+iidx));
+                    head.AddChild(ast);
+                    idx = iidx;
+                    break;
+                }
+                if (tokens[0] == "for") {
+                    if (tokens.size() < 4)
+                        ErrHandler().CallErr("No matching syntax: for");
+
+                    if (std::find(tokens.begin(), tokens.end(), "range") != tokens.end()) { // for clause
+                        if (tokens[2] != "in" ||
+                            tokens[3] != "range" ||
+                            tokens[4] != "(" ||
+                            tokens[tokens.size()-1] != "{" ||
+                            tokens[tokens.size()-2] != ")"
+                            ) 
+                            ErrHandler().CallErr("No matching syntax: for");
+
+                        AST ast(ForClauseStmt, {
+                            Variable("_", tokens[1], OPERATOR), 
+                        }, {});
+
+                        std::vector<String> caches;
+                        for (int iidx = 5; iidx < tokens.size()-2; iidx++) {
+                            if (tokens[iidx] == ",") {
+                                ast.AddExpr(ParseExpr(caches));
+                                caches.clear();
+                            }
+                            caches.push_back(tokens[iidx]);
+                        }
+                        if (caches.size()) {
+                            ast.AddExpr(ParseExpr(caches));
+                            caches.clear();
+                        }
+                        if (caches.size() != 3) 
+                            ErrHandler().CallErr("For clause only has three elements: start, end, step");
+
+                        int level = 0, iidx;
+                        for (iidx = idx; iidx < tokenss.size(); iidx++) {
+                            std::vector<String> ttokens = tokenss[iidx];
+                            if (ttokens[0] == "for" || ttokens[0] == "if" || ttokens[0] == "elif" || ttokens[0] == "else")
+                                level++;
+                            if (ttokens[0] == "}") level--;
+                            if (!level) break;
+                        }
+                        Parse(ast, std::vector<String>(codes.begin()+idx+1, codes.begin()+iidx));
+                        head.AddChild(ast);
+                        idx = iidx;
+                        break;
+                    }
+
+                    // ForSCStmt
+                    if (tokens.size() < 4 || tokens[1] != "(" || tokens[tokens.size()-2] != ")"
+                            || tokens[tokens.size()-1] != "{")
+                        ErrHandler().CallErr("No matching syntax: for");
+
+                    AST ast(ForSCStmt, {},
+                        {
+                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()-2))
+                        }
+                    );
+
+                    int level = 0, iidx;
+                    for (iidx = idx; iidx < tokenss.size(); iidx++) {
+                        std::vector<String> ttokens = tokenss[iidx];
+                        if (ttokens[0] == "for" || ttokens[0] == "if" || ttokens[0] == "elif" || ttokens[0] == "else")
+                            level++;
+                        if (ttokens[0] == "}") level--;
+                        if (!level) break;
+                    }
+                    Parse(ast, std::vector<String>(codes.begin()+idx+1, codes.begin()+iidx));
+                    head.AddChild(ast);
+                    idx = iidx;
+                    break;
+                }
+                
+                AST ast(Expression, {},
+                    {
+                        ParseExpr(tokens)
+                    }
+                );
+                head.AddChild(ast);
                 break;
-            case 1: // declaration, assignment
+            }
+
+            case 1: { // declaration, assignment
+                // WEAK TODO: change the way to identify Assignment and Declaration
+                int pos = std::find(tokens.begin(), tokens.end(), "=") - tokens.begin();
+
+                if (pos == 1) { // assignment
+                    if (tokens.size() < 3)
+                        ErrHandler().CallErr("No matching syntax: assignment");
+
+                    AST ast(Assignment,
+                        {
+                            Variable("_", tokens[0], OPERATOR)
+                        }, {
+                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()))
+                        }
+                    );
+                    head.AddChild(ast);
+                    break;
+                }
+                if (pos == 2) { // VarDel
+                    if (tokens.size() < 4)
+                        ErrHandler().CallErr("No matching syntax: declaration");
+
+                    AST ast(VarDel,
+                        {
+                            Variable("_", tokens[0], OPERATOR),
+                            Variable("_", tokens[1], OPERATOR)
+                        }, {
+                            ParseExpr(std::vector<String>(tokens.begin()+3, tokens.end()))
+                        }
+                    );
+                    head.AddChild(ast);
+                    break;
+                }
+                if (pos == 3) { // ConstDel
+                    if (tokens.size() < 5)
+                        ErrHandler().CallErr("No matching syntax: declaration");
+
+                    AST ast(ConstDel,
+                        {
+                            Variable("_", tokens[0], OPERATOR),
+                            Variable("_", tokens[1], OPERATOR)
+                        }, {
+                            ParseExpr(std::vector<String>(tokens.begin()+3, tokens.end()))
+                        }
+                    );
+                    head.AddChild(ast);
+                    break;
+                }
+
+                ErrHandler().CallErr("Unknown syntax");
                 break;
+            }
+
             default: // error
+                ErrHandler().CallErr("Unknown syntax");
                 break;
         }
     }
 }
 
-int main() {
-    std::unordered_map<String, Variable> stor;
-    stor["a"] = Variable("a", "2", INT);
-    std::cout << ParseExpr(
-            {"toint", "(", "in", "(", ")", ")", "*", "(", "1", "+", "1", ")"}
-    ).Execute(stor).GetValue();
-//    AST codeAST(Main, {}, {});
-//    Parse(codeAST, {"string a = \"Hello, \" + in()"});
-}

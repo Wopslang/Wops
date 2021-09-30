@@ -14,3 +14,6 @@ cmake_install.cmake
 CMakeCache.txt
 compile_commands.json
 build/
+Wopslang
+ci-test.wops
+cached/
