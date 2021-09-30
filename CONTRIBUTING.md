@@ -73,28 +73,9 @@ If you want to contribute as the Wopslang manager, join the [Wops Community Slac
 
 **Contributes about things in TODO list will have higher priority than normal one.**  
 
-- Wopslang Runtime System Test
+- Nothing
 
-## :computer: Wopslang Runtime System Test
 
-> Note: this section will be deleted after developing parser
 
-Follow these instruction to execute Wopslang Runtime System.
-
-1. open src/runtime/AST-test.cpp
-2. clear every code inside main function
-
-3. declare ASTs (there must be main AST)
-
-4. declare every tokens (in this code, some token expression nodes were reused, but we suggest you not to reuse tokens)
-
-     - See the defination of Expr for more detail
-5. connect them
-
-     - Connection Order: expression-expression, connected expression-AST, AST-AST
-
-6. declare empty variable storage and execute main AST
-
-If you wonder how to connect or declare AST or ExprAST, see the defination(src/runtime/AST.h). You can also test Runtime System Test by sending us your Wopslang code. Please make new discussion(category: Q&A) and attach your wopslang code. We'll code the runtime system testing C++ code and send it to you. Copy and paste the testing code into AST-test.cpp and build it. **If your wopslang code catched some bugs, we won't send you the testing code.**
 
 2021, Wops Team
