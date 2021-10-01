@@ -19,16 +19,21 @@ Testing Version: **v0.1 Alpha**
 License: Apache License 2.0  
 [⚒️ Official Documentation](./doc/README.md)  
 
-## Build
+## Build and Run
 
-Use command `make` to make executable interpreter file.  
-You can run `.wops` file like:
+Use this command to build and make executable interpreter:
 
 ```bash
-./Wopslang your/file/path
+bash build.sh
 ```
 
-> **WARNING**: We're on testing now. The interpreter might cause a critical issues. We seriously recommend not to run it now.
+To run:
+
+```bash
+Wopslang <filepath>
+```
+
+> Building system wasn't tested on Windows.
 
 ## Contact Us
 
