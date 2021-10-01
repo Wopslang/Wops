@@ -32,7 +32,7 @@ Use this command to build and make executable interpreter:
 |OS|Command|
 |--|-------|
 |Linux|`bash build.sh`|
-|Windows|`bat build.bat`|
+|Windows|`build.bat`|
 
 To run:
 
