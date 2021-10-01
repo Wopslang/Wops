@@ -56,7 +56,7 @@ The syntax is specified using Extended Backus-Naur Form (EBNF).
 
 ## Source Code Representation
 
- Source code is Unicode text encoded in [UTF-8].
+Source code is Unicode text encoded in [UTF-8]. Also, file extention of Wopslang code should be `.wops`
 
 ### Characters
 

@@ -12,6 +12,10 @@ std::vector<char> oprs{
     '+', '-', '*', '/', '%', '=', '>', '<', '!', '&', '|', '(', ')', '[', ']', '{', '}', ',',
 };
 
+std::vector<std::pair<String, String>> runes{
+    {"\a", "a"}, {"\b", "b"}, {"\f", "f"}, {"\n", "n"}, {"\r", "r"}, {"\t", "t"}, {"\v", "v"}, {"\\", "\\"}, {"\'", "'"}, {"\"", "\""}
+};
+
 std::vector<String> funcs {"in", "out", "tostring", "toint"};
 
 Expr ParseExpr(std::vector<String> tokens) {
@@ -328,6 +332,12 @@ void Parse(AST& head, std::vector<String> codes) {
                 isParsingString = !isParsingString;
                 cache += letter;
                 if (isParsingString) continue;
+                
+                for (std::pair<String, String> rune: runes) {
+                    while (cache.find("\\" + rune.second) != String::npos) {
+                        cache.replace(cache.find("\\" + rune.second), 2, rune.first);
+                    }
+                }
                 tokens.push_back(cache);
                 cache = "";
                 continue;
