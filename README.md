@@ -29,9 +29,10 @@ License: Apache License 2.0
 
 Use this command to build and make executable interpreter:
 
-```bash
-bash build.sh
-```
+|OS|Command|
+|--|-------|
+|Linux|`bash build.sh`|
+|Windows|`bat build.bat`|
 
 To run:
 
