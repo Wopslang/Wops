@@ -19,6 +19,12 @@ Testing Version: **v0.1 Alpha**
 License: Apache License 2.0  
 [⚒️ Official Documentation](./doc/README.md)  
 
+## Dependancy
+
+- gcc
+
+- make
+
 ## Build and Run
 
 Use this command to build and make executable interpreter:
@@ -48,8 +54,6 @@ Wopslang <filepath>
 
 **Bold user** is the Wopslang manager.  
 Special Thanks to @jhhan128
-
-## 🚀 Our Logo
 
 ![Wopslang Logo](https://emoji.slack-edge.com/T01MFM2TJ07/wopsfull/7fe35e7cbecd2d4d.png)
 
