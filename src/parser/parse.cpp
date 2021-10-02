@@ -12,8 +12,10 @@ std::vector<char> oprs{
     '+', '-', '*', '/', '%', '=', '>', '<', '!', '&', '|', '(', ')', '[', ']', '{', '}', ',',
 };
 
+char rune_scaffold[2] = {'"', '\0'};
+
 std::vector<std::pair<String, String>> runes{
-    {"\a", "a"}, {"\b", "b"}, {"\f", "f"}, {"\n", "n"}, {"\r", "r"}, {"\t", "t"}, {"\v", "v"}, {"\\", "\\"}, {"\'", "'"}, {"\"", "\""}
+    {"\a", "a"}, {"\b", "b"}, {"\f", "f"}, {"\n", "n"}, {"\r", "r"}, {"\t", "t"}, {"\v", "v"}, {"\\", "\\"}, {"\'", "'"}, {"\"", String(rune_scaffold)}
 };
 
 std::vector<String> funcs {"in", "out", "tostring", "toint"};

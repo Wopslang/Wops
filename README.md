@@ -21,6 +21,8 @@ License: Apache License 2.0
 
 ## Dependancy
 
+- git
+
 - gcc
 
 - make
@@ -29,17 +31,15 @@ License: Apache License 2.0
 
 Use this command to build and make executable interpreter:
 
-|OS|Command|
-|--|-------|
-|Linux|`bash build.sh`|
+```bash
+bash build.sh
+```
 
 To run:
 
 ```bash
-Wopslang <filepath>
+./Wopslang <filepath>
 ```
-
-> Building system wasn't tested on Windows.
 
 ## Contact Us
 
