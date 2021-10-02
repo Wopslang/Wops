@@ -7,7 +7,7 @@ else
 endif
 
 Wopslang :
-	g++ -o Wopslang src/interpreter.cpp src/parser/parse.cpp src/import_/eexec_.cpp $(OPTION)
+	g++ -fPIC -shared lib/library.cpp -o src/import_/dll/library.so -std=c++11 | g++ -o Wopslang src/interpreter.cpp src/parser/parse.cpp src/import_/eexec_.cpp $(OPTION)
 
 clean:
 	rm Wopslang 
