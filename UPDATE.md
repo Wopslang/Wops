@@ -12,7 +12,7 @@
   - AST for v0.1 alpha
   - Some Adapters which helps you to try AST
 
-### :heavy_check_mark: Dev v2
+### :white_check_mark: Dev v2
 
 - :hammer_and_wrench: **feature**
   - Parser for v0.1 alpha
