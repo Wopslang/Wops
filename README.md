@@ -21,7 +21,7 @@ License: Apache License 2.0
 
 ## Dependancy
 
-- git
+- git bash
 
 - gcc
 
