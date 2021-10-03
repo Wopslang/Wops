@@ -41,7 +41,7 @@ To run:
 ./Wopslang <filepath>
 ```
 
-## Contact Us
+## Credit 
 
 |Github Username|Slack Username|Role|
 |---|---|---|
@@ -54,6 +54,10 @@ To run:
 
 **Bold user** is the Wopslang manager.  
 Special Thanks to @jhhan128
+
+### Copyright
+
+We use [dlfcn-win32](https://github.com/dlfcn-win32/dlfcn-win32) for Windows users.
 
 ![Wopslang Logo](https://emoji.slack-edge.com/T01MFM2TJ07/wopsfull/7fe35e7cbecd2d4d.png)
 

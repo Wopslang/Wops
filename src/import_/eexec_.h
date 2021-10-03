@@ -5,7 +5,12 @@
  * 2021, Wops Team
  * */
 
+#ifdef _WIN32
+#include "../../include/dlfcn.h"
+#else
 #include <dlfcn.h>
+#endif
+
 #include <iostream>
 #include <string>
 #include "../type/variable.h"
