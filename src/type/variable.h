@@ -278,7 +278,7 @@ class Variable {
     inline std::string GetValue(); // extract
 
     // utility
-    inline std::string trim(std::string s) { return s.erase(0,1).erase(s.length()-1, 1); }
+    inline std::string trim(std::string s) { s = s.erase(0,1); return s.erase(s.length()-1, 1); }
 };
 
 inline Err Variable::Substitute(std::string newval) {
