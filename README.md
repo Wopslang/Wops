@@ -40,8 +40,6 @@ To run:
 ./Wopslang <filepath>
 ```
 
-> WARNING: We don't support Windows fully.
-
 ## Credit 
 
 |Github Username|Slack Username|Role|
