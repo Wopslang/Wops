@@ -28,7 +28,7 @@ License: Apache License 2.0
 
 ## Build and Run
 
-Use this command to build and make executable interpreter:
+Use this command in Git Bash to build and make executable interpreter:
 
 ```bash
 bash build.sh
