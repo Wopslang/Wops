@@ -1,0 +1,20 @@
+=== v0.2: ON DEVELOPMENT ===
+
+- feature
+  - add more function  
+  - support Array(based on `std::vector`)  
+
+=== v0.1.1: cdc54df ===
+
+- feature
+  - fixed critical error occured in Windows
+
+=== v0.1: 133e345 ===
+
+- WARNING: WE DO NOT RECOMMEND YOU THIS VERSION. INSTEAD, USE v0.1.1
+- feature
+  - support basic function, type(int, double, string, bool)  
+  - if, for available  
+
+
+2021, Wops Team
