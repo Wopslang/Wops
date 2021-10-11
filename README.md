@@ -37,7 +37,7 @@ bash build.sh
 To run:
 
 ```bash
-./Wopslang <filepath>
+./Wopslang <filepath>.wops
 ```
 
 ## Credit 
