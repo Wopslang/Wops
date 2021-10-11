@@ -12,6 +12,10 @@ std::vector<char> oprs{
     '+', '-', '*', '/', '%', '=', '>', '<', '!', '&', '|', '(', ')', '[', ']', '{', '}', ',',
 };
 
+std::vector<String> operators{
+    "+", "-", "*", "/", "%", "=", "!=", ">", "<", ">=", "<=", "!", "&&", "||"
+};
+
 std::vector<std::pair<String, String>> runes{
     {"\a", "a"}, {"\b", "b"}, {"\f", "f"}, {"\n", "n"}, {"\r", "r"}, {"\t", "t"}, {"\v", "v"}, {"\\", "\\"}, {"\'", "'"}, {"\"", "\""}
 };
@@ -179,7 +183,22 @@ Expr ParseExpr(std::vector<String> tokens) {
         String token = tokens[idx];
         if (!isTarget[idx]) continue;
         if (token == "+") {
-            if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr("operator + cannot be unary");
+            if (idx != 0 && std::find(operators.begin(), operators.end(), tokens[idx - 1]) != operators.end())
+                continue;
+            if (idx == tokens.size()-1) ErrHandler().CallErr("operator + cannot be unary");
+            if (idx == 0) {
+                if (tokens.size() != 2) ErrHandler().CallErr("invalid unary operation form");
+                if (std::regex_match(tokens[1], std::regex("[0-9]+"))) {
+                    head = Expr({1, 0, 0}, Variable("_", tokens[1], INT));
+                } else if (std::regex_match(tokens[1], std::regex("[0-9]+.[0-9]"))) {
+                    head = Expr({1, 0, 0}, Variable("_", tokens[1], DOUBLE));
+                } else if (tokens[1][0] == '\"' && tokens[1][tokens[1].length()-1] == '\"') {
+                    ErrHandler().CallErr("operator + in unary use cannot be used with string constant");
+                } else {
+                    ErrHandler().CallErr("operator + in unary use cannot be used with lvalue");
+                }
+                return head;
+            }
             head = Expr({0, 0, 0}, Variable("_", "+", OPERATOR));
             head.SetChildren({
                 ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
@@ -188,7 +207,22 @@ Expr ParseExpr(std::vector<String> tokens) {
             return head;
         }
         if (token == "-") {
-            if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr("operator - cannot be unary");
+            if (idx == tokens.size()-1) ErrHandler().CallErr("operator - cannot be unary");
+            if (std::find(operators.begin(), operators.end(), tokens[idx - 1]) != operators.end())
+                continue;
+            if (idx == 0) {
+                if (tokens.size() != 2) ErrHandler().CallErr("invalid unary operation form");
+                if (std::regex_match(tokens[1], std::regex("[0-9]+"))) {
+                    head = Expr({1, 0, 0}, Variable("_", "-" + tokens[1], INT));
+                } else if (std::regex_match(tokens[1], std::regex("[0-9]+.[0-9]"))) {
+                    head = Expr({1, 0, 0}, Variable("_", "-" + tokens[1], DOUBLE));
+                } else if (tokens[1][0] == '\"' && tokens[1][tokens[1].length()-1] == '\"') {
+                    ErrHandler().CallErr("operator - in unary use cannot be used with string constant");
+                } else {
+                    ErrHandler().CallErr("operator - in unary use cannot be used with lvalue");
+                }
+                return head;
+            }
             head = Expr({0, 0, 0}, Variable("_", "-", OPERATOR));
             head.SetChildren({
                 ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),

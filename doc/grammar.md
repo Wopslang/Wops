@@ -357,7 +357,7 @@ binary_op  = "||" | "&&" | rel_op | add_op | mul_op .
 rel_op     = "==" | "!=" | "<" | "<=" | ">" | ">=" .
 add_op     = "+" | "-"  .
 mul_op     = "*" | "/" | "%" .
-unary_op   = "!" .
+unary_op   = "!" | "+" | "-" .
 ```
 
 Each operator has a different priority for parsing. For instance, unary operators have the highest priority.
