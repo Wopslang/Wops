@@ -23,7 +23,7 @@ std::vector<std::pair<String, String>> runes{
 std::vector<String> funcs {"in", "out", "tostring", "toint"};
 
 Expr ParseExpr(std::vector<String> tokens) {
-    Expr head({0,0,0}, Variable("_", "", INT));
+    Expr head({0,0,0}, Variable("_", "", OPERATOR));
 
     if (tokens.size() >= 3 && std::find(funcs.begin(), funcs.end(), tokens[0]) != funcs.end() && 
             tokens[1] == "(" && tokens[tokens.size()-1] == ")") {
@@ -68,7 +68,7 @@ Expr ParseExpr(std::vector<String> tokens) {
     if (tokens.size() == 1) {
         if (std::regex_match(tokens[0], std::regex("[0-9]+"))) {
             head = Expr({1, 0, 0}, Variable("_", tokens[0], INT));
-        } else if (std::regex_match(tokens[0], std::regex("[0-9]+.[0-9]"))) {
+        } else if (std::regex_match(tokens[0], std::regex("[0-9]+.[0-9]+"))) {
             head = Expr({1, 0, 0}, Variable("_", tokens[0], DOUBLE));
         } else if (tokens[0][0] == '\"' && tokens[0][tokens[0].length()-1] == '\"') {
             head = Expr({1, 0, 0}, Variable("_", tokens[0], STRING));
@@ -190,7 +190,7 @@ Expr ParseExpr(std::vector<String> tokens) {
                 if (tokens.size() != 2) ErrHandler().CallErr("invalid unary operation form");
                 if (std::regex_match(tokens[1], std::regex("[0-9]+"))) {
                     head = Expr({1, 0, 0}, Variable("_", tokens[1], INT));
-                } else if (std::regex_match(tokens[1], std::regex("[0-9]+.[0-9]"))) {
+                } else if (std::regex_match(tokens[1], std::regex("[0-9]+.[0-9]+"))) {
                     head = Expr({1, 0, 0}, Variable("_", tokens[1], DOUBLE));
                 } else if (tokens[1][0] == '\"' && tokens[1][tokens[1].length()-1] == '\"') {
                     ErrHandler().CallErr("operator + in unary use cannot be used with string constant");
@@ -214,7 +214,7 @@ Expr ParseExpr(std::vector<String> tokens) {
                 if (tokens.size() != 2) ErrHandler().CallErr("invalid unary operation form");
                 if (std::regex_match(tokens[1], std::regex("[0-9]+"))) {
                     head = Expr({1, 0, 0}, Variable("_", "-" + tokens[1], INT));
-                } else if (std::regex_match(tokens[1], std::regex("[0-9]+.[0-9]"))) {
+                } else if (std::regex_match(tokens[1], std::regex("[0-9]+.[0-9]+"))) {
                     head = Expr({1, 0, 0}, Variable("_", "-" + tokens[1], DOUBLE));
                 } else if (tokens[1][0] == '\"' && tokens[1][tokens[1].length()-1] == '\"') {
                     ErrHandler().CallErr("operator - in unary use cannot be used with string constant");

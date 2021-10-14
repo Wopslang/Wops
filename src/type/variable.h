@@ -45,13 +45,13 @@ class Variable {
     TYPE _t;
 
     // constructor
-    Variable(std::string varname = "_", std::string val = "", TYPE t = INT, bool con = 0) {
+    Variable(std::string varname = "_", std::string val = "", TYPE t = OPERATOR, bool con = 0) {
         if (varname == "") ErrHandler().CallErr("Name of variable should not be blank. How about using '_'?");
 
         _t = t;
         token = varname;
         constant = con;
-        Substitute(val);
+        if (Substitute(val) == ERROR) ErrHandler().CallErr("Type of value does not match with declaration");
     }
 
     // operation
@@ -282,6 +282,7 @@ class Variable {
 };
 
 inline Err Variable::Substitute(std::string newval) {
+    if (newval == "") return OK;
     try {
         switch (_t) {
             case INT:

@@ -289,7 +289,7 @@ class AST {
 				if (storage.find(v_identifier.GetValue()) == storage.end())
 					ErrHandler().CallErr("Variable " + v_identifier.GetValue() + " hasn't defined yet.");
 				
-				storage[v_identifier.GetValue()] = expression[0].Execute(storage);
+				storage[v_identifier.GetValue()].Substitute(expression[0].Execute(storage).GetValue());
 				break;
 			}
 
