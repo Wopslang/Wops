@@ -5,3 +5,5 @@
   - Substitution: a[3] = 7
   - Substitution with range: a[0 ~ 3] = 100
   - For statement with Array: for i in a
+2: Error System
+  - Print the line number where the error was occured
