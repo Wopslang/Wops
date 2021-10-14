@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
             Parse(main, code);
             main.Execute(stor);
             end = clock();
-            std::cout << "\n=== DEBUG ===\n\e[32m" << "Running Time: " << (double)(end-start) << "\e[m\n";
+            std::cout << "\n=== DEBUG ===\n\e[32m" << "Running Time(ms): " << (double)(end-start) * 1000 / CLOCKS_PER_SEC << "\e[m\n";
             return 0;
         }
         Parse(main, code);
