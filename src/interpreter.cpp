@@ -7,12 +7,13 @@
  * */
 
 #include <fstream>
+#include <ctime>
 #include "runtime/AST.h"
 #include "parser/parse.h"
 
 int main(int argc, char **argv) {
     std::cout << "\e[31m" << "Warning: This is alpha version. Some critical issues might be appeared." << "\e[m\n";
-    if (argc == 2) {
+    if (argc == 2 || (argc == 3 && String(argv[1]) == "debug")) {
         std::ifstream handler(String(argv[1]).data());
         if (!handler.is_open())
             ErrHandler().CallErr("From Interpreter: cannot open the file");
@@ -29,6 +30,15 @@ int main(int argc, char **argv) {
         // interpret
         std::unordered_map<String, Variable> stor;
         AST main(Main, {}, {});
+
+        if (argc == 3 && String(argv[1]) == "debug") {
+            std::time_t end, start = time(nullptr);
+            Parse(main, code);
+            main.Execute(stor);
+            end = time(nullptr);
+            std::cout << "\e[32m" << "Running Time: " << (double)(end-start) << "\e[m\n";
+            return 0;
+        }
         Parse(main, code);
         main.Execute(stor);
     } else {
