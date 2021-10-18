@@ -4,6 +4,14 @@
   - add more function  
   - support Array(based on `std::vector`)  
 
+=== v0.1.2 ===
+
+- feature
+  - fixed type error
+  - add debug mode
+  - add negative and positive number;
+  - and fixed some minor bugs
+
 === v0.1.1: cdc54df ===
 
 - feature
