@@ -4,7 +4,7 @@
   - add more function  
   - support Array(based on `std::vector`)  
 
-=== v0.1.2 ===
+=== v0.1.2: 4bf6081 ===
 
 - feature
   - fixed type error
