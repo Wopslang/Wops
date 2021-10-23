@@ -1,3 +1,4 @@
+# :mega: We're hearing your idea! Check [the discussion](https://github.com/Wopslang/Wops/discussions/32#discussion-3645738)
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
 ```go
