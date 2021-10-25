@@ -41,6 +41,10 @@ To run:
 ./Wopslang <filepath>.wops
 ```
 
+## Sample Code
+
+See [sample folder](./sample) :sparkles:
+
 ## Credit 
 
 |Github Username|Slack Username|Role|
