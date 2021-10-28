@@ -13,9 +13,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: make
       run: bash build.sh; mv Wopslang test/
-    - name: configure
-      run: cd test; ls
     - name: run
-      run: ls; cat in | ./Wopslang ci-test.wops debug
+      run: cd test; cat in | ./Wopslang ci-test.wops debug
     - name: clear
-      run: rm Wopslang
+      run: rm test/Wopslang
