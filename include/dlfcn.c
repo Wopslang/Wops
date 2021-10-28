@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+#include "dlfcn.h"
 
 typedef struct CACHE_DLFCN{
     long lasterror;
