@@ -1,7 +1,7 @@
 # Makefile
 
 ifeq ($(OS), Windows_NT)
-	OPTION=src/import_/eexec_.cpp include/dlfcn.c -std=c++11
+	OPTION=include/dlfcn.c src/import_/eexec_.cpp -std=c++11
 else
 	OPTION=src/import_/eexec_.cpp -std=c++11 -ldl
 endif
