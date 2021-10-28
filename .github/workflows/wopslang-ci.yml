@@ -16,6 +16,6 @@ jobs:
     - name: configure
       run: cd test; ls
     - name: run
-      run: ./Wopslang ci-test.wops debug < cat in
+      run: cat in | ./Wopslang ci-test.wops debug
     - name: clear
       run: rm Wopslang
