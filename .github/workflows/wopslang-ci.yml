@@ -10,10 +10,11 @@ jobs:
   Ubuntu:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: configure
-      run: sudo apt-get install tree; ls;
+      run: sudo apt-get install tree;
     - name: make
-      run: bash build.sh; mv Wopslang test/; 
+      run: make CI-TEST-Wopslang; mv Wopslang test/; 
     - name: run
       run: cd test; tree; cat in | ./Wopslang ci-test.wops debug
     - name: clear
