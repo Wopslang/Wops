@@ -1,0 +1,32 @@
+name: Wopslang CI
+
+on:
+  push:
+    branches: [ main, lab ]
+  pull_request:
+    branches: [ main, lab ]
+
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: sudo apt-get install tree;
+    - name: make
+      run: mkdir test/lib; make CI-TEST-Wopslang; mv Wopslang test/; 
+    - name: run
+      run: cd test; tree; cat in | ./Wopslang ci-test.wops debug
+    - name: clear
+      run: rm test/Wopslang
+  Windows:
+    runs-on: windows-latest
+    needs: [ Ubuntu ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: make
+      run: mkdir test\lib; make CI-TEST-Wopslang; dir; mv Wopslang.exe test\Wopslang.exe;
+    - name: run
+      run: cd test; type in | .\Wopslang.exe ci-test.wops debug
+    - name: clear
+      run: rm test\Wopslang.exe;

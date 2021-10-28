@@ -1,0 +1,11 @@
+int a = toint(in())
+out(a)
+for (a != 1) {
+    if (a % 2 == 1) {
+        a = 3 * a + 1
+    }
+    else {
+        a = a / 2
+    }
+    out(a)
+}
