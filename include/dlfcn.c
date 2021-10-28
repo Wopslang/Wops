@@ -58,8 +58,8 @@ void *dlsym(void *handle, const char *name) {
     );
 
     if (!func_ptr) {
-        func_ptr.lasterror = GetLastError();
-        func_ptr.err_rutin = "dlsym";
+        cache.lasterror = GetLastError();
+        cache.err_rutin = "dlsym";
     }
     return (void *)(intptr_t) func_ptr;
 }
