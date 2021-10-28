@@ -28,4 +28,4 @@ jobs:
     - name: run
       run: cd test; type in | .\Wopslang.exe ci-test.wops debug
     - name: clear
-      run: rm test\Wopslang;
+      run: rm test\Wopslang.exe;
