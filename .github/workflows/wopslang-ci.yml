@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: make
-      run: bash build.sh; mv Wopslang test/
+      run: bash build.sh; mv Wopslang test/; mv lib/library.so test/lib/library.so;
     - name: run
       run: cd test; cat in | ./Wopslang ci-test.wops debug
     - name: clear
