@@ -19,3 +19,13 @@ jobs:
       run: cd test; tree; cat in | ./Wopslang ci-test.wops debug
     - name: clear
       run: rm test/Wopslang
+  Windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: make
+      run: mkdir test\lib; make CI-TEST-Wopslang; mv Wopslang test\Wopslang;
+    - name: run
+      run: cd test; .\Wopslang ci-test.wops debug < in
+    - name: clear
+      run: rm test\Wopslang;
