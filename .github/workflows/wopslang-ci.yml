@@ -12,10 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: make
-      run: bash build.sh
-    - name: configure 1
-      run: mv Wopslang test/
-    - name: configure 2
+      run: bash build.sh; mv Wopslang test/
+    - name: configure
       run: cd test
     - name: run
       run: ./Wopslang ci-test debug < in
