@@ -26,6 +26,6 @@ jobs:
     - name: make
       run: mkdir test\lib; make CI-TEST-Wopslang; dir; mv Wopslang.exe test\Wopslang.exe;
     - name: run
-      run: cd test; .\Wopslang.exe ci-test.wops debug < in
+      run: cd test; type in | .\Wopslang.exe ci-test.wops debug
     - name: clear
       run: rm test\Wopslang;
