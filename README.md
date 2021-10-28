@@ -1,6 +1,8 @@
 ### :mega: We're hearing your idea! Check [the discussion](https://github.com/Wopslang/Wops/discussions/32#discussion-3645738)
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
+[![Wopslang CI](https://github.com/Wopslang/Wops/actions/workflows/wopslang-ci.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/wopslang-ci.yml)
+
 ```go
 func<WholeNewWorld> Wopslang(contributors) {
     int newIdea = 0
@@ -11,7 +13,7 @@ func<WholeNewWorld> Wopslang(contributors) {
 }
 ```
 
-## `#LanguageForAlgorithm` `#WorkingPseudo`
+### `#LanguageForAlgorithm` `#WorkingPseudo`
 
 ## Infomation
 
@@ -58,10 +60,6 @@ See [sample folder](./sample) :sparkles:
 
 **Bold user** is the Wopslang manager.  
 Special Thanks to @jhhan128
-
-### Copyright
-
-We use [dlfcn-win32](https://github.com/dlfcn-win32/dlfcn-win32) for Windows users.
 
 ![Wopslang Logo](https://emoji.slack-edge.com/T01MFM2TJ07/wopsfull/7fe35e7cbecd2d4d.png)
 
