@@ -10,9 +10,8 @@ jobs:
   Ubuntu:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
     - name: configure
-      run: sudo apt-get install tree
+      run: sudo apt-get install tree; ls;
     - name: make
       run: bash build.sh; mv Wopslang test/; 
     - name: run
