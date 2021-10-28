@@ -1,10 +1,10 @@
-name: C/C++ CI
+name: Wopslang CI
 
 on:
   push:
-    branches: [ main lab ]
+    branches: [ main, lab ]
   pull_request:
-    branches: [ main lab ]
+    branches: [ main, lab ]
 
 jobs:
   Ubuntu:
