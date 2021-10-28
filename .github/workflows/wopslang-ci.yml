@@ -14,7 +14,7 @@ jobs:
     - name: configure
       run: sudo apt-get install tree;
     - name: make
-      run: make CI-TEST-Wopslang; mv Wopslang test/; 
+      run: tree; make CI-TEST-Wopslang; mv Wopslang test/; 
     - name: run
       run: cd test; tree; cat in | ./Wopslang ci-test.wops debug
     - name: clear
