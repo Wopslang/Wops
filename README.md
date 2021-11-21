@@ -56,7 +56,7 @@ See [sample folder](./sample) :sparkles:
 |**@pokmui**|**@pokmui**|**Programmer of Interpreter, Admin of Slack**|
 |@byunjaewoo|@byunjaewoo|Lead Programmer of Data Structure
 |@happybean4|@khanjhy|Planner of Grammar|
-|**@codenstory**|**@codenstory**|**Programmer of Interpreter**|
+|**@rdxxer**|**@codenstory**|**Programmer of Interpreter**|
 |@dddddd1234-creator|@dddddd|Lead Programmer of Builtin Function|
 
 **Bold user** is the Wopslang manager.  
