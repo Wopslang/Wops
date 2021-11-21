@@ -2,6 +2,7 @@
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
 [![Wopslang CI](https://github.com/Wopslang/Wops/actions/workflows/wopslang-ci.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/wopslang-ci.yml)
+![Badge](https://img.shields.io/badge/Slack-Join_our_chat-critical.svg?link=https://join.slack.com/t/wopslangcommunity/shared_invite/zt-nkcy12cy-n8YlAPnOT~ErPODF6k3jOw&logo=slack)
 
 ```go
 func<WholeNewWorld> Wopslang(contributors) {
