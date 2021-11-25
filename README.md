@@ -1,4 +1,4 @@
-### :mega: We're hearing your idea! Check [the discussion](https://github.com/Wopslang/Wops/discussions/32#discussion-3645738)
+### :mega: All-new grammar is under design! Tell your idea using [the discussion](https://github.com/Wopslang/Wops/discussions/32#discussion-3645738)
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
 [![Wopslang CI](https://github.com/Wopslang/Wops/actions/workflows/wopslang-ci.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/wopslang-ci.yml)
@@ -21,6 +21,7 @@ func<WholeNewWorld> Wopslang(contributors) {
 Version: **Wopslang v0.1.2 alpha**  
 License: Apache License 2.0  
 [⚒️ Official Documentation](./doc/README.md)  
+[➕ VSCode Extension](https://github.com/Wopslang/vscode-wops)
 
 ## Dependancy
 
