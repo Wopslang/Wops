@@ -66,7 +66,7 @@ If you want to contribute as the Wopslang manager, join the [Wops Community Slac
 |Github Username|Slack Username|
 |---|---|
 |@RedoC-github|@RedoC-github|
-|@codenstory|@codenstory|
+|@rdxxer|@codenstory|
 |@pokmui|@pokmui|
 
 ## :white_check_mark: TODO
