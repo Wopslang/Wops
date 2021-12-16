@@ -16,3 +16,4 @@ compile_commands.json
 build/
 Wopslang
 cached/
+.so
