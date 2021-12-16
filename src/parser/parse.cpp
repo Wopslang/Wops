@@ -278,6 +278,8 @@ Expr ParseExpr(std::vector<String> tokens) {
             return head;
         }
     }
+
+    ErrHandler().CallErr("invalid expression.");
 }
 
 void Parse(AST& head, std::vector<String> codes) {
@@ -484,18 +486,27 @@ void Parse(AST& head, std::vector<String> codes) {
                         }, {});
 
                         std::vector<String> caches;
+                        int grammar_checknum = 0;
                         for (int iidx = 5; iidx < tokens.size()-2; iidx++) {
                             if (tokens[iidx] == ",") {
+                                if (grammar_checknum > 3)
+                                    ErrHandler().CallErr("For clause only has three elements: start, end, step");
+
+                                grammar_checknum++;
                                 ast.AddExpr(ParseExpr(caches));
                                 caches.clear();
+                                continue;
                             }
                             caches.push_back(tokens[iidx]);
                         }
-                        if (caches.size()) {
-                            ast.AddExpr(ParseExpr(caches));
-                            caches.clear();
+                        if (!caches.size()) {
+                            ErrHandler().CallErr("For clause doesn't allow blank expression");
                         }
-                        if (caches.size() != 3) 
+                        ast.AddExpr(ParseExpr(caches));
+                        caches.clear();
+                        grammar_checknum++;
+
+                        if (grammar_checknum != 3) 
                             ErrHandler().CallErr("For clause only has three elements: start, end, step");
 
                         int level = 0, iidx;
