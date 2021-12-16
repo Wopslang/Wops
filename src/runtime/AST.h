@@ -287,7 +287,10 @@ class AST {
 			case Assignment: {
 				Variable v_identifier = argument[0];
 				if (storage.find(v_identifier.GetValue()) == storage.end())
-					ErrHandler().CallErr("Variable " + v_identifier.GetValue() + " hasn't defined yet.");
+					ErrHandler().CallErr("Variable " + v_identifier.GetValue() + " hasn't defined yet");
+
+				if (storage[v_identifier.GetValue()].constant)
+					ErrHandler().CallErr(v_identifier.GetValue() + " is constant");
 				
 				storage[v_identifier.GetValue()].Substitute(expression[0].Execute(storage).GetValue());
 				break;

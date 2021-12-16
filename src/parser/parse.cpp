@@ -596,10 +596,10 @@ void Parse(AST& head, std::vector<String> codes) {
 
                     AST ast(ConstDel,
                         {
-                            Variable("_", tokens[0], OPERATOR),
-                            Variable("_", tokens[1], OPERATOR)
+                            Variable("_", tokens[1], OPERATOR),
+                            Variable("_", tokens[2], OPERATOR)
                         }, {
-                            ParseExpr(std::vector<String>(tokens.begin()+3, tokens.end()))
+                            ParseExpr(std::vector<String>(tokens.begin()+4, tokens.end()))
                         }
                     );
                     head.AddChild(ast);
