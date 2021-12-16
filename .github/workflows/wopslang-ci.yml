@@ -21,7 +21,6 @@ jobs:
       run: rm test/Wopslang
   Windows:
     runs-on: windows-latest
-    needs: [ Ubuntu ]
     steps:
     - uses: actions/checkout@v2
     - name: make
