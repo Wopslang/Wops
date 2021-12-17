@@ -1,5 +1,8 @@
-### :mega: We're hearing your idea! Check [the discussion](https://github.com/Wopslang/Wops/discussions/32#discussion-3645738)
+### :mega: All-new grammar is under design! Tell your idea using [the discussion](https://github.com/Wopslang/Wops/discussions/32#discussion-3645738)
 # :hammer_and_wrench: Working Pseudocode, Wopslang
+
+[![Wopslang CI](https://github.com/Wopslang/Wops/actions/workflows/wopslang-ci.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/wopslang-ci.yml)
+![Badge](https://img.shields.io/badge/Slack-Join_our_chat-critical.svg?link=https://join.slack.com/t/wopslangcommunity/shared_invite/zt-nkcy12cy-n8YlAPnOT~ErPODF6k3jOw&logo=slack)
 
 ```go
 func<WholeNewWorld> Wopslang(contributors) {
@@ -53,7 +56,7 @@ See [sample folder](./sample) :sparkles:
 |**@pokmui**|**@pokmui**|**Programmer of Interpreter, Admin of Slack**|
 |@byunjaewoo|@byunjaewoo|Lead Programmer of Data Structure
 |@happybean4|@khanjhy|Planner of Grammar|
-|**@codenstory**|**@codenstory**|**Programmer of Interpreter**|
+|**@rdxxer**|**@codenstory**|**Programmer of Interpreter**|
 |@dddddd1234-creator|@dddddd|Lead Programmer of Builtin Function|
 
 **Bold user** is the Wopslang manager.  
