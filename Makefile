@@ -16,4 +16,4 @@ Wopslang-debug :
 	g++ -fPIC -shared lib/library.cpp -o lib/library.so -std=c++11 | g++ -g -o Wopslang src/interpreter.cpp src/parser/parse.cpp $(OPTION)
 
 clean:
-	rm Wopslang 
+	rm Wopslang | rm lib/library.so
