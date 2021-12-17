@@ -326,7 +326,10 @@ class AST {
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.find(iter->first) == storage.end()) local.erase(iter);
+					if (storage.count(iter->second.token)) {
+					    local.erase(iter->second.token);
+					    if (local.empty()) break;
+                    }
 				}
 				storage = local;
 				return {0, true};
@@ -356,7 +359,10 @@ class AST {
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.find(iter->first) == storage.end()) local.erase(iter);
+					if (storage.count(iter->second.token)) {
+					    local.erase(iter->second.token);
+					    if (local.empty()) break;
+                    }
 				}
 				storage = local;
 				return {0, true};
@@ -380,7 +386,10 @@ class AST {
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.find(iter->first) == storage.end()) local.erase(iter);
+					if (storage.count(iter->second.token)) {
+					    local.erase(iter->second.token);
+					    if (local.empty()) break;
+                    }
 				}
 				storage = local;
 				return {0, true};
@@ -389,7 +398,7 @@ class AST {
 			case ForClauseStmt: {
 				Storage local = storage;
 				for (int idx = std::stoi(expression[0].Execute(storage).GetValue()); idx < std::stoi(expression[1].Execute(storage).GetValue()); idx += std::stoi(expression[2].Execute(storage).GetValue())) {
-					local[argument[0].GetValue()] = Variable("_", std::to_string(idx), INT);
+					local[argument[0].GetValue()] = Variable(argument[0].GetValue(), std::to_string(idx), INT);
 					bool ignoreif = 1;
 					for (AST ast: childStmt) {
 						std::pair<int, bool> res = ast.Execute(local);
@@ -406,7 +415,10 @@ class AST {
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.find(iter->first) == storage.end()) local.erase(iter);
+					if (storage.count(iter->second.token)) {
+					    local.erase(iter->second.token);
+					    if (local.empty()) break;
+                    }
 				}
 				storage = local;
 				break;
@@ -437,7 +449,10 @@ class AST {
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.find(iter->first) == storage.end()) local.erase(iter);
+					if (storage.count(iter->second.token)) {
+					    local.erase(iter->second.token);
+					    if (local.empty()) break;
+                    }
 				}
 				storage = local;
 				break;
