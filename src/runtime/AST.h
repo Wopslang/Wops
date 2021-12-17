@@ -326,7 +326,7 @@ class AST {
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.count(iter->second.token)) {
+					if (!storage.count(iter->second.token)) {
 					    local.erase(iter->second.token);
 					    if (local.empty()) break;
                     }
@@ -359,7 +359,7 @@ class AST {
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.count(iter->second.token)) {
+					if (!storage.count(iter->second.token)) {
 					    local.erase(iter->second.token);
 					    if (local.empty()) break;
                     }
@@ -386,7 +386,7 @@ class AST {
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.count(iter->second.token)) {
+					if (!storage.count(iter->second.token)) {
 					    local.erase(iter->second.token);
 					    if (local.empty()) break;
                     }
@@ -415,7 +415,7 @@ class AST {
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.count(iter->second.token)) {
+					if (!storage.count(iter->second.token)) {
 					    local.erase(iter->second.token);
 					    if (local.empty()) break;
                     }
@@ -449,7 +449,7 @@ class AST {
 					}
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.count(iter->second.token)) {
+					if (!storage.count(iter->second.token)) {
 					    local.erase(iter->second.token);
 					    if (local.empty()) break;
                     }
