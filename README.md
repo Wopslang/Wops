@@ -14,13 +14,14 @@ func<WholeNewWorld> Wopslang(contributors) {
 }
 ```
 
-## `#LanguageForAlgorithm` `#WorkingPseudo`
+### `#LanguageForAlgorithm` `#WorkingPseudo`
 
 ## Infomation
 
 Version: **Wopslang v0.1.3 alpha**  
 License: Apache License 2.0  
 [⚒️ Official Documentation](./doc/README.md)  
+[➕ VSCode Extension](https://github.com/Wopslang/vscode-wops)
 
 ## Dependancy
 
@@ -61,10 +62,6 @@ See [sample folder](./sample) :sparkles:
 
 **Bold user** is the Wopslang manager.  
 Special Thanks to @jhhan128
-
-### Copyright
-
-We use [dlfcn-win32](https://github.com/dlfcn-win32/dlfcn-win32) for Windows users.
 
 ![Wopslang Logo](https://emoji.slack-edge.com/T01MFM2TJ07/wopsfull/7fe35e7cbecd2d4d.png)
 
