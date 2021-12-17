@@ -4,6 +4,16 @@
   - add more function  
   - support Array(based on `std::vector`)  
 
+=== v0.1.3: 88ad93d ===
+- WARNING: THIS VERSION IS ONLY AVAILABLE FOR UNIX-TYPE OS.
+           ALSO, WE STRONGLY RECOMMEND YOU TO UPDATE TO THIS VERSION.
+
+- improvement
+  - fixed critical reported bug(#37)
+  - fixed critical unreported bug to the constant system
+  - fixed critical unreported bug to the for statement with for clause
+  - fixed some minor bugs
+
 === v0.1.2: 4bf6081 ===
 
 - feature

@@ -16,17 +16,16 @@ jobs:
     - name: make
       run: mkdir test/lib; make CI-TEST-Wopslang; mv Wopslang test/; 
     - name: run
-      run: cd test; tree; cat in | ./Wopslang ci-test.wops debug
+      run: cd test; tree; ./Wopslang ci-test.wops debug
     - name: clear
       run: rm test/Wopslang
   Windows:
     runs-on: windows-latest
-    needs: [ Ubuntu ]
     steps:
     - uses: actions/checkout@v2
     - name: make
       run: mkdir test\lib; make CI-TEST-Wopslang; dir; mv Wopslang.exe test\Wopslang.exe;
     - name: run
-      run: cd test; type in | .\Wopslang.exe ci-test.wops debug
+      run: cd test; .\Wopslang.exe ci-test.wops debug
     - name: clear
       run: rm test\Wopslang.exe;
