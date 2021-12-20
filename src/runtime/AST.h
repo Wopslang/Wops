@@ -404,19 +404,24 @@ class AST {
 				for (int idx = std::stoi(expression[0].Execute(storage).GetValue()); idx < std::stoi(expression[1].Execute(storage).GetValue()); idx += std::stoi(expression[2].Execute(storage).GetValue())) {
 					local[argument[0].GetValue()] = Variable(argument[0].GetValue(), std::to_string(idx), INT);
 					bool ignoreif = 0;
+					bool flowstmt = 0;
 					for (AST ast: childStmt) {
 						if (ignoreif) {
 							if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 							ignoreif = 0;
 						}
 						std::pair<int, bool> res = ast.Execute(local);
-						if (res.first == 2) break;
-						if (res.first == 1) continue;
+						if (res.first == 2) {
+						    flowstmt = 1;
+                            break;
+						} 
+						if (res.first == 1) break;
 						if (res.second) {
 							ignoreif = 1;
 							continue;
 						}
 					}
+					if (flowstmt) break;
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
 					if (!storage.count(iter->second.token)) {
@@ -437,20 +442,24 @@ class AST {
 					if (condition.GetValue() == "0") break;
 
 					bool ignoreif = 0;
+					bool flowstmt = 0;
 					for (AST ast: childStmt) {
 						if (ignoreif) {
 							if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 							ignoreif = 0;
 						}
 						std::pair<int, bool> res = ast.Execute(local);
-						if (res.first == 2) break;
-						if (res.first == 1) continue;
-						
+						if (res.first == 2) {
+						    flowstmt = 1;
+						    break;
+                        }
+						if (res.first == 1) break;
 						if (res.second) {
 							ignoreif = 1;
 							continue;
 						}
 					}
+					if (flowstmt) break;
 				}
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
 					if (!storage.count(iter->second.token)) {
