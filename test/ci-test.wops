@@ -1,3 +1,10 @@
+//
+// test/ci-test.wops
+// Wopslang CI Testfile
+// 
+// 2021, Wops Team
+//
+
 int a = 100
 
 for i in range(0, a, 1) {

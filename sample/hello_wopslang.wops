@@ -1,2 +1,9 @@
+//
+// sample/hello_wopslang.wops
+// Wopslang Sample for v0.1.x
+// 
+// 2021, Wops Team
+//
+
 out("Hello, Wopslang!")
 out("안녕, 옵스랭!")

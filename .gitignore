@@ -2,9 +2,6 @@
 .DS_Store
 .gch
 a.out
-a.out.dSYM
-eexec_.dSYM
-Wopslang.dSYM
 test.cpp
 .idea
 eexec_
@@ -16,4 +13,6 @@ compile_commands.json
 build/
 Wopslang
 cached/
-.so
+library.so
+*.dSYM
+*.dSYM.icloud
