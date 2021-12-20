@@ -1,0 +1,27 @@
+//
+// sample/fizzbuzz.wops
+// Wopslang Sample for v0.1.x
+// 
+// 2021, Wops Team
+//
+
+int n = toint(in())
+
+for i in range(1, n+1, 1) {
+    out(tostring(i)+": ")
+    if (i % 15 == 0) {
+        out("fizzbuzz")
+    }
+    else {
+        if (i % 3 == 0) {
+            out("fizz")
+        } 
+        elif (i % 5 == 0) {
+            out("buzz")
+        }
+        else {
+            continue
+        }
+    }
+    out("\n")
+}
