@@ -1,0 +1,27 @@
+//
+// sample/hailstone_sequence.wops
+// Wopslang Sample for v0.1.x
+// 
+// 2022, Wops Team
+//
+
+int a = int(in())
+
+for i in range(0, a, 1) {
+    out("@")
+}
+out("\n")
+
+for (a != 1) {
+    if (a % 2 == 1) {
+        a = 3 * a + 1
+    }
+    else {
+        a = a / 2
+    }
+    for i in range(0, a, 1) {
+        out("@")
+    }
+    out("\n")
+}
+
