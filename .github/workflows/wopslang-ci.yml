@@ -14,6 +14,6 @@ jobs:
     - name: configure
       run: sudo apt-get install tree;
     - name: make
-      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/; 
+      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/; echo "100" > sample/in 
     - name: run
-      run: cd sample; tree; ./Wopslang fizzbuzz.wops debug
+      run: cd sample; tree; ./Wopslang fizzbuzz.wops debug < in
