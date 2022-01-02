@@ -14,9 +14,9 @@ jobs:
     - name: configure
       run: sudo apt-get install tree;
     - name: make
-      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/; echo "100" > sample/in 
+      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
     - name: run
-      run: cd sample; tree; out < ./Wopslang fizzbuzz.wops debug < in
+      run: cd sample; tree; ./Wopslang fizzbuzz.wops debug > out
   Fizzbuzz_Check:
     runs-on: ubuntu-latest
     needs: Fizzbuzz
