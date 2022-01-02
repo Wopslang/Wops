@@ -16,4 +16,10 @@ jobs:
     - name: make
       run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/; echo "100" > sample/in 
     - name: run
-      run: cd sample; tree; ./Wopslang fizzbuzz.wops debug < in
+      run: cd sample; tree; out < ./Wopslang fizzbuzz.wops debug < in
+  Fizzbuzz_Check:
+    needs: Fizzbuzz
+    steps:
+    - name: test
+      run: tree;
+    
