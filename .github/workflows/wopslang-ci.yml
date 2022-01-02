@@ -7,25 +7,13 @@ on:
     branches: [ main, lab ]
 
 jobs:
-  Ubuntu:
+  Fizzbuzz:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: configure
       run: sudo apt-get install tree;
     - name: make
-      run: mkdir test/lib; make CI-TEST-Wopslang; mv Wopslang test/; 
+      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/; 
     - name: run
-      run: cd test; tree; ./Wopslang ci-test.wops debug
-    - name: clear
-      run: rm test/Wopslang
-  Windows:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: make
-      run: mkdir test\lib; make CI-TEST-Wopslang; dir; mv Wopslang.exe test\Wopslang.exe;
-    - name: run
-      run: cd test; .\Wopslang.exe ci-test.wops debug
-    - name: clear
-      run: rm test\Wopslang.exe;
+      run: cd sample; tree; ./Wopslang fizzbuzz.wops debug
