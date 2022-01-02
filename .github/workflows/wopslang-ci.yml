@@ -16,7 +16,7 @@ jobs:
     - name: make
       run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
     - name: run
-      run: cd sample; tree; ./Wopslang fizzbuzz.wops debug > out
+      run: cd sample; tree; ./Wopslang fizzbuzz.wops debug; touch out;
   Fizzbuzz_Check:
     runs-on: ubuntu-latest
     needs: Fizzbuzz
