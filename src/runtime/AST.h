@@ -327,13 +327,12 @@ class AST {
 						continue;
 					}
 				}
+				Storage connection;
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (!storage.count(iter->second.token)) {
-					    local.erase(iter->second.token);
-					    if (local.empty()) break;
-                    }
+					if (storage.count(iter->second.token))
+					    connection[iter->second.token] = iter->second;
 				}
-				storage = local;
+				storage = connection;
 				return {0, true};
 			}
 
@@ -361,13 +360,12 @@ class AST {
 						continue;
 					}
 				}
+				Storage connection;
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (!storage.count(iter->second.token)) {
-					    local.erase(iter->second.token);
-					    if (local.empty()) break;
-                    }
+					if (storage.count(iter->second.token))
+					    connection[iter->second.token] = iter->second;
 				}
-				storage = local;
+				storage = connection;
 				return {0, true};
 			}
 
@@ -389,13 +387,12 @@ class AST {
 						continue;
 					}
 				}
+				Storage connection;
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (!storage.count(iter->second.token)) {
-					    local.erase(iter->second.token);
-					    if (local.empty()) break;
-                    }
+					if (storage.count(iter->second.token))
+					    connection[iter->second.token] = iter->second;
 				}
-				storage = local;
+				storage = connection;
 				return {0, true};
 			}
 
@@ -423,13 +420,12 @@ class AST {
 					}
 					if (flowstmt) break;
 				}
+				Storage connection;
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (!storage.count(iter->second.token)) {
-					    local.erase(iter->second.token);
-					    if (local.empty()) break;
-                    }
+					if (storage.count(iter->second.token))
+					    connection[iter->second.token] = iter->second;
 				}
-				storage = local;
+				storage = connection;
 				break;
 			}
 
@@ -461,13 +457,12 @@ class AST {
 					}
 					if (flowstmt) break;
 				}
+				Storage connection;
 				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (!storage.count(iter->second.token)) {
-					    local.erase(iter->second.token);
-					    if (local.empty()) break;
-                    }
+					if (storage.count(iter->second.token))
+					    connection[iter->second.token] = iter->second;
 				}
-				storage = local;
+				storage = connection;
 				break;
 			}
 		}
