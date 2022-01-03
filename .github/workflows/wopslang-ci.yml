@@ -7,16 +7,38 @@ on:
     branches: [ main, lab ]
 
 jobs:
-  Fizzbuzz:
+  Build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: configure
-      run: sudo apt-get install tree;
+    - name: make
+      run: mkdir sample/lib; make CI-TEST-Wopslang;
+  Fizzbuzz:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
     - name: make
       run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
     - name: run
-      run: cd sample; tree; ./Wopslang fizzbuzz.wops debug > out;
-    - name: check
-      run: tree; cmp -s sample/out test/fizzbuzz-result || exit 1
+      run: cd sample; ./Wopslang fizzbuzz.wops debug > out;
+  Hailstone_Sequence:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: make
+      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
+    - name: run
+      run: cd sample; tree; ./Wopslang hailstone_sequence.wops debug > out;
+  Hello_Wopslang:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: make
+      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
+    - name: run
+      run: cd sample; tree; ./Wopslang hello_wopslang.wops debug > out;
+  
     
