@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: configure
-      run: sudo apt-get install tree;
+      run: sudo apt-get install tree; sudo apt-get install cmp;
     - name: make
       run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
     - name: run
