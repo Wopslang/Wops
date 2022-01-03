@@ -12,11 +12,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: configure
-      run: sudo apt-get install tree; sudo apt-get install cmp;
+      run: sudo apt-get install tree;
     - name: make
       run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
     - name: run
       run: cd sample; tree; ./Wopslang fizzbuzz.wops debug > out;
     - name: check
-      run: cmp -s out sample/out test/fizzbuzz-result || exit 1
+      run: tree; cmp -s out sample/out test/fizzbuzz-result || exit 1
     
