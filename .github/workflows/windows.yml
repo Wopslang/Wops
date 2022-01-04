@@ -8,14 +8,14 @@ on:
 
 jobs:
   Build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: make
       run: mkdir sample/lib; make CI-TEST-Wopslang;
   Fizzbuzz:
     needs: Build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: make
@@ -24,7 +24,7 @@ jobs:
       run: cd sample; ./Wopslang.exe fizzbuzz.wops debug > out;
   Hailstone_Sequence:
     needs: Build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: make
@@ -33,7 +33,7 @@ jobs:
       run: cd sample; tree; ./Wopslang.exe hailstone_sequence.wops debug > out;
   Hello_Wopslang:
     needs: Build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: make
