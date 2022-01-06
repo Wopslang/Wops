@@ -46,6 +46,8 @@ To run:
 ./Wopslang <filepath>.wops
 ```
 
+Check [howto.md](doc/howto.md) for more detail
+
 ## Sample Code
 
 See [sample folder](./sample) :sparkles:
