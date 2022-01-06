@@ -105,3 +105,7 @@ It is a document containing how to install Wops. If you find an unexpected error
 ./Wopslang <file directory>.wops
 ```
 
+
+
+© 2021 Wops Team
+
