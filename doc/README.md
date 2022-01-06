@@ -15,8 +15,8 @@ func<Answer> Documentation(question) {
 
 *[Wopslang Builtin Functions for v0.1](https://github.com/Wopslang/Wops/blob/main/lib/functions.md)*
 
-## 📓 How to
+## 📓 Guidebook
 
-*[Comming Soon...]()*
+*[How to install and launch Wopslang](howto.md)*
 
 © 2021 Wops Team
