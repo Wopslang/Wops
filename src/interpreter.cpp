@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     if (argc == 2 || (argc == 3 && String(argv[2]) == "debug")) {
         std::ifstream handler(String(argv[1]).data());
         if (!handler.is_open())
-            ErrHandler().CallErr("From Interpreter: cannot open the file");
+            ErrHandler().CallErr(-1, "From Interpreter: cannot open the file");
 
         String codeline;
         std::vector<String> code;
@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
         
         // interpret
         std::unordered_map<String, Variable> stor;
-        AST main(Main, {}, {});
+        AST main(Main, {}, {}, 0);
 
         if (argc == 3 && String(argv[2]) == "debug") {
             std::clock_t end, start = clock();
