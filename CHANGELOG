@@ -4,7 +4,7 @@
   - add more function  
   - support Array(based on `std::vector`)  
 
-=== v0.1.4: ===
+=== v0.1.4: bf8adbf ===
 - improvement
   - fixed critical reported bug(#44, #43, #37)
   - updated error handler (Now provide the line where the error occured!)
