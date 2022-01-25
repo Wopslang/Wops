@@ -1,4 +1,4 @@
-### :mega: All-new grammar is under design! Tell your idea using [the discussion](https://github.com/Wopslang/Wops/discussions/32#discussion-3645738)
+### :mega: The development is being delayed because of contributor's academic.
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
 [![CI - Ubuntu OS](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml)
@@ -45,6 +45,8 @@ To run:
 ```bash
 ./Wopslang <filepath>.wops
 ```
+
+Check [howto.md](doc/howto.md) for more detail
 
 ## Sample Code
 
