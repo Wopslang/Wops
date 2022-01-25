@@ -19,7 +19,7 @@ func<WholeNewWorld> Wopslang(contributors) {
 
 ## Infomation
 
-Version: **Wopslang v0.1.3 alpha**  
+Version: **Wopslang v0.1.4 alpha**  
 License: Apache License 2.0  
 [⚒️ Official Documentation](./doc/README.md)  
 [➕ VSCode Extension](https://github.com/Wopslang/vscode-wops)
@@ -68,4 +68,4 @@ Special Thanks to @jhhan128
 
 ![Wopslang Logo](https://emoji.slack-edge.com/T01MFM2TJ07/wopsfull/7fe35e7cbecd2d4d.png)
 
-2021, Wops Team
+2022, Wops Team
