@@ -386,6 +386,7 @@ void Parse(AST& head, std::vector<String> codes) {
     }
 
     for (int idx = 0; idx < tokenss.size(); idx++) {
+        parsing_line++;
         std::vector<String> tokens = tokenss[idx];
         switch (std::count(tokens.begin(), tokens.end(), "=")) {
             case 0: { // expression, break, continue, if, for stmt
@@ -423,6 +424,7 @@ void Parse(AST& head, std::vector<String> codes) {
                     }
                     Parse(ast, std::vector<String>(codes.begin()+idx+1, codes.begin()+iidx));
                     head.AddChild(ast);
+                    parsing_line += iidx - idx;
                     idx = iidx;
                     break;
                 }
@@ -447,6 +449,7 @@ void Parse(AST& head, std::vector<String> codes) {
                     }
                     Parse(ast, std::vector<String>(codes.begin()+idx+1, codes.begin()+iidx));
                     head.AddChild(ast);
+                    parsing_line += iidx - idx;
                     idx = iidx;
                     break;
                 }
@@ -466,6 +469,7 @@ void Parse(AST& head, std::vector<String> codes) {
                     }
                     Parse(ast, std::vector<String>(codes.begin()+idx+1, codes.begin()+iidx));
                     head.AddChild(ast);
+                    parsing_line += iidx - idx;
                     idx = iidx;
                     break;
                 }
@@ -520,6 +524,7 @@ void Parse(AST& head, std::vector<String> codes) {
                         }
                         Parse(ast, std::vector<String>(codes.begin()+idx+1, codes.begin()+iidx));
                         head.AddChild(ast);
+                        parsing_line += iidx - idx;
                         idx = iidx;
                         break;
                     }
@@ -545,6 +550,7 @@ void Parse(AST& head, std::vector<String> codes) {
                     }
                     Parse(ast, std::vector<String>(codes.begin()+idx+1, codes.begin()+iidx));
                     head.AddChild(ast);
+                    parsing_line += iidx - idx;
                     idx = iidx;
                     break;
                 }
