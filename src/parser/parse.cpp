@@ -40,14 +40,14 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             for (int idx = 2; idx < tokens.size()-1; idx++) {
                 if (tokens[idx] == ",") {
                     if (parameter.size() == 0) ErrHandler().CallErr(parsing_line, "Blank parameter");
-                    head.AddChild(ParseExpr(parameter));
+                    head.AddChild(ParseExpr(parameter, parsing_line));
                     parameter.clear();
                     continue;
                 }
                 parameter.push_back(tokens[idx]);
             }
             if (parameter.size() != 0)
-                head.AddChild(ParseExpr(parameter));
+                head.AddChild(ParseExpr(parameter, parsing_line));
             return head;
         }
     }
@@ -96,8 +96,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator || cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", "||", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -111,8 +111,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator && cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", "&&", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -126,8 +126,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator == cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", "==", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -135,8 +135,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator != cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", "!=", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -144,8 +144,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator < cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", "<", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -153,8 +153,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator <= cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", "<=", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -162,8 +162,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator > cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", ">", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -171,8 +171,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator >= cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", ">=", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -201,8 +201,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             }
             head = Expr({0, 0, 0}, Variable("_", "+", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -225,8 +225,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             }
             head = Expr({0, 0, 0}, Variable("_", "-", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -240,8 +240,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator * cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", "*", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -249,8 +249,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator / cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", "/", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -258,8 +258,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator % cannot be unary");
             head = Expr({0, 0, 0}, Variable("_", "%", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx)),
-                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()))
+                ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
+                ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
             });
             return head;
         }
@@ -273,7 +273,7 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             if (idx == tokens.size()-1) ErrHandler().CallErr(parsing_line, "operator ! cannot appear after identifier");
             head = Expr({0, 0, 0}, Variable("_", "!", OPERATOR), parsing_line);
             head.SetChildren({
-                ParseExpr({tokens[idx+1]})
+                ParseExpr({tokens[idx+1]}, parsing_line)
             });
             return head;
         }
@@ -409,7 +409,7 @@ void Parse(AST& head, std::vector<String> codes) {
 
                     AST ast(IfStmt, {},
                         {
-                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()-2))
+                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()-2), parsing_line)
                         }, parsing_line
                     );
 
@@ -433,7 +433,7 @@ void Parse(AST& head, std::vector<String> codes) {
 
                     AST ast(ElifStmt, {},
                         {
-                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()-2))
+                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()-2), parsing_line)
                         }, parsing_line
                     );
 
@@ -494,7 +494,7 @@ void Parse(AST& head, std::vector<String> codes) {
                                     ErrHandler().CallErr(parsing_line, "For clause only has three elements: start, end, step");
 
                                 grammar_checknum++;
-                                ast.AddExpr(ParseExpr(caches));
+                                ast.AddExpr(ParseExpr(caches, parsing_line));
                                 caches.clear();
                                 continue;
                             }
@@ -503,7 +503,7 @@ void Parse(AST& head, std::vector<String> codes) {
                         if (!caches.size()) {
                             ErrHandler().CallErr(parsing_line, "For clause doesn't allow blank expression");
                         }
-                        ast.AddExpr(ParseExpr(caches));
+                        ast.AddExpr(ParseExpr(caches, parsing_line));
                         caches.clear();
                         grammar_checknum++;
 
@@ -531,7 +531,7 @@ void Parse(AST& head, std::vector<String> codes) {
 
                     AST ast(ForSCStmt, {},
                         {
-                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()-2))
+                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()-2), parsing_line)
                         }, parsing_line
                     );
 
@@ -551,7 +551,7 @@ void Parse(AST& head, std::vector<String> codes) {
                 
                 AST ast(Expression, {},
                     {
-                        ParseExpr(tokens)
+                        ParseExpr(tokens, parsing_line)
                     }, parsing_line
                 );
                 head.AddChild(ast);
@@ -570,7 +570,7 @@ void Parse(AST& head, std::vector<String> codes) {
                         {
                             Variable("_", tokens[0], OPERATOR)
                         }, {
-                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()))
+                            ParseExpr(std::vector<String>(tokens.begin()+2, tokens.end()), parsing_line)
                         }, parsing_line
                     );
                     head.AddChild(ast);
@@ -585,7 +585,7 @@ void Parse(AST& head, std::vector<String> codes) {
                             Variable("_", tokens[0], OPERATOR),
                             Variable("_", tokens[1], OPERATOR)
                         }, {
-                            ParseExpr(std::vector<String>(tokens.begin()+3, tokens.end()))
+                            ParseExpr(std::vector<String>(tokens.begin()+3, tokens.end()), parsing_line)
                         }, parsing_line
                     );
                     head.AddChild(ast);
@@ -600,7 +600,7 @@ void Parse(AST& head, std::vector<String> codes) {
                             Variable("_", tokens[1], OPERATOR),
                             Variable("_", tokens[2], OPERATOR)
                         }, {
-                            ParseExpr(std::vector<String>(tokens.begin()+4, tokens.end()))
+                            ParseExpr(std::vector<String>(tokens.begin()+4, tokens.end()), parsing_line)
                         }, parsing_line
                     );
                     head.AddChild(ast);
