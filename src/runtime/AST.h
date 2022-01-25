@@ -44,17 +44,20 @@ enum StmtType {
  *   - bool constant, variable, call (token's type)
  *   - Variable token
  *   - std::vector<Expr> children 
+ *   - int codeline
  */
+
 class Expr {
 	private:
 	bool constant = 0, variable = 0, call = 0;
 	Variable token;
 	std::vector<Expr> children;
+	int codeline;
 
 	public:
 	// constructor
-	Expr(std::vector<bool> t, Variable tkn) {
-		token = tkn, constant = t[0], variable = t[1], call = t[2];
+	Expr(std::vector<bool> t, Variable tkn, int _codeline) {
+		token = tkn, constant = t[0], variable = t[1], call = t[2], codeline = _codeline;
 	}
 
 	void SetChildren(std::vector<Expr> rplcment) {
@@ -72,7 +75,7 @@ class Expr {
 		if (variable) {
 			auto iter = storage.find(tkn);
 			if (iter == storage.end())  // has variable declared?
-				ErrHandler().CallErr(tkn + " has not declared yet");
+				ErrHandler().CallErr(codeline, tkn + " has not declared yet");
 			return iter->second;
 		}
 		if (constant) {
@@ -85,7 +88,7 @@ class Expr {
 			}
 			ArrayWithCode res = EExecFunc(tkn, arg);
 			if (res.error == ERROR)
-				ErrHandler().CallErr("Error occured while calling " + tkn);
+				ErrHandler().CallErr(codeline, "Error occured while calling " + tkn);
 			
 			return res.var.container[0];
 		}
@@ -151,6 +154,8 @@ typedef std::unordered_map<std::string, Variable> Storage;
  *	 - std::vector<AST *> childStmt
  *	 - std::vector<Expr> expression
  *	 - std::vector<Variable> argument
+ * public
+ *	 - int codeline
  * 
  * expression
  * 
@@ -185,9 +190,11 @@ class AST {
 	std::vector<Variable> argument;
 
 	public:
+	int codeline;
+
 	// constructor
-	AST(StmtType t, std::vector<Variable> argv, std::vector<Expr> expr) {
-		_t = t, argument = argv, expression = expr;
+	AST(StmtType t, std::vector<Variable> argv, std::vector<Expr> expr, int _codeline) {
+		_t = t, argument = argv, expression = expr, codeline = _codeline;
 	}
 
 	void SetChildren(std::vector<AST> rplcment) {
@@ -226,7 +233,7 @@ class AST {
 
 					std::pair<int, bool> res = ast.Execute(storage);
 					if (res.first >= 1)
-						ErrHandler().CallErr("break and continue statement only allowed to be used in for statements");
+						ErrHandler().CallErr(codeline, "break and continue statement only allowed to be used in for statements");
 
 					if (res.second) {
 						ignoreif = 1;
@@ -239,7 +246,7 @@ class AST {
 			case ConstDel: {
 				Variable v_type = argument[0], v_identifier = argument[1];
 				if (storage.find(v_identifier.GetValue()) != storage.end())
-					ErrHandler().CallErr("Redefine variable " + v_identifier.GetValue());
+					ErrHandler().CallErr(codeline, "Redefine variable " + v_identifier.GetValue());
 				
 				TYPE v_t = v_type.GetValue() == "int" ? INT : (
 					v_type.GetValue() == "bool" ? BOOL : (
@@ -262,7 +269,7 @@ class AST {
 			case VarDel: {
 				Variable v_type = argument[0], v_identifier = argument[1];
 				if (storage.find(v_identifier.GetValue()) != storage.end())
-					ErrHandler().CallErr("Redefine variable " + v_identifier.GetValue());
+					ErrHandler().CallErr(codeline, "Redefine variable " + v_identifier.GetValue());
 				
 				TYPE v_t = v_type.GetValue() == "int" ? INT : (
 					v_type.GetValue() == "bool" ? BOOL : (
@@ -288,10 +295,10 @@ class AST {
 			case Assignment: {
 				Variable v_identifier = argument[0];
 				if (storage.find(v_identifier.GetValue()) == storage.end())
-					ErrHandler().CallErr("Variable " + v_identifier.GetValue() + " hasn't defined yet");
+					ErrHandler().CallErr(codeline, "Variable " + v_identifier.GetValue() + " hasn't defined yet");
 
 				if (storage[v_identifier.GetValue()].constant)
-					ErrHandler().CallErr(v_identifier.GetValue() + " is constant");
+					ErrHandler().CallErr(codeline, v_identifier.GetValue() + " is constant");
 				
 				storage[v_identifier.GetValue()].Substitute(expression[0].Execute(storage).GetValue());
 				break;
@@ -307,7 +314,7 @@ class AST {
 				Storage local = storage;
 				Variable condition = expression[0].Execute(local);
 				if (condition._t != BOOL)
-					ErrHandler().CallErr("If Statement allows only boolean condition expression.");
+					ErrHandler().CallErr(codeline, "If Statement allows only boolean condition expression.");
 				if (condition.GetValue() == "0") {
 					return {0, false};
 				}
@@ -320,7 +327,7 @@ class AST {
 					std::pair<int, bool> res = ast.Execute(local);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
-						ErrHandler().CallErr("If Statement doesn't allow to use break or continue statement.");
+						ErrHandler().CallErr(codeline, "If Statement doesn't allow to use break or continue statement.");
 					}
 					if (res.second) {
 						ignoreif = 1;
@@ -340,7 +347,7 @@ class AST {
 				Storage local = storage;
 				Variable condition = expression[0].Execute(local);
 				if (condition._t != BOOL)
-					ErrHandler().CallErr("Elif Statement allows only boolean condition expression.");
+					ErrHandler().CallErr(codeline, "Elif Statement allows only boolean condition expression.");
 				if (condition.GetValue() == "0") {
 					return {0, false};
 				}
@@ -353,7 +360,7 @@ class AST {
 					std::pair<int, bool> res = ast.Execute(local);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
-						ErrHandler().CallErr("Elif Statement doesn't allow to use break or continue statement.");
+						ErrHandler().CallErr(codeline, "Elif Statement doesn't allow to use break or continue statement.");
 					}
 					if (res.second) {
 						ignoreif = 1;
@@ -380,7 +387,7 @@ class AST {
 					std::pair<int, bool> res = ast.Execute(local);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
-						ErrHandler().CallErr("Else Statement doesn't allow to use break or continue statement.");
+						ErrHandler().CallErr(codeline, "Else Statement doesn't allow to use break or continue statement.");
 					}
 					if (res.second) {
 						ignoreif = 1;
@@ -434,7 +441,7 @@ class AST {
 				while (1) {
 					Variable condition = expression[0].Execute(local);
 					if (condition._t != BOOL)
-						ErrHandler().CallErr("For Statement allows only boolean condition expression.");
+						ErrHandler().CallErr(codeline, "For Statement allows only boolean condition expression.");
 					if (condition.GetValue() == "0") break;
 
 					bool ignoreif = 0;

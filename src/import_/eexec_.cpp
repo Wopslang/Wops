@@ -17,7 +17,7 @@ ArrayWithCode EExecFunc(std::string func, Array argv) {
     void* handle = dlopen("lib/library.so", RTLD_LAZY);
 
     if (!handle) {
-        ErrHandler().CallErr("Cannot load library: " + std::string(dlerror()));
+        ErrHandler().CallErr(-1, "Cannot load library: " + std::string(dlerror()));
         return {null, ERROR};
     }
 
@@ -31,7 +31,7 @@ ArrayWithCode EExecFunc(std::string func, Array argv) {
     t fptr = (t) dlsym(handle, exfunc.c_str());
     const char *dlsym_error = dlerror();
     if (dlsym_error) {
-        ErrHandler().CallErr("Cannot load symbol: " + func);
+        ErrHandler().CallErr(-1, "Cannot load symbol: " + func);
         dlclose(handle);
         return {null, ERROR};
     }

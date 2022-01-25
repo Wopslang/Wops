@@ -4,6 +4,13 @@
   - add more function  
   - support Array(based on `std::vector`)  
 
+=== v0.1.4: bf8adbf ===
+- improvement
+  - fixed critical reported bug(#44, #43, #37)
+  - updated error handler (Now provide the line where the error occured!)
+  - now Windows user can use the latest Wopslang
+  - fixed some minor bugs
+
 === v0.1.3: 88ad93d ===
 - WARNING: THIS VERSION IS ONLY AVAILABLE FOR UNIX-TYPE OS.
            ALSO, WE STRONGLY RECOMMEND YOU TO UPDATE TO THIS VERSION.
@@ -36,4 +43,4 @@
   - if, for available  
 
 
-2021, Wops Team
+2022, Wops Team

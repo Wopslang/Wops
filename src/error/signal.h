@@ -20,8 +20,12 @@ enum Err {
 
 class ErrHandler {
     public:
-    void CallErr(std::string errmsg) {
-        std::cout << "\e[31m" << errmsg << "\e[m";
+    void CallErr(int error_pos, std::string errmsg) {
+        if (error_pos != -1) {
+            std::cout << "\e[31m"<< "line " << error_pos << ": " << errmsg << "\e[m";
+            exit(1);
+        }
+        std::cout << "\e[31m"<< "runtime: " << errmsg << "\e[m";
         exit(1);
         return;
     }
