@@ -67,7 +67,7 @@ extern "C" ArrayWithCode toint(Array s) {
         if (e.GetValue()[0] != '"'
             || e.GetValue()[e.value.length()-1] != '"'
             || e.value.length() < 2
-            || std::regex_match(e.trim(e.value), std::regex("/[+-]?\d+"))) {
+            || std::regex_match(e.trim(e.value), std::regex("/[+-]?\\d+"))) {
                 return {ret, ERROR};
         }
         ret.container.push_back(Variable("_", std::to_string(std::stoi(e.trim(e.value))), INT));
