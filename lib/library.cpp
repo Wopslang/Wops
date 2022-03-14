@@ -13,6 +13,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <regex>
 #include "../src/type/array.h"
 #include "../src/type/variable.h"
 
@@ -66,7 +67,7 @@ extern "C" ArrayWithCode toint(Array s) {
         if (e.GetValue()[0] != '"'
             || e.GetValue()[e.value.length()-1] != '"'
             || e.value.length() < 2
-            || e.trim(e.value).find_first_not_of("0123456789") != std::string::npos) {
+            || std::regex_match(e.trim(e.value), std::regex("/[+-]?\d+"))) {
                 return {ret, ERROR};
         }
         ret.container.push_back(Variable("_", std::to_string(std::stoi(e.trim(e.value))), INT));
