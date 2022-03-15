@@ -34,6 +34,8 @@ enum StmtType {
 	ForSCStmt, // For statement with single condition
 };
 
+typedef std::unordered_map<std::string, Variable> Storage;
+
 /**
  * class Expr
  * Expression Syntax Tree class
@@ -69,13 +71,22 @@ class Expr {
 	}
 
 	// execute from the tree root
-	Variable Execute(std::unordered_map<std::string, Variable> storage) {
+	Variable Execute(std::vector<Storage>& storages) {
 		std::string tkn = token.GetValue();
 
 		if (variable) {
-			auto iter = storage.find(tkn);
-			if (iter == storage.end())  // has variable declared?
+			auto iter = storages[0].find(tkn);
+			bool wasErrorOccured = true;
+			for (Storage storage: storages) {
+				iter = storage.find(tkn);
+				if (iter != storage.end()) {
+					wasErrorOccured = false;
+					break;
+				}
+			}
+			if (wasErrorOccured)  // has variable declared?
 				ErrHandler().CallErr(codeline, tkn + " has not declared yet");
+
 			return iter->second;
 		}
 		if (constant) {
@@ -84,7 +95,7 @@ class Expr {
 		if (call) {
 			Array arg;
 			for (Expr child: children) {
-				arg.container.push_back(child.Execute(storage));
+				arg.container.push_back(child.Execute(storages));
 			}
 			ArrayWithCode res = EExecFunc(tkn, arg);
 			if (res.error == ERROR)
@@ -95,53 +106,52 @@ class Expr {
 
 		// Binary Operation
 		if (tkn == "+") {
-			return children[0].Execute(storage) + children[1].Execute(storage);
+			return children[0].Execute(storages) + children[1].Execute(storages);
 		}
 		if (tkn == "-") {
-			return children[0].Execute(storage) - children[1].Execute(storage);
+			return children[0].Execute(storages) - children[1].Execute(storages);
 		}
 		if (tkn == "*") {
-			return children[0].Execute(storage) * children[1].Execute(storage);
+			return children[0].Execute(storages) * children[1].Execute(storages);
 		}
 		if (tkn == "/") {
-			return children[0].Execute(storage) / children[1].Execute(storage);
+			return children[0].Execute(storages) / children[1].Execute(storages);
 		}
 		if (tkn == "%") {
-			return children[0].Execute(storage) % children[1].Execute(storage);
+			return children[0].Execute(storages) % children[1].Execute(storages);
 		}
 		if (tkn == "==") {
-			return children[0].Execute(storage) == children[1].Execute(storage);
+			return children[0].Execute(storages) == children[1].Execute(storages);
 		}
 		if (tkn == "!=") {
-			return children[0].Execute(storage) != children[1].Execute(storage);
+			return children[0].Execute(storages) != children[1].Execute(storages);
 		}
 		if (tkn == ">") {
-			return children[0].Execute(storage) > children[1].Execute(storage);
+			return children[0].Execute(storages) > children[1].Execute(storages);
 		}
 		if (tkn == ">=") {
-			return children[0].Execute(storage) >= children[1].Execute(storage);
+			return children[0].Execute(storages) >= children[1].Execute(storages);
 		}
 		if (tkn == "<") {
-			return children[0].Execute(storage) < children[1].Execute(storage);
+			return children[0].Execute(storages) < children[1].Execute(storages);
 		}
 		if (tkn == "<=") {
-			return children[0].Execute(storage) <= children[1].Execute(storage);
+			return children[0].Execute(storages) <= children[1].Execute(storages);
 		}
 		if (tkn == "||") {
-			return children[0].Execute(storage) || children[1].Execute(storage);
+			return children[0].Execute(storages) || children[1].Execute(storages);
 		}
 		if (tkn == "&&") {
-			return children[0].Execute(storage) && children[1].Execute(storage);
+			return children[0].Execute(storages) && children[1].Execute(storages);
 		}
 
 		// Unary Operation
 		if (tkn == "!") {
-			return !children[0].Execute(storage);
+			return !children[0].Execute(storages);
 		}
 	}
 };
 
-typedef std::unordered_map<std::string, Variable> Storage;
 
 /**
  * class AST 
@@ -221,7 +231,8 @@ class AST {
 		argument.push_back(argv);
 	}
 
-	std::pair<int, bool> Execute(Storage& storage) {
+	// storages: smaller index, inner variable
+	std::pair<int, bool> Execute(std::vector<Storage>& storages) {
 		switch (_t) {
 			case Main: {
 				bool ignoreif = 0;
@@ -231,7 +242,7 @@ class AST {
 						ignoreif = 0;
 					}
 
-					std::pair<int, bool> res = ast.Execute(storage);
+					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1)
 						ErrHandler().CallErr(codeline, "break and continue statement only allowed to be used in for statements");
 
@@ -245,8 +256,10 @@ class AST {
 
 			case ConstDel: {
 				Variable v_type = argument[0], v_identifier = argument[1];
-				if (storage.find(v_identifier.GetValue()) != storage.end())
-					ErrHandler().CallErr(codeline, "Redefine variable " + v_identifier.GetValue());
+				for (Storage storage: storages) {
+					if (storage.find(v_identifier.GetValue()) != storage.end())
+						ErrHandler().CallErr(codeline, "Redefine variable " + v_identifier.GetValue());
+				}
 				
 				TYPE v_t = v_type.GetValue() == "int" ? INT : (
 					v_type.GetValue() == "bool" ? BOOL : (
@@ -254,11 +267,11 @@ class AST {
 					)
 				);
 
-				storage.insert({
+				storages[0].insert({
 					v_identifier.GetValue(),
 					Variable(
 						v_identifier.GetValue(),
-						expression[0].Execute(storage).GetValue(),
+						expression[0].Execute(storages).GetValue(),
 						v_t,
 					true)
 				});
@@ -268,8 +281,10 @@ class AST {
 
 			case VarDel: {
 				Variable v_type = argument[0], v_identifier = argument[1];
-				if (storage.find(v_identifier.GetValue()) != storage.end())
-					ErrHandler().CallErr(codeline, "Redefine variable " + v_identifier.GetValue());
+				for (Storage storage: storages) {
+					if (storage.find(v_identifier.GetValue()) != storage.end())
+						ErrHandler().CallErr(codeline, "Redefine variable " + v_identifier.GetValue());
+				}
 				
 				TYPE v_t = v_type.GetValue() == "int" ? INT : (
 					v_type.GetValue() == "bool" ? BOOL : (
@@ -277,11 +292,11 @@ class AST {
 					)
 				);
 
-				storage.insert({
+				storages[0].insert({
 					v_identifier.GetValue(),
 					Variable(
 						v_identifier.GetValue(),
-						expression[0].Execute(storage).GetValue(),
+						expression[0].Execute(storages).GetValue(),
 						v_t,
 					false)
 				});
@@ -289,19 +304,22 @@ class AST {
 			}
 
 			case Expression:
-				expression[0].Execute(storage).GetValue();
+				expression[0].Execute(storages).GetValue();
 				break;
 
 			case Assignment: {
 				Variable v_identifier = argument[0];
-				if (storage.find(v_identifier.GetValue()) == storage.end())
+				bool wasErrorOccured = true;
+				for (Storage storage: storages)
+					if (storage.find(v_identifier.GetValue()) != storage.end()) {
+						if (storage[v_identifier.GetValue()].constant)
+							ErrHandler().CallErr(codeline, v_identifier.GetValue() + " is constant");
+						storage[v_identifier.GetValue()].Substitute(expression[0].Execute(storages).GetValue());
+						wasErrorOccured = false;
+						break;
+					}
+				if (wasErrorOccured)
 					ErrHandler().CallErr(codeline, "Variable " + v_identifier.GetValue() + " hasn't defined yet");
-
-				if (storage[v_identifier.GetValue()].constant)
-					ErrHandler().CallErr(codeline, v_identifier.GetValue() + " is constant");
-				
-				storage[v_identifier.GetValue()].Substitute(expression[0].Execute(storage).GetValue());
-				break;
 			}
 
 			case BreakStmt:
@@ -311,8 +329,8 @@ class AST {
 				return {1, false};
 
 			case IfStmt: {
-				Storage local = storage;
-				Variable condition = expression[0].Execute(local);
+				storages.insert(storages.begin(), Storage());
+				Variable condition = expression[0].Execute(storages);
 				if (condition._t != BOOL)
 					ErrHandler().CallErr(codeline, "If Statement allows only boolean condition expression.");
 				if (condition.GetValue() == "0") {
@@ -324,7 +342,7 @@ class AST {
 						if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 						ignoreif = 0;
 					}
-					std::pair<int, bool> res = ast.Execute(local);
+					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
 						ErrHandler().CallErr(codeline, "If Statement doesn't allow to use break or continue statement.");
@@ -334,18 +352,13 @@ class AST {
 						continue;
 					}
 				}
-				Storage connection;
-				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.count(iter->second.token))
-					    connection[iter->second.token] = iter->second;
-				}
-				storage = connection;
+				storages.erase(storages.begin());
 				return {0, true};
 			}
 
 			case ElifStmt: {
-				Storage local = storage;
-				Variable condition = expression[0].Execute(local);
+				storages.insert(storages.begin(), Storage());
+				Variable condition = expression[0].Execute(storages);
 				if (condition._t != BOOL)
 					ErrHandler().CallErr(codeline, "Elif Statement allows only boolean condition expression.");
 				if (condition.GetValue() == "0") {
@@ -357,7 +370,7 @@ class AST {
 						if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 						ignoreif = 0;
 					}
-					std::pair<int, bool> res = ast.Execute(local);
+					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
 						ErrHandler().CallErr(codeline, "Elif Statement doesn't allow to use break or continue statement.");
@@ -367,24 +380,19 @@ class AST {
 						continue;
 					}
 				}
-				Storage connection;
-				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.count(iter->second.token))
-					    connection[iter->second.token] = iter->second;
-				}
-				storage = connection;
+				storages.erase(storages.begin());
 				return {0, true};
 			}
 
 			case ElseStmt: {
-				Storage local = storage;
+				storages.insert(storages.begin(), Storage());
 				bool ignoreif = 0;
 				for (AST ast: childStmt) {
 					if (ignoreif) {
 						if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 						ignoreif = 0;
 					}
-					std::pair<int, bool> res = ast.Execute(local);
+					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
 						ErrHandler().CallErr(codeline, "Else Statement doesn't allow to use break or continue statement.");
@@ -394,19 +402,14 @@ class AST {
 						continue;
 					}
 				}
-				Storage connection;
-				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.count(iter->second.token))
-					    connection[iter->second.token] = iter->second;
-				}
-				storage = connection;
+				storages.erase(storages.begin());
 				return {0, true};
 			}
 
 			case ForClauseStmt: {
-				Storage local = storage;
-				for (int idx = std::stoi(expression[0].Execute(storage).GetValue()); idx < std::stoi(expression[1].Execute(storage).GetValue()); idx += std::stoi(expression[2].Execute(storage).GetValue())) {
-					local[argument[0].GetValue()] = Variable(argument[0].GetValue(), std::to_string(idx), INT);
+				storages.insert(storages.begin(), Storage());
+				for (int idx = std::stoi(expression[0].Execute(storages).GetValue()); idx < std::stoi(expression[1].Execute(storages).GetValue()); idx += std::stoi(expression[2].Execute(storages).GetValue())) {
+					storages[0][argument[0].GetValue()] = Variable(argument[0].GetValue(), std::to_string(idx), INT);
 					bool ignoreif = 0;
 					bool flowstmt = 0;
 					for (AST ast: childStmt) {
@@ -414,7 +417,7 @@ class AST {
 							if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 							ignoreif = 0;
 						}
-						std::pair<int, bool> res = ast.Execute(local);
+						std::pair<int, bool> res = ast.Execute(storages);
 						if (res.first == 2) {
 						    flowstmt = 1;
                             break;
@@ -427,19 +430,14 @@ class AST {
 					}
 					if (flowstmt) break;
 				}
-				Storage connection;
-				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.count(iter->second.token))
-					    connection[iter->second.token] = iter->second;
-				}
-				storage = connection;
+				storages.erase(storages.begin());
 				break;
 			}
 
 			case ForSCStmt: {
-				Storage local = storage;
+				storages.insert(storages.begin(), Storage());
 				while (1) {
-					Variable condition = expression[0].Execute(local);
+					Variable condition = expression[0].Execute(storages);
 					if (condition._t != BOOL)
 						ErrHandler().CallErr(codeline, "For Statement allows only boolean condition expression.");
 					if (condition.GetValue() == "0") break;
@@ -451,7 +449,7 @@ class AST {
 							if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
 							ignoreif = 0;
 						}
-						std::pair<int, bool> res = ast.Execute(local);
+						std::pair<int, bool> res = ast.Execute(storages);
 						if (res.first == 2) {
 						    flowstmt = 1;
 						    break;
@@ -464,12 +462,7 @@ class AST {
 					}
 					if (flowstmt) break;
 				}
-				Storage connection;
-				for (auto iter = local.begin(); iter != local.end(); iter++) {
-					if (storage.count(iter->second.token))
-					    connection[iter->second.token] = iter->second;
-				}
-				storage = connection;
+				storages.erase(storages.begin());
 				break;
 			}
 		}

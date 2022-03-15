@@ -28,7 +28,8 @@ int main(int argc, char **argv) {
         handler.close();
         
         // interpret
-        std::unordered_map<String, Variable> stor;
+        std::vector<Storage> stor;
+        stor.push_back(Storage());
         AST main(Main, {}, {}, 0);
 
         if (argc == 3 && String(argv[2]) == "debug") {

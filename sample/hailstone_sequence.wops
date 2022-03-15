@@ -5,7 +5,7 @@
 // 2022, Wops Team
 //
 
-int a = 100
+int a = 4
 
 for i in range(0, a, 1) {
     out("@")
