@@ -256,7 +256,7 @@ class AST {
 
 			case ConstDel: {
 				Variable v_type = argument[0], v_identifier = argument[1];
-				for (Storage storage: storages) {
+				for (Storage& storage: storages) {
 					if (storage.find(v_identifier.GetValue()) != storage.end())
 						ErrHandler().CallErr(codeline, "Redefine variable " + v_identifier.GetValue());
 				}
@@ -281,7 +281,7 @@ class AST {
 
 			case VarDel: {
 				Variable v_type = argument[0], v_identifier = argument[1];
-				for (Storage storage: storages) {
+				for (Storage& storage: storages) {
 					if (storage.find(v_identifier.GetValue()) != storage.end())
 						ErrHandler().CallErr(codeline, "Redefine variable " + v_identifier.GetValue());
 				}
@@ -310,7 +310,7 @@ class AST {
 			case Assignment: {
 				Variable v_identifier = argument[0];
 				bool wasErrorOccured = true;
-				for (Storage storage: storages)
+				for (Storage& storage: storages)
 					if (storage.find(v_identifier.GetValue()) != storage.end()) {
 						if (storage[v_identifier.GetValue()].constant)
 							ErrHandler().CallErr(codeline, v_identifier.GetValue() + " is constant");
@@ -320,6 +320,7 @@ class AST {
 					}
 				if (wasErrorOccured)
 					ErrHandler().CallErr(codeline, "Variable " + v_identifier.GetValue() + " hasn't defined yet");
+				break;
 			}
 
 			case BreakStmt:
@@ -407,8 +408,8 @@ class AST {
 			}
 
 			case ForClauseStmt: {
-				storages.insert(storages.begin(), Storage());
 				for (int idx = std::stoi(expression[0].Execute(storages).GetValue()); idx < std::stoi(expression[1].Execute(storages).GetValue()); idx += std::stoi(expression[2].Execute(storages).GetValue())) {
+					storages.insert(storages.begin(), Storage());
 					storages[0][argument[0].GetValue()] = Variable(argument[0].GetValue(), std::to_string(idx), INT);
 					bool ignoreif = 0;
 					bool flowstmt = 0;
@@ -428,15 +429,15 @@ class AST {
 							continue;
 						}
 					}
+					storages.erase(storages.begin());
 					if (flowstmt) break;
 				}
-				storages.erase(storages.begin());
 				break;
 			}
 
 			case ForSCStmt: {
-				storages.insert(storages.begin(), Storage());
 				while (1) {
+					storages.insert(storages.begin(), Storage());
 					Variable condition = expression[0].Execute(storages);
 					if (condition._t != BOOL)
 						ErrHandler().CallErr(codeline, "For Statement allows only boolean condition expression.");
@@ -460,9 +461,9 @@ class AST {
 							continue;
 						}
 					}
+					storages.erase(storages.begin());
 					if (flowstmt) break;
 				}
-				storages.erase(storages.begin());
 				break;
 			}
 		}

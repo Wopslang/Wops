@@ -543,6 +543,7 @@ void Parse(AST& head, std::vector<String> codes) {
                     int level = 0, iidx;
                     for (iidx = idx; iidx < tokenss.size(); iidx++) {
                         std::vector<String> ttokens = tokenss[iidx];
+                        if (!ttokens.size()) break;
                         if (ttokens[0] == "for" || ttokens[0] == "if" || ttokens[0] == "elif" || ttokens[0] == "else")
                             level++;
                         if (ttokens[0] == "}") level--;
