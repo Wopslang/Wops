@@ -18,6 +18,7 @@ for (a != 1) {
     }
     else {
         a = a / 2
+        
     }
     for i in range(0, a, 1) {
         out("@")
