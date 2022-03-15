@@ -1,4 +1,4 @@
-### :mega: The development is being delayed because of contributor's academic.
+> :construction: We're reviewing every logic in the parser due to too many errors
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
 [![CI - Ubuntu OS](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml)
