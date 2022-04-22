@@ -18,5 +18,6 @@
 
 void Parse(AST& head, std::vector<String> codes);
 Expr ParseExpr(std::vector<std::string> tokens, int parsing_line);
+std::vector<String> GetTokenTable(String code);
 
 #endif

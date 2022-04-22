@@ -7,22 +7,21 @@
 
 int a = 100
 
-for i in range(0, a, 1) {
+for i in 0~a~1 $
     out("@")
-}
+;
+
 out("\n")
 
-for (a != 1) {    
-    if (a % 2 == 1) {
+for a != 1 $
+    if a % 2 == 1 ?
         a = 3 * a + 1
-    }
-    else {
+    ; ?
         a = a / 2
-        
-    }
-    for i in range(0, a, 1) {
+    ;
+    for i in 0~a~1 $
         out("@")
-    }
+    ;
     out("\n")
-}
+;
 
