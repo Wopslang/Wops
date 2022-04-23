@@ -13,7 +13,7 @@ std::vector<char> oprs{
 };
 
 std::vector<String> operators{
-    "+", "-", "*", "/", "%", "=", "!=", ">", "<", ">=", "<=", "!", "&&", "||"
+    "+", "-", "*", "/", "%", "=", "==", "!=", ">", "<", ">=", "<=", "!", "&&", "||"
 };
 
 std::vector<std::pair<String, String>> runes{
@@ -67,6 +67,68 @@ std::vector<String> GetTokenTable(String code) {
             continue;
         }
         if (std::find(oprs.begin(), oprs.end(), code[idx]) != oprs.end() && !is_searching_string) {
+            bool alreadyChecked = false;
+            switch (code[idx]) {
+                case '=': 
+                case '!': 
+                case '<': 
+                case '>': {
+                    if (code.length() > idx+1 && code[idx+1] == '=') {
+                        String token; token.resize(idx);
+
+                        if (idx != 0) {
+                            std::copy(code.begin(), code.begin()+idx, token.begin());
+                            token_table.push_back(token); 
+                        }
+                        
+                        token.resize(2); std::copy(code.begin()+idx, code.begin()+idx+2, token.begin());
+                        token_table.push_back(token);
+                        
+                        code.erase(0, idx+2);
+                        idx = 0;
+                        alreadyChecked = true;
+                    }
+                    break;
+                }
+                case '&': {
+                    if (code.length() > idx+1 && code[idx+1] == '&') {
+                        String token; token.resize(idx);
+
+                        if (idx != 0) {
+                            std::copy(code.begin(), code.begin()+idx, token.begin());
+                            token_table.push_back(token); 
+                        }
+                        
+                        token.resize(2); std::copy(code.begin()+idx, code.begin()+idx+2, token.begin());
+                        token_table.push_back(token);
+                        
+                        code.erase(0, idx+2);
+                        idx = 0;
+                        alreadyChecked = true;
+                    }
+                    break;
+                }
+                case '|': {
+                    if (code.length() > idx+1 && code[idx+1] == '|') {
+                        String token; token.resize(idx);
+
+                        if (idx != 0) {
+                            std::copy(code.begin(), code.begin()+idx, token.begin());
+                            token_table.push_back(token); 
+                        }
+                        
+                        token.resize(2); std::copy(code.begin()+idx, code.begin()+idx+2, token.begin());
+                        token_table.push_back(token);
+                        
+                        code.erase(0, idx+2);
+                        idx = 0;
+                        alreadyChecked = true;
+                    }
+                    break;
+                }
+            }
+            if (alreadyChecked) continue;
+            
             String token; token.resize(idx);
 
             if (idx != 0) {
@@ -94,3 +156,9 @@ void Parse(AST& head, std::vector<String> codes) {
     }
 }
 
+int main() {
+    for (String e: GetTokenTable("ab=="))
+        std::cout << e << "\n";
+
+    return 0;
+}
