@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     if (argc == 2 || (argc == 3 && String(argv[2]) == "debug")) {
         std::ifstream handler(String(argv[1]).data());
         if (!handler.is_open())
-            ErrHandler().CallErr(-1, "From Interpreter: cannot open the file");
+            ErrHandler().CallErr(-1, INTERPRETER_CANNOT_OPEN_FILE);
 
         String codeline;
         std::vector<String> code;

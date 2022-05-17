@@ -482,10 +482,10 @@ A *for* statement with for clause is based on `range` function. There are three 
 ForClause = identifiers "in" Expression "~" Expression "~" Expression" .
 ```
 
-```ebnf
-for i in 0~6~2 {
+```go
+for i in 0~6~2 $
     out(tostring(i) + "\n")
-}
+;
 ```
 
 Output:

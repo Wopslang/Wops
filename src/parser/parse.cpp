@@ -9,11 +9,11 @@
 #include "parse.h"
 
 std::vector<char> oprs{
-    '+', '-', '*', '/', '%', '=', '>', '<', '!', '&', '|', '(', ')', '[', ']', ':', ';', ','
+    '+', '-', '*', '/', '%', '=', '>', '<', '!', '&', '|', '(', ')', '[', ']', ':', ';', ',', '?', '$'
 };
 
 std::vector<String> operators{
-    "+", "-", "*", "/", "%", "=", "==", "!=", ">", "<", ">=", "<=", "!", "&&", "||"
+    "+", "-", "*", "/", "%", "=", "==", "!=", ">", "<", ">=", "<=", "!", "&&", "||", "//"
 };
 
 std::vector<std::pair<String, String>> runes{
@@ -126,6 +126,24 @@ std::vector<String> GetTokenTable(String code) {
                     }
                     break;
                 }
+                case '/': {
+                    if (code.length() > idx+1 && code[idx+1] == '/') {
+                        String token; token.resize(idx);
+
+                        if (idx != 0) {
+                            std::copy(code.begin(), code.begin()+idx, token.begin());
+                            token_table.push_back(token); 
+                        }
+                        
+                        token.resize(2); std::copy(code.begin()+idx, code.begin()+idx+2, token.begin());
+                        token_table.push_back(token);
+                        
+                        code.erase(0, idx+2);
+                        idx = 0;
+                        alreadyChecked = true;
+                    }
+                    break;
+                }
             }
             if (alreadyChecked) continue;
             
@@ -153,6 +171,16 @@ void Parse(AST& head, std::vector<String> codes) {
     for (String code: codes) {
         parsing_line++;
         std::vector<String> token_table = GetTokenTable(code);
+
+        if (!token_table.size()) continue;
+        if (token_table[0] == "//") continue;
+
+        // if statement
+        if (token_table[0] == "if") {
+            if (token_table[token_table.size()-1] != "?")
+                ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR);
+            AST if_block(IfStmt, )
+        }
     }
 }
 
