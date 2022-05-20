@@ -21,11 +21,13 @@ std::vector<std::pair<String, String>> runes{
 };
 
 Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
+    // :TODO update
     Expr head({0,0,0}, Variable("_", "", OPERATOR), parsing_line);
     return head;
 }
 
 std::vector<String> GetTokenTable(String code) {
+    // :TODO add some exceptions of the runes
     bool is_searching_string = false;
     bool is_searching_blank = false;
     std::vector<String> token_table;
@@ -169,6 +171,8 @@ std::vector<String> GetTokenTable(String code) {
 // int Parse(AST& head, std::vector<String> codes)
 // ** return value is the end of line of parsing block **
 int Parse(AST& head, std::vector<String> codes) {
+    // :TODO add other statements
+    // :TODO unit test
     int parsing_line = head.codeline; // base parsing line = 0
     for (int idx = 0; idx < codes.size(); idx++) {
         String code = codes[idx];
