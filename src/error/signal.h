@@ -18,6 +18,7 @@ enum Err {
     INTERPRETER_CANNOT_OPEN_FILE,
     NO_MATCHING_SYNTAX_FOR,
     NO_MATCHING_SYNTAX_IF,
+    NO_MATCHING_SYNTAX_ELIF,
     VARIABLE_HAS_NOT_DECLARED,
     VARIABLE_REDECLARE,
     ERROR_OCCURED_WHILE_CALLING_FUNCTION,
@@ -27,6 +28,8 @@ enum Err {
     IF_NO_BOOLEAN_CONDITION,
     ELIF_NO_BOOLEAN_CONDITION,
     FOR_NO_BOOLEAN_CONDITION,
+    CANNOT_LOAD_LIBRARY,
+    CANNOT_LOAD_SYMBOL,
 };
 
 class ErrHandler {
@@ -34,6 +37,12 @@ class ErrHandler {
     void CallErr(int error_pos, Err errtype, std::vector<String> arg={}) {
         std::string errmsg;
         switch (errtype) {
+            case OK:
+            errmsg = "OKAY";
+            break;
+            case ERROR:
+            errmsg = "ERROR";
+            break;
             case INTERPRETER_CANNOT_OPEN_FILE:
             errmsg = "From Interpreter: cannot open the file";
             break;
@@ -42,6 +51,9 @@ class ErrHandler {
             break;
             case NO_MATCHING_SYNTAX_IF:
             errmsg = "No matching syntax: if";
+            break;
+            case NO_MATCHING_SYNTAX_ELIF:
+            errmsg = "No matching syntax: elif";
             break;
             case VARIABLE_HAS_NOT_DECLARED:
             errmsg = arg[0] + " has not declared yet";
@@ -69,6 +81,12 @@ class ErrHandler {
             break;
             case FOR_NO_BOOLEAN_CONDITION:
             errmsg = "For Statement allows only boolean condition expression.";
+            break;
+            case CANNOT_LOAD_LIBRARY:
+            errmsg = "Cannot load library: " + arg[0];
+            break;
+            case CANNOT_LOAD_SYMBOL:
+            errmsg = "Cannot load symbol: " + arg[0];
             break;
         }
         if (error_pos != -1) {

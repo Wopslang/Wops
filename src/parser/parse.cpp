@@ -9,7 +9,7 @@
 #include "parse.h"
 
 std::vector<char> oprs{
-    '+', '-', '*', '/', '%', '=', '>', '<', '!', '&', '|', '(', ')', '[', ']', ':', ';', ',', '?', '$'
+    '+', '-', '*', '/', '%', '=', '>', '<', '!', '&', '|', '(', ')', '[', ']', ':', ';', ',', '?', '$', '~',
 };
 
 std::vector<String> operators{
@@ -166,20 +166,135 @@ std::vector<String> GetTokenTable(String code) {
     return token_table;
 }
 
-void Parse(AST& head, std::vector<String> codes) {
-    int parsing_line = head.codeline;
-    for (String code: codes) {
+// int Parse(AST& head, std::vector<String> codes)
+// ** return value is the end of line of parsing block **
+int Parse(AST& head, std::vector<String> codes) {
+    int parsing_line = head.codeline; // base parsing line = 0
+    for (int idx = 0; idx < codes.size(); idx++) {
+        String code = codes[idx];
         parsing_line++;
         std::vector<String> token_table = GetTokenTable(code);
 
         if (!token_table.size()) continue;
         if (token_table[0] == "//") continue;
+        if (token_table[0] == ";") return parsing_line;
 
         // if statement
         if (token_table[0] == "if") {
             if (token_table[token_table.size()-1] != "?")
+                ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_IF);
+
+            AST if_block(IfStmt, {}, {
+                ParseExpr(std::vector<String>(token_table.begin()+1, token_table.end()-1), parsing_line)
+            }, parsing_line);
+
+            int end_block = Parse(
+                    if_block, 
+                    std::vector<String>(codes.begin()+parsing_line+1, codes.end())
+            );
+
+            idx += end_block - parsing_line;
+            
+            // check elif statement
+            parsing_line = end_block;
+            
+            std::vector<String> end_block_token_table = GetTokenTable(codes[idx]);
+            if (end_block_token_table.size() == 1) continue;
+            idx--; parsing_line--;  // need to check
+        }
+        
+        // elif & else statement
+        else if (token_table[0] == ";") {
+            if (token_table.size() != 1 && token_table[token_table.size()-1] != "?")
+                ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_ELIF);
+            if (token_table.size() == 2) {  // else statement
+                AST else_block(ElifStmt, {}, {
+                    ParseExpr(
+                        std::vector<String>(token_table.begin()+1, token_table.end()-1),
+                        parsing_line
+                    )
+                }, parsing_line);
+
+                Parse(else_block, std::vector<String>(codes.begin()+parsing_line+1, codes.end()));
+
+                int end_block = Parse(
+                        else_block, 
+                        std::vector<String>(codes.begin()+parsing_line+1, codes.end())
+                );
+
+                idx += end_block - parsing_line;
+                
+                // check elif statement
+                parsing_line = end_block;
+                
+                std::vector<String> end_block_token_table = GetTokenTable(codes[idx]);
+                if (end_block_token_table.size() == 1) continue;
+                idx--; parsing_line--;  // need to check
+                continue;
+            }
+            AST elif_block(ElifStmt, {}, {
+                ParseExpr(
+                    std::vector<String>(token_table.begin()+1, token_table.end()-1),
+                    parsing_line
+                )
+            }, parsing_line);
+
+            Parse(elif_block, std::vector<String>(codes.begin()+parsing_line+1, codes.end()));
+
+            int end_block = Parse(
+                    elif_block, 
+                    std::vector<String>(codes.begin()+parsing_line+1, codes.end())
+            );
+
+            idx += end_block - parsing_line;
+            
+            // check elif statement
+            parsing_line = end_block;
+            
+            std::vector<String> end_block_token_table = GetTokenTable(codes[idx]);
+            if (end_block_token_table.size() == 1) continue;
+            idx--; parsing_line--;  // need to check
+        }
+
+        // for statement
+        else if (token_table[0] == "for") {
+            if (token_table[token_table.size()-1] != "$") 
                 ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR);
-            AST if_block(IfStmt, )
+
+            // for statement with for clause
+            if (std::find(token_table.begin(), token_table.end(), "in") != token_table.end()) {
+                if (token_table.size() < 9 || token_table[2] != "in")
+                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR);
+
+                // check range
+                std::vector<int> rangeidx_list;
+                for (int rangeidx = 3; rangeidx < token_table.size()-1; rangeidx++)
+                    if (token_table[rangeidx] == "~") {
+                        rangeidx_list.push_back(rangeidx);
+                    }
+
+                if (rangeidx_list.size() != 2 || 
+                        rangeidx_list[0] - 2 == 1 ||
+                        rangeidx_list[1] - rangeidx_list[0] == 1 ||
+                        token_table.size()-1 - rangeidx_list[1] == 1)
+                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR);
+
+                AST for_block(ForClauseStmt, {
+                        Variable("_", token_table[1], OPERATOR),
+                    }, {
+                        ParseExpr(std::vector<String>(token_table.begin()+3, token_table.begin()+rangeidx_list[0]), parsing_line),
+                        ParseExpr(std::vector<String>(token_table.begin()+rangeidx_list[0]+1, token_table.begin()+rangeidx_list[1]), parsing_line),
+                        ParseExpr(std::vector<String>(token_table.begin()+rangeidx_list[1]+1, token_table.end()-1), parsing_line),
+                    }, parsing_line);
+
+                int end_block = Parse(
+                        for_block, 
+                        std::vector<String>(codes.begin()+parsing_line+1, codes.end())
+                );
+
+                idx += end_block - parsing_line;
+                parsing_line = end_block;
+            } 
         }
     }
 }

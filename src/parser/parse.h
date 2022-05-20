@@ -5,6 +5,7 @@
  * 2021, Wops Team
  * */
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 #include <string>
@@ -16,7 +17,7 @@
 #ifndef WOPS_PARSE_H
 #define WOPS_PARSE_H
 
-void Parse(AST& head, std::vector<String> codes);
+int Parse(AST& head, std::vector<String> codes);
 Expr ParseExpr(std::vector<std::string> tokens, int parsing_line);
 std::vector<String> GetTokenTable(String code);
 
