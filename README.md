@@ -1,5 +1,5 @@
 > :construction: We're reviewing every logic in the parser due to too many errors  
-> 📣 Development is being delayed because of developers' mid-exam.
+> 📣 Development is being delayed because of developers' final-exam.
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
 [![CI - Ubuntu OS](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml)
