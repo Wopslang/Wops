@@ -201,6 +201,8 @@ int Parse(AST& head, std::vector<String> codes) {
                     std::vector<String>(codes.begin()+parsing_line+1, codes.end())
             );
 
+            head.AddChild(if_block);
+
             idx += end_block - parsing_line;
             
             // check elif statement
@@ -223,12 +225,12 @@ int Parse(AST& head, std::vector<String> codes) {
                     )
                 }, parsing_line);
 
-                Parse(else_block, std::vector<String>(codes.begin()+parsing_line+1, codes.end()));
-
                 int end_block = Parse(
                         else_block, 
                         std::vector<String>(codes.begin()+parsing_line+1, codes.end())
                 );
+
+                head.AddChild(else_block);
 
                 idx += end_block - parsing_line;
                 
@@ -247,12 +249,12 @@ int Parse(AST& head, std::vector<String> codes) {
                 )
             }, parsing_line);
 
-            Parse(elif_block, std::vector<String>(codes.begin()+parsing_line+1, codes.end()));
-
             int end_block = Parse(
                     elif_block, 
                     std::vector<String>(codes.begin()+parsing_line+1, codes.end())
             );
+
+            head.AddChild(elif_block);
 
             idx += end_block - parsing_line;
             
@@ -301,6 +303,8 @@ int Parse(AST& head, std::vector<String> codes) {
                         std::vector<String>(codes.begin()+parsing_line+1, codes.end())
                 );
 
+                head.AddChild(for_block);
+
                 idx += end_block - parsing_line;
                 parsing_line = end_block;
                 continue;
@@ -310,8 +314,23 @@ int Parse(AST& head, std::vector<String> codes) {
             AST for_block(ForSCStmt, {}, {
                 ParseExpr(std::vector<String>(token_table.begin()+1, token_table.end()-2), parsing_line),
             }, parsing_line);
+
+            int end_block = Parse(
+                for_block,
+                std::vector<String>(codes.begin()+parsing_line+1, codes.end())
+            );
+
+            head.AddChild(for_block);
+
+            idx += end_block - parsing_line;
+            parsing_line = end_block;
         }
 
+        // break statement
+        else if (token_table[0] == "break") {
+            AST break_stmt(BreakStmt, {}, {}, parsing_line);
+            // TODO: add parsing_line calculation system of break statement
+        }
     }
 }
 
