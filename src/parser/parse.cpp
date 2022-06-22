@@ -20,12 +20,16 @@ std::vector<std::pair<String, String>> runes{
     {"\a", "a"}, {"\b", "b"}, {"\f", "f"}, {"\n", "n"}, {"\r", "r"}, {"\t", "t"}, {"\v", "v"}, {"\\", "\\"}, {"\'", "'"}, {"\"", "\""}
 };
 
+// Expr ParseExpr(std::vector<String> tokens, int parsing_line)
+// Group string tokens into Expr structure
 Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
     // :TODO update
     Expr head({0,0,0}, Variable("_", "", OPERATOR), parsing_line);
     return head;
 }
 
+// std::vector<String> GetTokenTable(String code)
+// get token table from the string code (a single code line)
 std::vector<String> GetTokenTable(String code) {
     // :TODO add some exceptions of the runes
     bool is_searching_string = false;
@@ -277,6 +281,7 @@ int Parse(AST& head, std::vector<String> codes) {
                         rangeidx_list.push_back(rangeidx);
                     }
 
+                // grammar checking (ex. 1~2 (x), 1~~2 (x), 3~5~1 (o))
                 if (rangeidx_list.size() != 2 || 
                         rangeidx_list[0] - 2 == 1 ||
                         rangeidx_list[1] - rangeidx_list[0] == 1 ||
@@ -298,8 +303,15 @@ int Parse(AST& head, std::vector<String> codes) {
 
                 idx += end_block - parsing_line;
                 parsing_line = end_block;
+                continue;
             } 
+
+            // for statement with single condition
+            AST for_block(ForSCStmt, {}, {
+                ParseExpr(std::vector<String>(token_table.begin()+1, token_table.end()-2), parsing_line),
+            }, parsing_line);
         }
+
     }
 }
 
