@@ -105,6 +105,17 @@ class ErrHandler {
         exit(1);
         return;
     }
+
+    // Deprecated
+    void CallErrDE(int error_pos, std::string errmsg) {
+        if (error_pos != -1) {
+            std::cout << "\e[31m"<< "line " << error_pos << ": " << errmsg << "\e[m";
+            exit(1);
+        }
+        std::cout << "\e[31m"<< "runtime: " << errmsg << "\e[m";
+        exit(1);
+        return;
+    }
 };
 
 #endif
