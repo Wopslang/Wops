@@ -175,7 +175,6 @@ std::vector<String> GetTokenTable(String code) {
 // int Parse(AST& head, std::vector<String> codes)
 // ** return value is the end of line of parsing block **
 int Parse(AST& head, std::vector<String> codes) {
-    // :TODO add other statements
     // :TODO unit test
     int parsing_line = head.codeline; // base parsing line = 0
     for (int idx = 0; idx < codes.size(); idx++) {
@@ -183,8 +182,13 @@ int Parse(AST& head, std::vector<String> codes) {
         parsing_line++;
         std::vector<String> token_table = GetTokenTable(code);
 
+        // blank statement
         if (!token_table.size()) continue;
+        
+        // comment
         if (token_table[0] == "//") continue;
+
+        // end line of the parsing block
         if (token_table[0] == ";") return parsing_line;
 
         // if statement
@@ -328,8 +332,63 @@ int Parse(AST& head, std::vector<String> codes) {
 
         // break statement
         else if (token_table[0] == "break") {
+            if (token_table.size() > 1)
+                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR);
+
             AST break_stmt(BreakStmt, {}, {}, parsing_line);
-            // TODO: add parsing_line calculation system of break statement
+            head.AddChild(break_stmt);
+        }
+
+        // continue statement
+        else if (token_table[0] == "continue") {
+            if (token_table.size() > 1)
+                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_CONTINUE);
+            AST continue_stmt(ContinueStmt, {}, {}, parsing_line);
+            head.AddChild(continue_stmt);
+        }
+
+        // Assignment
+        else if (token_table.size() > 2 && token_table[1] == "=") {
+            AST assignment(Assignment, {
+                Variable("_", token_table[0], OPERATOR)
+            }, { 
+                ParseExpr(std::vector<String>(token_table.begin()+2, token_table.end()), parsing_line)
+            }, parsing_line);
+
+            head.AddChild(assignment);
+        }
+
+        // VarDel
+        else if (token_table.size() > 3 && token_table[2] == "=") {
+            AST vardel(Assignment, {
+                Variable("_", token_table[0], OPERATOR),
+                Variable("_", token_table[1], OPERATOR)
+            }, { 
+                ParseExpr(std::vector<String>(token_table.begin()+3, token_table.end()), parsing_line)
+            }, parsing_line);
+
+            head.AddChild(vardel);
+        }
+
+        // ConstDel
+        else if (token_table.size() > 4 && token_table[0] == "const" && token_table[3] == "=") {
+            AST constdel(ConstDel, {
+                Variable("_", token_table[1], OPERATOR),
+                Variable("_", token_table[2], OPERATOR)
+            }, { 
+                ParseExpr(std::vector<String>(token_table.begin()+4, token_table.end()), parsing_line)
+            }, parsing_line);
+
+            head.AddChild(constdel);
+        }
+
+        // Expression
+        else {
+            AST expression(Expression, {}, {
+                ParseExpr(token_table, parsing_line)
+            }, parsing_line);
+            
+            head.AddChild(expression);
         }
     }
 }

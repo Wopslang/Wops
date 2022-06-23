@@ -19,6 +19,8 @@ enum Err {
     NO_MATCHING_SYNTAX_FOR,
     NO_MATCHING_SYNTAX_IF,
     NO_MATCHING_SYNTAX_ELIF,
+    NO_MATCHING_SYNTAX_BREAK,
+    NO_MATCHING_SYNTAX_CONTINUE,
     VARIABLE_HAS_NOT_DECLARED,
     VARIABLE_REDECLARE,
     ERROR_OCCURED_WHILE_CALLING_FUNCTION,
@@ -54,6 +56,12 @@ class ErrHandler {
             break;
             case NO_MATCHING_SYNTAX_ELIF:
             errmsg = "No matching syntax: elif";
+            break;
+            case NO_MATCHING_SYNTAX_BREAK:
+            errmsg = "No matching syntax: break";
+            break;
+            case NO_MATCHING_SYNTAX_CONTINUE:
+            errmsg = "No matching syntax: continue";
             break;
             case VARIABLE_HAS_NOT_DECLARED:
             errmsg = arg[0] + " has not declared yet";
