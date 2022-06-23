@@ -9,6 +9,7 @@
 #define WOPS_ERRORSIGNAL_H
 
 #include <iostream>
+#include "../type/variable.h"
 
 // enum Err
 // Enumeration of error types
