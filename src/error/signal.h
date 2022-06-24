@@ -9,6 +9,7 @@
 #define WOPS_ERRORSIGNAL_H
 
 #include <iostream>
+#include <vector>
 #include "../../include/basis.h"
 
 // enum Err
