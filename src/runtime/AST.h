@@ -244,7 +244,7 @@ class AST {
 
 					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1)
-						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR);
+						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR, {});
 
 					if (res.second) {
 						ignoreif = 1;
@@ -333,7 +333,7 @@ class AST {
 				storages.insert(storages.begin(), Storage());
 				Variable condition = expression[0].Execute(storages);
 				if (condition._t != BOOL)
-					ErrHandler().CallErr(codeline, IF_NO_BOOLEAN_CONDITION);
+					ErrHandler().CallErr(codeline, IF_NO_BOOLEAN_CONDITION, {});
 				if (condition.GetValue() == "0") {
 					return {0, false};
 				}
@@ -346,7 +346,7 @@ class AST {
 					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
-						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR);
+						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR, {});
 					}
 					if (res.second) {
 						ignoreif = 1;
@@ -361,7 +361,7 @@ class AST {
 				storages.insert(storages.begin(), Storage());
 				Variable condition = expression[0].Execute(storages);
 				if (condition._t != BOOL)
-					ErrHandler().CallErr(codeline, ELIF_NO_BOOLEAN_CONDITION);
+					ErrHandler().CallErr(codeline, ELIF_NO_BOOLEAN_CONDITION, {});
 				if (condition.GetValue() == "0") {
 					return {0, false};
 				}
@@ -374,7 +374,7 @@ class AST {
 					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
-						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR);
+						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR, {});
 					}
 					if (res.second) {
 						ignoreif = 1;
@@ -396,7 +396,7 @@ class AST {
 					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
-						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR);
+						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR, {});
 					}
 					if (res.second) {
 						ignoreif = 1;
@@ -440,7 +440,7 @@ class AST {
 					storages.insert(storages.begin(), Storage());
 					Variable condition = expression[0].Execute(storages);
 					if (condition._t != BOOL)
-						ErrHandler().CallErr(codeline, FOR_NO_BOOLEAN_CONDITION);
+						ErrHandler().CallErr(codeline, FOR_NO_BOOLEAN_CONDITION, {});
 					if (condition.GetValue() == "0") break;
 
 					bool ignoreif = 0;

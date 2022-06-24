@@ -457,7 +457,7 @@ int Parse(AST& head, std::vector<String> codes) {
         // if statement
         if (token_table[0] == "if") {
             if (token_table[token_table.size()-1] != "?")
-                ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_IF);
+                ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_IF, {});
 
             AST if_block(IfStmt, {}, {
                 ParseExpr(std::vector<String>(token_table.begin()+1, token_table.end()-1), parsing_line)
@@ -483,7 +483,7 @@ int Parse(AST& head, std::vector<String> codes) {
         // elif & else statement
         else if (token_table[0] == ";") {
             if (token_table.size() != 1 && token_table[token_table.size()-1] != "?")
-                ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_ELIF);
+                ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_ELIF, {});
             if (token_table.size() == 2) {  // else statement
                 AST else_block(ElifStmt, {}, {
                     ParseExpr(
@@ -536,12 +536,12 @@ int Parse(AST& head, std::vector<String> codes) {
         // for statement
         else if (token_table[0] == "for") {
             if (token_table[token_table.size()-1] != "$") 
-                ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR);
+                ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR, {});
 
             // for statement with for clause
             if (std::find(token_table.begin(), token_table.end(), "in") != token_table.end()) {
                 if (token_table.size() < 9 || token_table[2] != "in")
-                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR);
+                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR, {});
 
                 // check range
                 std::vector<int> rangeidx_list;
@@ -555,7 +555,7 @@ int Parse(AST& head, std::vector<String> codes) {
                         rangeidx_list[0] - 2 == 1 ||
                         rangeidx_list[1] - rangeidx_list[0] == 1 ||
                         token_table.size()-1 - rangeidx_list[1] == 1)
-                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR);
+                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR, {});
 
                 AST for_block(ForClauseStmt, {
                         Variable("_", token_table[1], OPERATOR),
@@ -596,7 +596,7 @@ int Parse(AST& head, std::vector<String> codes) {
         // break statement
         else if (token_table[0] == "break") {
             if (token_table.size() > 1)
-                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR);
+                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR, {});
 
             AST break_stmt(BreakStmt, {}, {}, parsing_line);
             head.AddChild(break_stmt);
@@ -605,7 +605,7 @@ int Parse(AST& head, std::vector<String> codes) {
         // continue statement
         else if (token_table[0] == "continue") {
             if (token_table.size() > 1)
-                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_CONTINUE);
+                    ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_CONTINUE, {});
             AST continue_stmt(ContinueStmt, {}, {}, parsing_line);
             head.AddChild(continue_stmt);
         }

@@ -9,7 +9,7 @@
 #define WOPS_ERRORSIGNAL_H
 
 #include <iostream>
-#include "../type/variable.h"
+#include "../../include/basis.h"
 
 // enum Err
 // Enumeration of error types
@@ -37,7 +37,7 @@ enum Err {
 
 class ErrHandler {
     public:
-    void CallErr(int error_pos, Err errtype, std::vector<String> arg={}) {
+    void CallErr(int error_pos, Err errtype, std::vector<String> arg) {
         std::string errmsg;
         switch (errtype) {
             case OK:
