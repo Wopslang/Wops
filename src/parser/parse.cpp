@@ -326,14 +326,8 @@ std::vector<String> GetTokenTable(String code) {
                 token_table.push_back(token); 
 
                 code.erase(0, idx+1);
-                idx = -1; continue;
+                idx = -1;
             }
-            String token; token.resize(idx);
-            std::copy(code.begin(), code.begin()+idx, token.begin());
-            token_table.push_back(token); 
-
-            code.erase(0, idx);
-            idx = 0;
             continue;
         }
         if (std::find(oprs.begin(), oprs.end(), code[idx]) != oprs.end() && !is_searching_string) {
@@ -355,7 +349,7 @@ std::vector<String> GetTokenTable(String code) {
                         token_table.push_back(token);
                         
                         code.erase(0, idx+2);
-                        idx = 0;
+                        idx = -1;
                         alreadyChecked = true;
                     }
                     break;
@@ -373,7 +367,7 @@ std::vector<String> GetTokenTable(String code) {
                         token_table.push_back(token);
                         
                         code.erase(0, idx+2);
-                        idx = 0;
+                        idx = -1;
                         alreadyChecked = true;
                     }
                     break;
@@ -391,7 +385,7 @@ std::vector<String> GetTokenTable(String code) {
                         token_table.push_back(token);
                         
                         code.erase(0, idx+2);
-                        idx = 0;
+                        idx = -1;
                         alreadyChecked = true;
                     }
                     break;
@@ -409,7 +403,7 @@ std::vector<String> GetTokenTable(String code) {
                         token_table.push_back(token);
                         
                         code.erase(0, idx+2);
-                        idx = 0;
+                        idx = -1;
                         alreadyChecked = true;
                     }
                     break;
@@ -428,7 +422,7 @@ std::vector<String> GetTokenTable(String code) {
             token_table.push_back(token);
             
             code.erase(0, idx+1);
-            idx = 0;
+            idx = -1;
             continue;
         }
     }
@@ -655,3 +649,10 @@ int Parse(AST& head, std::vector<String> codes) {
         }
     }
 }
+
+// int main() {
+//      for (String e: GetTokenTable("out(\"hello world\")"))
+//          std::cout << e << "\n";
+
+//      return 0;
+//  }
