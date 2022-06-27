@@ -330,6 +330,11 @@ std::vector<String> GetTokenTable(String code) {
             }
             continue;
         }
+        // rune exception
+        if (is_searching_string && code[idx] == '\\') {
+            code.insert(code.begin()+idx, '\\'); 
+            idx++; continue;
+        }
         if (std::find(oprs.begin(), oprs.end(), code[idx]) != oprs.end() && !is_searching_string) {
             bool alreadyChecked = false;
             switch (code[idx]) {
