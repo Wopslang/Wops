@@ -323,17 +323,19 @@ std::vector<String> GetTokenTable(String code) {
             if (!is_searching_string) {
                 String token; token.resize(idx+1);
                 std::copy(code.begin(), code.begin()+idx+1, token.begin());
+
+                // rune exception
+                for (std::pair<String, String> rune: runes) {
+                    while (token.find("\\" + rune.second) != String::npos) {
+                        token.replace(token.find("\\" + rune.second), 2, rune.first);
+                    }
+                }
                 token_table.push_back(token); 
 
                 code.erase(0, idx+1);
                 idx = -1;
             }
             continue;
-        }
-        // rune exception
-        if (is_searching_string && code[idx] == '\\') {
-            code.insert(code.begin()+idx, '\\'); 
-            idx++; continue;
         }
         if (std::find(oprs.begin(), oprs.end(), code[idx]) != oprs.end() && !is_searching_string) {
             bool alreadyChecked = false;
