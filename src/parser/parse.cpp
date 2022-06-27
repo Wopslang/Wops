@@ -446,7 +446,7 @@ int Parse(AST& head, std::vector<String> codes) {
         if (token_table[0] == "//") continue;
 
         // end line of the parsing block
-        if (token_table[0] == ";") return parsing_line;
+        if (token_table.size() == 1 && token_table[0] == ";") return parsing_line;
 
         // if statement
         if (token_table[0] == "if") {
@@ -459,7 +459,7 @@ int Parse(AST& head, std::vector<String> codes) {
 
             int end_block = Parse(
                     if_block, 
-                    std::vector<String>(codes.begin()+parsing_line+1, codes.end())
+                    std::vector<String>(codes.begin()+parsing_line-head.codeline, codes.end())
             );
 
             head.AddChild(if_block);
@@ -478,29 +478,25 @@ int Parse(AST& head, std::vector<String> codes) {
         else if (token_table[0] == ";") {
             if (token_table.size() != 1 && token_table[token_table.size()-1] != "?")
                 ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_ELIF, {});
+            if (head.GetStmt() == IfStmt || head.GetStmt() == ElifStmt) return parsing_line;  // should be parsed in a lower level
             if (token_table.size() == 2) {  // else statement
-                AST else_block(ElifStmt, {}, {
-                    ParseExpr(
-                        std::vector<String>(token_table.begin()+1, token_table.end()-1),
-                        parsing_line
-                    )
-                }, parsing_line);
+                AST else_block(ElseStmt, {}, {}, parsing_line);
 
                 int end_block = Parse(
                         else_block, 
-                        std::vector<String>(codes.begin()+parsing_line+1, codes.end())
+                        std::vector<String>(codes.begin()+parsing_line-head.codeline, codes.end())
                 );
 
                 head.AddChild(else_block);
 
+                // check whether a elif/else statement follows
                 idx += end_block - parsing_line;
                 
-                // check elif statement
                 parsing_line = end_block;
                 
                 std::vector<String> end_block_token_table = GetTokenTable(codes[idx]);
-                if (end_block_token_table.size() == 1) continue;
-                idx--; parsing_line--;  // need to check
+                if (end_block_token_table.size() == 1) continue;  // zero possiblity
+                idx--; parsing_line--;
                 continue;
             }
             AST elif_block(ElifStmt, {}, {
@@ -512,19 +508,19 @@ int Parse(AST& head, std::vector<String> codes) {
 
             int end_block = Parse(
                     elif_block, 
-                    std::vector<String>(codes.begin()+parsing_line+1, codes.end())
+                    std::vector<String>(codes.begin()+parsing_line-head.codeline, codes.end())
             );
 
             head.AddChild(elif_block);
 
             idx += end_block - parsing_line;
             
-            // check elif statement
+            // check whether a elif/else statement follows
             parsing_line = end_block;
             
             std::vector<String> end_block_token_table = GetTokenTable(codes[idx]);
-            if (end_block_token_table.size() == 1) continue;
-            idx--; parsing_line--;  // need to check
+            if (end_block_token_table.size() == 1) continue;  // zero possiblity
+            idx--; parsing_line--;
         }
 
         // for statement
@@ -561,7 +557,7 @@ int Parse(AST& head, std::vector<String> codes) {
 
                 int end_block = Parse(
                         for_block, 
-                        std::vector<String>(codes.begin()+parsing_line+1, codes.end())
+                        std::vector<String>(codes.begin()+parsing_line-head.codeline, codes.end())
                 );
 
                 head.AddChild(for_block);
@@ -573,12 +569,12 @@ int Parse(AST& head, std::vector<String> codes) {
 
             // for statement with single condition
             AST for_block(ForSCStmt, {}, {
-                ParseExpr(std::vector<String>(token_table.begin()+1, token_table.end()-2), parsing_line),
+                ParseExpr(std::vector<String>(token_table.begin()+1, token_table.end()-1), parsing_line),
             }, parsing_line);
 
             int end_block = Parse(
                 for_block,
-                std::vector<String>(codes.begin()+parsing_line+1, codes.end())
+                std::vector<String>(codes.begin()+parsing_line-head.codeline, codes.end())
             );
 
             head.AddChild(for_block);
@@ -617,7 +613,7 @@ int Parse(AST& head, std::vector<String> codes) {
 
         // VarDel
         else if (token_table.size() > 3 && token_table[2] == "=") {
-            AST vardel(Assignment, {
+            AST vardel(VarDel, {
                 Variable("_", token_table[0], OPERATOR),
                 Variable("_", token_table[1], OPERATOR)
             }, { 

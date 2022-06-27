@@ -231,6 +231,8 @@ class AST {
 		argument.push_back(argv);
 	}
 
+	StmtType GetStmt() { return _t; }
+
 	// storages: smaller index, inner variable
 	std::pair<int, bool> Execute(std::vector<Storage>& storages) {
 		switch (_t) {
