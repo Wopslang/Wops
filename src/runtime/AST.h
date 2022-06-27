@@ -85,7 +85,7 @@ class Expr {
 				}
 			}
 			if (wasErrorOccured)  // has variable declared?
-				ErrHandler().CallErr(codeline, tkn + " has not declared yet");
+				ErrHandler().CallErr(codeline, VARIABLE_HAS_NOT_DECLARED, {tkn});
 
 			return iter->second;
 		}
@@ -99,7 +99,7 @@ class Expr {
 			}
 			ArrayWithCode res = EExecFunc(tkn, arg);
 			if (res.error == ERROR)
-				ErrHandler().CallErr(codeline, "Error occured while calling " + tkn);
+				ErrHandler().CallErr(codeline, ERROR_OCCURED_WHILE_CALLING_FUNCTION, {tkn});
 			
 			return res.var.container[0];
 		}
@@ -231,6 +231,8 @@ class AST {
 		argument.push_back(argv);
 	}
 
+	StmtType GetStmt() { return _t; }
+
 	// storages: smaller index, inner variable
 	std::pair<int, bool> Execute(std::vector<Storage>& storages) {
 		switch (_t) {
@@ -244,7 +246,7 @@ class AST {
 
 					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1)
-						ErrHandler().CallErr(codeline, "break and continue statement only allowed to be used in for statements");
+						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR, {});
 
 					if (res.second) {
 						ignoreif = 1;
@@ -258,7 +260,7 @@ class AST {
 				Variable v_type = argument[0], v_identifier = argument[1];
 				for (Storage& storage: storages) {
 					if (storage.find(v_identifier.GetValue()) != storage.end())
-						ErrHandler().CallErr(codeline, "Redefine variable " + v_identifier.GetValue());
+						ErrHandler().CallErr(codeline, VARIABLE_REDECLARE, {v_identifier.GetValue()});
 				}
 				
 				TYPE v_t = v_type.GetValue() == "int" ? INT : (
@@ -283,7 +285,7 @@ class AST {
 				Variable v_type = argument[0], v_identifier = argument[1];
 				for (Storage& storage: storages) {
 					if (storage.find(v_identifier.GetValue()) != storage.end())
-						ErrHandler().CallErr(codeline, "Redefine variable " + v_identifier.GetValue());
+						ErrHandler().CallErr(codeline, VARIABLE_REDECLARE, {v_identifier.GetValue()});
 				}
 				
 				TYPE v_t = v_type.GetValue() == "int" ? INT : (
@@ -313,13 +315,13 @@ class AST {
 				for (Storage& storage: storages)
 					if (storage.find(v_identifier.GetValue()) != storage.end()) {
 						if (storage[v_identifier.GetValue()].constant)
-							ErrHandler().CallErr(codeline, v_identifier.GetValue() + " is constant");
+							ErrHandler().CallErr(codeline, ASSIGN_ON_CONSTANT, {v_identifier.GetValue()});
 						storage[v_identifier.GetValue()].Substitute(expression[0].Execute(storages).GetValue());
 						wasErrorOccured = false;
 						break;
 					}
 				if (wasErrorOccured)
-					ErrHandler().CallErr(codeline, "Variable " + v_identifier.GetValue() + " hasn't defined yet");
+					ErrHandler().CallErr(codeline, ASSIGN_ON_UNKNOWN, {v_identifier.GetValue()});
 				break;
 			}
 
@@ -333,7 +335,7 @@ class AST {
 				storages.insert(storages.begin(), Storage());
 				Variable condition = expression[0].Execute(storages);
 				if (condition._t != BOOL)
-					ErrHandler().CallErr(codeline, "If Statement allows only boolean condition expression.");
+					ErrHandler().CallErr(codeline, IF_NO_BOOLEAN_CONDITION, {});
 				if (condition.GetValue() == "0") {
 					return {0, false};
 				}
@@ -346,7 +348,7 @@ class AST {
 					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
-						ErrHandler().CallErr(codeline, "If Statement doesn't allow to use break or continue statement.");
+						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR, {});
 					}
 					if (res.second) {
 						ignoreif = 1;
@@ -361,7 +363,7 @@ class AST {
 				storages.insert(storages.begin(), Storage());
 				Variable condition = expression[0].Execute(storages);
 				if (condition._t != BOOL)
-					ErrHandler().CallErr(codeline, "Elif Statement allows only boolean condition expression.");
+					ErrHandler().CallErr(codeline, ELIF_NO_BOOLEAN_CONDITION, {});
 				if (condition.GetValue() == "0") {
 					return {0, false};
 				}
@@ -374,7 +376,7 @@ class AST {
 					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
-						ErrHandler().CallErr(codeline, "Elif Statement doesn't allow to use break or continue statement.");
+						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR, {});
 					}
 					if (res.second) {
 						ignoreif = 1;
@@ -396,7 +398,7 @@ class AST {
 					std::pair<int, bool> res = ast.Execute(storages);
 					if (res.first >= 1) {
 					    return {res.first, res.second};
-						ErrHandler().CallErr(codeline, "Else Statement doesn't allow to use break or continue statement.");
+						ErrHandler().CallErr(codeline, BREAK_CONTINUE_ONLY_ALLOWED_FOR, {});
 					}
 					if (res.second) {
 						ignoreif = 1;
@@ -440,7 +442,7 @@ class AST {
 					storages.insert(storages.begin(), Storage());
 					Variable condition = expression[0].Execute(storages);
 					if (condition._t != BOOL)
-						ErrHandler().CallErr(codeline, "For Statement allows only boolean condition expression.");
+						ErrHandler().CallErr(codeline, FOR_NO_BOOLEAN_CONDITION, {});
 					if (condition.GetValue() == "0") break;
 
 					bool ignoreif = 0;

@@ -16,3 +16,4 @@ cached/
 library.so
 *.dSYM
 *.dSYM.icloud
+.vscode

@@ -2,7 +2,7 @@ name: CI - Ubuntu OS
 
 on:
   push:
-    branches: [ main, lab ]
+    branches: [ main, lab, redesign-parsing-system ]
   pull_request:
     branches: [ main, lab ]
 

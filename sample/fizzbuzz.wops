@@ -7,22 +7,19 @@
 
 int n = 100 
 
-for i in range(1, n+1, 1) {
+for i in 1~n+1~1 $
     out(tostring(i)+": ")
-    if (i % 15 == 0) {
+    if i % 15 == 0 ?
         out("fizzbuzz")
-    }
-    else {
-        if (i % 3 == 0) {
+    ; ?
+        if i % 3 == 0 ?
             out("fizz")
-        } 
-        elif (i % 5 == 0) {
+        ; i % 5 == 0 ?
             out("buzz")
-        }
-        else {
+        ; ?
             out("none\n")
             continue
-        }
-    }
+        ;
+    ;
     out("\n")
-}
+;
