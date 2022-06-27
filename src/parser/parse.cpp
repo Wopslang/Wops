@@ -20,9 +20,10 @@ std::vector<std::pair<String, String>> runes{
     {"\a", "a"}, {"\b", "b"}, {"\f", "f"}, {"\n", "n"}, {"\r", "r"}, {"\t", "t"}, {"\v", "v"}, {"\\", "\\"}, {"\'", "'"}, {"\"", "\""}
 };
 
-// for test
+// TODO: improve library system
 std::vector<String> funcs {"in", "out", "tostring", "toint"};
 
+// TODO: develop this function
 // Expr ParseExpr(std::vector<String> tokens, int parsing_line)
 // Group string tokens into Expr structure
 // Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
@@ -31,7 +32,7 @@ std::vector<String> funcs {"in", "out", "tostring", "toint"};
 //     return head;
 // }
 
-// for test
+// Deprecated
 Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
     Expr head({0,0,0}, Variable("_", "", OPERATOR), parsing_line);
 
@@ -295,7 +296,6 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
 // std::vector<String> GetTokenTable(String code)
 // get token table from the string code (a single code line)
 std::vector<String> GetTokenTable(String code) {
-    // :TODO add some exceptions of the runes
     bool is_searching_string = false;
     bool is_searching_blank = false;
     std::vector<String> token_table;
@@ -652,10 +652,3 @@ int Parse(AST& head, std::vector<String> codes) {
         }
     }
 }
-
-// int main() {
-//      for (String e: GetTokenTable("out(\"hello world\")"))
-//          std::cout << e << "\n";
-
-//      return 0;
-//  }
