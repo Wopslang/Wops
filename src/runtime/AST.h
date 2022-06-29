@@ -337,6 +337,7 @@ class AST {
 				if (condition._t != BOOL)
 					ErrHandler().CallErr(codeline, IF_NO_BOOLEAN_CONDITION, {});
 				if (condition.GetValue() == "0") {
+					storages.erase(storages.begin());
 					return {0, false};
 				}
 				bool ignoreif = 0;
@@ -365,6 +366,7 @@ class AST {
 				if (condition._t != BOOL)
 					ErrHandler().CallErr(codeline, ELIF_NO_BOOLEAN_CONDITION, {});
 				if (condition.GetValue() == "0") {
+					storages.erase(storages.begin());
 					return {0, false};
 				}
 				bool ignoreif = 0;
@@ -443,7 +445,10 @@ class AST {
 					Variable condition = expression[0].Execute(storages);
 					if (condition._t != BOOL)
 						ErrHandler().CallErr(codeline, FOR_NO_BOOLEAN_CONDITION, {});
-					if (condition.GetValue() == "0") break;
+					if (condition.GetValue() == "0") {
+						storages.erase(storages.begin());
+						break;
+					}
 
 					bool ignoreif = 0;
 					bool flowstmt = 0;
