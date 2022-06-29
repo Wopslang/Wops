@@ -21,7 +21,7 @@ jobs:
     - name: make
       run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang.exe sample/;
     - name: run
-      run: cd sample; ./Wopslang.exe fizzbuzz.wops debug > out;
+      run: cd sample; ./Wopslang.exe fizzbuzz.wops debug; # for test
   Hailstone_Sequence:
     needs: Build
     runs-on: windows-latest
