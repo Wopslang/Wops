@@ -78,4 +78,4 @@ If you want to contribute as the Wopslang manager, join the [Wops Community Slac
 
 
 
-2021, Wops Team
+2022, Wops Team
