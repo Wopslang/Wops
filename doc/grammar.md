@@ -10,7 +10,6 @@
 - [Lexical Elements]
   - [Comments]
   - [Tokens]
-  - [Semicolons]
   - [Identifiers]
   - [Keywords]
   - [Operators and Punctuation]
@@ -143,8 +142,8 @@ The following character sequences represent operators (including assignment oper
 ```text
 +    &&    ==    !=    (    )
 -    ||    <     <=    [    ]
-*    >     >=    /     {    }
-     =     ;     %     !            
+*    >     >=    /     :    =
+           ;     %     !            
 ```
 
 ### Integer Literal
@@ -279,7 +278,9 @@ string soo = poo
 A block is an empty sequence of declarations and statements within matching brace({,})s.
 
 ```ebnf
-Block = "{" Statements "}" .
+Block = ":" Statements ";" .
+IfBlock = "?" Statements ";" .
+ForBlock = "$" Statements ";" .
 Statements = { Statement } .
 ```
 
@@ -433,24 +434,24 @@ c = 0.5 - 1.3
 
 For example:
 
-```python
-if (a == 1) {
+```go
+if a == 1 ?
     // A
-} elif (a > 1) {
+; a > 1 ?
     // B
-} elif (a < 2) {
+; a < 2 ?
     // C
-} else {
+; ?
     // D
-}
+;
 ```
 
 If a is 1, `A`'ll be executed. If a is larger than 1, `B`'ll be executed. For `C`, if a is smaller than 2 and larger than 1, `C` won't be executed. `C` will be executed if a is smaller than 1. `D` won't be executed ever.
 
 ```ebnf
-IfStmt = "if" "(" Expression ")" Block
-      { "elif" "(" Expression ")" Block }
-      ["else" Block]
+IfStmt = "if" Expression IfBlock
+      { ";" Expression IfBlock }
+      [";" IfBlock]
 ```
 
 ### For Statement
@@ -460,7 +461,7 @@ IfStmt = "if" "(" Expression ")" Block
 > Note: there isn't a "range" clause because there isn't any array system in Wopslang v0.1.
 
 ```ebnf
-ForStmt = "for" ( "(" Expression ")" | ForClause ) Block .
+ForStmt = "for" ( Expression | ForClause ) ForBlock .
 ```
 
 #### For statement with single condition
@@ -468,9 +469,9 @@ ForStmt = "for" ( "(" Expression ")" | ForClause ) Block .
 A *for* statement with single condition represent repeating execution of a block as long as a boolean condition evaluates to true. The condition is evaluated before each iteration.
 
 ```go
-for (a % 2) {
+for a % 2 $
     out(tostring(a) + "\n")
-}
+;
 ```
 
 #### For statement with for clause
@@ -478,13 +479,13 @@ for (a % 2) {
 A *for* statement with for clause is based on `range` function. There are three arguments of `range` function: *start, end, and step*. Then, `range` function create an array which is [start, end) when step is one(it's almost same with *python's range function*). Finally, *for* statement repeat execution of a block with that array. **Remember that range function doesn't include end index's element**
 
 ```ebnf
-ForClause = identifiers "in" "range" "(" Expression "," Expression "," Expression ")" .
+ForClause = identifiers "in" Expression "~" Expression "~" Expression" .
 ```
 
-```ebnf
-for i in range(0, 6, 2) {
+```go
+for i in 0~6~2 $
     out(tostring(i) + "\n")
-}
+;
 ```
 
 Output:

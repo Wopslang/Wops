@@ -3,7 +3,6 @@
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
 [![CI - Ubuntu OS](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml)
-[![CI - Windows OS](https://github.com/Wopslang/Wops/actions/workflows/windows.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/windows.yml)
 [![Badge](https://img.shields.io/badge/Slack-Join_our_chat-critical.svg?link=https://join.slack.com/t/wopslangcommunity/shared_invite/zt-nkcy12cy-n8YlAPnOT~ErPODF6k3jOw&logo=slack)](https://join.slack.com/t/wopslangcommunity/shared_invite/zt-nkcy12cy-n8YlAPnOT~ErPODF6k3jOw)
 
 ```go

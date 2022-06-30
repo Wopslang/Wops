@@ -4,6 +4,21 @@
   - add more function  
   - support Array(based on `std::vector`)  
 
+=== v0.1.5: 239dd25 ===
+
+- feature
+  - NEW GRAMMAR
+  - redesigned parsing system (O(N^2) -> O(N))
+  - modularized error handler (but still many codes are using deprecated one)
+
+- improvement
+  - fixed critical reported bug(#48)
+  - fixed some minor bugs
+
+- todo
+  - improve ParseExpr function
+  - remove every deprecated code
+
 === v0.1.4: bf8adbf ===
 - improvement
   - fixed critical reported bug(#44, #43, #37)
