@@ -10,11 +10,24 @@
 #include "variable.h"
 #include <vector>
 
-// class Object
-// Woplsang Object Class
+/**
+ * class Object  
+ * Wopslang Object Class
+ *
+ * Structure
+ *
+ * Private
+ *   - data
+ * Public 
+ *   - size 
+ *   - precalc_size
+ *   - dim
+ *   - runtime_codeline
+ *   - token 
+*/
 class Object {
     private:
-    std::vector<Object> data;
+    std::vector<Variable> data;
 
     public:
     // a[100][200][300] -> size = {100, 200, 300}, dim = 3
@@ -26,7 +39,7 @@ class Object {
     String token;
 
     // constructor
-    Object(String objname = "_", std::vector<Object> objdata = {}, std::vector<Int> objsize = {}, Int objdim = 0, Int codeline = -1) {
+    Object(String objname = "_", std::vector<Variable> objdata = {}, std::vector<Int> objsize = {}, Int objdim = 0, Int codeline = -1) {
         token = objname;
         data = objdata;
         size = objsize;
@@ -52,15 +65,15 @@ class Object {
         if (precalc_size[0]*size[0] != data.size()) ErrHandler().CallErr(runtime_codeline, OBJECT_NOT_MATCHING_DATA, {token});
     }
 
-    // Object At(std::vector<Int> dimidx)
+    // Variable At(std::vector<Int> dimidx)
     // Get the data addressed by dimidx
-    Object At(std::vector<Int> dimidx) {
+    Variable At(std::vector<Int> dimidx) {
         return data[IdxFinder(dimidx)];
     }
 
     // void Replace(std::vector<Int> dimidx, Object newdata)
     // Replace the data addressed by dimidx with newdata
-    void Replace(std::vector<Int> dimidx, Object newdata) {
+    void Replace(std::vector<Int> dimidx, Variable newdata) {
         data[IdxFinder(dimidx)] = newdata;
     }
 
