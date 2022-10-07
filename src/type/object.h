@@ -10,28 +10,65 @@
 #include "variable.h"
 #include <vector>
 
-// enum OBJECT_TYPE { SINGLE, ARRAY, OTHER }
-// Enumeration of object types
-enum OBJECT_TYPE {
-    SINGLE,
-    ARRAY,
-    OTHER,
-};
-
 // class Object
 // Woplsang Object Class
 class Object {
     private:
-    std::vector<Variable> data;
+    std::vector<Object> data;
 
     public:
-    OBJECT_TYPE type;
+    // a[100][200][300] -> size = {100, 200, 300}, dim = 3
+    // single variable -> dim = 0
+    std::vector<Int> size; // multiplication of all size <= 10^9
+    std::vector<Int> precalc_size;
+    Int dim;
+    Int runtime_codeline; // for error analyzing
     String token;
 
-    Object(String objname = "_", std::vector<Variable> objdata = {}, OBJECT_TYPE objtype = OTHER) {
+    // constructor
+    Object(String objname = "_", std::vector<Object> objdata = {}, std::vector<Int> objsize = {}, Int objdim = 0, Int codeline = -1) {
         token = objname;
         data = objdata;
-        type = objtype;
+        size = objsize;
+        dim = objdim;
+        runtime_codeline = codeline;
+        Prepare();
+    }
+
+    // void Prepare()
+    // Prerequisite Job
+    void Prepare() {
+        if (!dim) return;
+
+        precalc_size.resize(dim);
+        precalc_size[dim-1] = 1;
+        for (int idx = dim-2; idx >= 0; idx--) {
+            Int *checker; *checker = precalc_size[idx+1]*size[idx+1];
+            if (precalc_size[idx+1] > 0 && size[idx+1] > 0 && *checker < 0) ErrHandler().CallErr(runtime_codeline, OBJECT_OVERFLOW, {token});
+            if (precalc_size[idx+1] < 0 && size[idx+1] < 0 && *checker > 0) ErrHandler().CallErr(runtime_codeline, OBJECT_OVERFLOW, {token});
+            if (precalc_size[idx+1]*size[idx+1] > 1000000000) ErrHandler().CallErr(runtime_codeline, OBJECT_OVERFLOW, {token});
+            precalc_size[idx] = precalc_size[idx+1]*size[idx+1];
+        }
+        if (precalc_size[0]*size[0] != data.size()) ErrHandler().CallErr(runtime_codeline, OBJECT_NOT_MATCHING_DATA, {token});
+    }
+
+    // Object At(std::vector<Int> dimidx)
+    // Get the data addressed by dimidx
+    Object At(std::vector<Int> dimidx) {
+        return data[IdxFinder(dimidx)];
+    }
+
+    // void Replace(std::vector<Int> dimidx, Object newdata)
+    // Replace the data addressed by dimidx with newdata
+    void Replace(std::vector<Int> dimidx, Object newdata) {
+        data[IdxFinder(dimidx)] = newdata;
+    }
+
+    // Int IdxFinder(std::vector<Int> dimidx)
+    Int IdxFinder(std::vector<Int> dimidx) {
+        Int cur = 0;
+        for (int idx = 0; idx < dim; idx++) cur += dimidx[idx]*precalc_size[idx];
+        return cur;
     }
 };
 

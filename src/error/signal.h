@@ -34,6 +34,8 @@ enum Err {
     FOR_NO_BOOLEAN_CONDITION,
     CANNOT_LOAD_LIBRARY,
     CANNOT_LOAD_SYMBOL,
+    OBJECT_OVERFLOW,
+    OBJECT_NOT_MATCHING_DATA,
 };
 
 class ErrHandler {
@@ -97,6 +99,12 @@ class ErrHandler {
             break;
             case CANNOT_LOAD_SYMBOL:
             errmsg = "Cannot load symbol: " + arg[0];
+            break;
+            case OBJECT_OVERFLOW:
+            errmsg = "Size of object " + arg[0] + " is over than limit";
+            break;
+            case OBJECT_NOT_MATCHING_DATA:
+            errmsg = "Data of object " + arg[0] + " does not match with declaration";
             break;
         }
         if (error_pos != -1) {
