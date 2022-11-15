@@ -24,10 +24,12 @@
  *   - dim
  *   - runtime_codeline
  *   - token 
+ *   - errvalue
 */
 class Object {
     private:
-    std::vector<Variable> data;
+    std::vector<Object> data; // for base, data = {}
+    Variable base; // base (0-dim)
 
     public:
     // a[100][200][300] -> size = {100, 200, 300}, dim = 3
@@ -37,14 +39,17 @@ class Object {
     Int dim;
     Int runtime_codeline; // for error analyzing
     String token;
+    Err errvalue; // special variable: only used to deliver error code
 
     // constructor
-    Object(String objname = "_", std::vector<Variable> objdata = {}, std::vector<Int> objsize = {}, Int objdim = 0, Int codeline = -1) {
+    Object(String objname = "_", std::vector<Object> objdata = {}, std::vector<Int> objsize = {}, Variable objbase = {}, Int objdim = 0, Int codeline = -1, Err err = OK) {
         token = objname;
         data = objdata;
+        base = objbase;
         size = objsize;
         dim = objdim;
         runtime_codeline = codeline;
+        errvalue = err;
         Prepare();
     }
 
@@ -52,6 +57,7 @@ class Object {
     // Prerequisite Job
     void Prepare() {
         if (!dim) return;
+        if (dim != size.size()) ErrHandler().CallErr(runtime_codeline, OBJECT_WRONG_DIMENSION, {token, std::to_string(dim), std::to_string(size.size())}); 
 
         precalc_size.resize(dim);
         precalc_size[dim-1] = 1;
@@ -65,16 +71,41 @@ class Object {
         if (precalc_size[0]*size[0] != data.size()) ErrHandler().CallErr(runtime_codeline, OBJECT_NOT_MATCHING_DATA, {token});
     }
 
-    // Variable At(std::vector<Int> dimidx)
+    // Object At(std::vector<Int> dimidx)
     // Get the data addressed by dimidx
-    Variable At(std::vector<Int> dimidx) {
+    Object At(std::vector<Int> dimidx) {
+        if (!dim) return Object("_", {}, {}, base);
+        if (dim != dimidx.size()) ErrHandler().CallErr(runtime_codeline, OBJECT_WRONG_DIMENSION, {token, std::to_string(dim), std::to_string(dimidx.size())});
+
+        Int idx = IdxFinder(dimidx);
+        if (idx >= data.size()) ErrHandler().CallErr(runtime_codeline, OBJECT_OVERFLOW, {token});
         return data[IdxFinder(dimidx)];
     }
 
     // void Replace(std::vector<Int> dimidx, Object newdata)
     // Replace the data addressed by dimidx with newdata
-    void Replace(std::vector<Int> dimidx, Variable newdata) {
+    void Replace(std::vector<Int> dimidx, Object newdata) {
+        if (dim != newdata.dim) ErrHandler().CallErr(runtime_codeline, OBJECT_WRONG_DIMENSION, {token, std::to_string(dim), std::to_string(newdata.dim)});
+        if (dimidx.size() != dim) ErrHandler().CallErr(runtime_codeline, OBJECT_WRONG_DIMENSION, {token, std::to_string(dim), std::to_string(dimidx.size())}); 
+        if (!dim) { base = newdata.base; return; }
         data[IdxFinder(dimidx)] = newdata;
+    }
+
+    // void ReplaceContainer(std::vector<Object> container)
+    // Replace whole data with container 
+    void ReplaceContainer(std::vector<Object> container) {
+        data = container;
+    }
+
+    // std::vector<Object> GetContainer()
+    // Getter function for data
+    std::vector<Object> GetContainer() { return data; }
+
+    // Variable GetBase()
+    // Getter function for base
+    Variable GetBase() { 
+        if (dim) ErrHandler().CallErr(runtime_codeline, TOO_HIGH_DIMENSION, {token, "0", std::to_string(dim)});
+        return base; 
     }
 
     // Int IdxFinder(std::vector<Int> dimidx)

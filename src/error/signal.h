@@ -36,6 +36,8 @@ enum Err {
     CANNOT_LOAD_SYMBOL,
     OBJECT_OVERFLOW,
     OBJECT_NOT_MATCHING_DATA,
+    OBJECT_WRONG_DIMENSION,
+    TOO_HIGH_DIMENSION,
 };
 
 class ErrHandler {
@@ -105,6 +107,12 @@ class ErrHandler {
             break;
             case OBJECT_NOT_MATCHING_DATA:
             errmsg = "Data of object " + arg[0] + " does not match with declaration";
+            break;
+            case OBJECT_WRONG_DIMENSION:
+            errmsg = "Object " + arg[0] + " has wrong dimension (Expected " + arg[1] + ", Found " + arg[2] + ")";
+            break;
+            case TOO_HIGH_DIMENSION:
+            errmsg = arg[0] + " has too high dimension for job (Expected " + arg[1] + ", Found " + arg[2] + ")";
             break;
         }
         if (error_pos != -1) {

@@ -14,7 +14,7 @@
 #include <utility>
 #include "../import_/eexec_.h"
 #include "../type/variable.h"
-#include "../type/array.h"
+#include "../type/object.h"
 #include "../type/operator.h"
 
 // enum TYPE {...}
@@ -34,7 +34,7 @@ enum StmtType {
 	ForSCStmt, // For statement with single condition
 };
 
-typedef std::unordered_map<std::string, Variable> Storage;
+typedef std::unordered_map<std::string, Object> Storage;
 
 /**
  * class Expr
@@ -71,7 +71,7 @@ class Expr {
 	}
 
 	// execute from the tree root
-	Variable Execute(std::vector<Storage>& storages) {
+	Object Execute(std::vector<Storage>& storages) {
 		std::string tkn = token.GetValue();
 
 		if (variable) {
@@ -87,67 +87,125 @@ class Expr {
 			if (wasErrorOccured)  // has variable declared?
 				ErrHandler().CallErr(codeline, VARIABLE_HAS_NOT_DECLARED, {tkn});
 
+			iter->second.runtime_codeline = codeline;
 			return iter->second;
 		}
 		if (constant) {
-			return token;
+			return Object("_", {}, {}, token, 0, codeline, OK);
 		}
 		if (call) {
-			Array arg;
+			Object arg;
+			std::vector<Object> container;
 			for (Expr child: children) {
-				arg.container.push_back(child.Execute(storages));
+				container.push_back(child.Execute(storages));
 			}
-			ArrayWithCode res = EExecFunc(tkn, arg);
-			if (res.error == ERROR)
-				ErrHandler().CallErr(codeline, ERROR_OCCURED_WHILE_CALLING_FUNCTION, {tkn});
+			arg.dim = 1; arg.ReplaceContainer(container); arg.size = { (Int)container.size() };
+			Object res = EExecFunc(tkn, arg);
+			if (res.errvalue != OK)
+				ErrHandler().CallErr(codeline, res.errvalue, {tkn});
 			
-			return res.var.container[0];
+			return res;
 		}
 
 		// Binary Operation
 		if (tkn == "+") {
-			return children[0].Execute(storages) + children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() + operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == "-") {
-			return children[0].Execute(storages) - children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() - operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == "*") {
-			return children[0].Execute(storages) * children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() * operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == "/") {
-			return children[0].Execute(storages) / children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() / operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == "%") {
-			return children[0].Execute(storages) % children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() % operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == "==") {
-			return children[0].Execute(storages) == children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() == operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == "!=") {
-			return children[0].Execute(storages) != children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() != operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == ">") {
-			return children[0].Execute(storages) > children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() > operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == ">=") {
-			return children[0].Execute(storages) >= children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() >= operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == "<") {
-			return children[0].Execute(storages) < children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() < operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == "<=") {
-			return children[0].Execute(storages) <= children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() <= operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == "||") {
-			return children[0].Execute(storages) || children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() || operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 		if (tkn == "&&") {
-			return children[0].Execute(storages) && children[1].Execute(storages);
+			Object value = children[0].Execute(storages), operand = children[1].Execute(storages);
+			if (value.dim != operand.dim) ErrHandler().CallErr(codeline, OBJECT_WRONG_DIMENSION, {tkn, std::to_string(value.dim), std::to_string(operand.dim)});
+			if (value.dim == 0)
+				return Object("_", {}, {}, value.GetBase() && operand.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(operand.dim)});
 		}
 
 		// Unary Operation
 		if (tkn == "!") {
-			return !children[0].Execute(storages);
+			Object value = children[0].Execute(storages);
+			if (value.dim == 0)
+				return Object("_", {}, {}, !value.GetBase(), 0, codeline, OK);
+			ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {tkn, "0", std::to_string(value.dim)});
 		}
 	}
 };
@@ -197,13 +255,13 @@ class AST {
 	StmtType _t;
 	std::vector<AST> childStmt;
 	std::vector<Expr> expression;
-	std::vector<Variable> argument;
+	std::vector<Object> argument;
 
 	public:
 	int codeline;
 
 	// constructor
-	AST(StmtType t, std::vector<Variable> argv, std::vector<Expr> expr, int _codeline) {
+	AST(StmtType t, std::vector<Object> argv, std::vector<Expr> expr, int _codeline) {
 		_t = t, argument = argv, expression = expr, codeline = _codeline;
 	}
 
@@ -223,11 +281,11 @@ class AST {
 		expression.push_back(expr);
 	}
 
-	void SetArg(std::vector<Variable> argv) {
+	void SetArg(std::vector<Object> argv) {
 		argument = argv;
 	}
 
-	void AddArg(Variable argv) {
+	void AddArg(Object argv) {
 		argument.push_back(argv);
 	}
 
@@ -257,71 +315,70 @@ class AST {
 			}
 
 			case ConstDel: {
-				Variable v_type = argument[0], v_identifier = argument[1];
+				Object v_type = argument[0], v_identifier = argument[1];
+				if (v_type.dim != 0 && v_identifier.dim != 0) ErrHandler().CallErr(codeline, TOO_HIGH_DIMENSION, {"Expression", "0", std::to_string(v_type.dim)});
 				for (Storage& storage: storages) {
-					if (storage.find(v_identifier.GetValue()) != storage.end())
-						ErrHandler().CallErr(codeline, VARIABLE_REDECLARE, {v_identifier.GetValue()});
+					if (storage.find(v_identifier.GetBase().GetValue()) != storage.end())
+						ErrHandler().CallErr(codeline, VARIABLE_REDECLARE, {v_identifier.GetBase().GetValue()});
 				}
 				
-				TYPE v_t = v_type.GetValue() == "int" ? INT : (
-					v_type.GetValue() == "bool" ? BOOL : (
-						v_type.GetValue() == "string" ? STRING : DOUBLE
+				TYPE v_t = v_type.GetBase().GetValue() == "int" ? INT : (
+					v_type.GetBase().GetValue() == "bool" ? BOOL : (
+						v_type.GetBase().GetValue() == "string" ? STRING : DOUBLE
 					)
 				);
 
-				storages[0].insert({
-					v_identifier.GetValue(),
+				storages[0].insert({v_identifier.GetBase().GetValue(), {v_identifier.GetBase().GetValue(), {}, {}, 
 					Variable(
-						v_identifier.GetValue(),
-						expression[0].Execute(storages).GetValue(),
+						v_identifier.GetBase().GetValue(),
+						expression[0].Execute(storages).GetBase().GetValue(),
 						v_t,
 					true)
-				});
+				, 0, codeline, OK}});
 
 				break;
 			}
 
 			case VarDel: {
-				Variable v_type = argument[0], v_identifier = argument[1];
+				Object v_type = argument[0], v_identifier = argument[1];
 				for (Storage& storage: storages) {
-					if (storage.find(v_identifier.GetValue()) != storage.end())
-						ErrHandler().CallErr(codeline, VARIABLE_REDECLARE, {v_identifier.GetValue()});
+					if (storage.find(v_identifier.GetBase().GetValue()) != storage.end())
+						ErrHandler().CallErr(codeline, VARIABLE_REDECLARE, {v_identifier.GetBase().GetValue()});
 				}
 				
-				TYPE v_t = v_type.GetValue() == "int" ? INT : (
-					v_type.GetValue() == "bool" ? BOOL : (
-						v_type.GetValue() == "string" ? STRING : DOUBLE
+				TYPE v_t = v_type.GetBase().GetValue() == "int" ? INT : (
+					v_type.GetBase().GetValue() == "bool" ? BOOL : (
+						v_type.GetBase().GetValue() == "string" ? STRING : DOUBLE
 					)
 				);
 
-				storages[0].insert({
-					v_identifier.GetValue(),
+				storages[0].insert({v_identifier.GetBase().GetValue(), {v_identifier.GetBase().GetValue(), {}, {}, 
 					Variable(
-						v_identifier.GetValue(),
-						expression[0].Execute(storages).GetValue(),
+						v_identifier.GetBase().GetValue(),
+						expression[0].Execute(storages).GetBase().GetValue(),
 						v_t,
 					false)
-				});
+				, 0, codeline, OK}});
 				break;
 			}
 
 			case Expression:
-				expression[0].Execute(storages).GetValue();
+				expression[0].Execute(storages);
 				break;
 
 			case Assignment: {
-				Variable v_identifier = argument[0];
+				Object v_identifier = argument[0];
 				bool wasErrorOccured = true;
 				for (Storage& storage: storages)
-					if (storage.find(v_identifier.GetValue()) != storage.end()) {
-						if (storage[v_identifier.GetValue()].constant)
-							ErrHandler().CallErr(codeline, ASSIGN_ON_CONSTANT, {v_identifier.GetValue()});
-						storage[v_identifier.GetValue()].Substitute(expression[0].Execute(storages).GetValue());
+					if (storage.find(v_identifier.GetBase().GetValue()) != storage.end()) {
+						if (storage[v_identifier.GetBase().GetValue()].GetBase().constant)
+							ErrHandler().CallErr(codeline, ASSIGN_ON_CONSTANT, {v_identifier.GetBase().GetValue()});
+						storage[v_identifier.GetBase().GetValue()].GetBase().Substitute(expression[0].Execute(storages).GetBase().GetValue());
 						wasErrorOccured = false;
 						break;
 					}
 				if (wasErrorOccured)
-					ErrHandler().CallErr(codeline, ASSIGN_ON_UNKNOWN, {v_identifier.GetValue()});
+					ErrHandler().CallErr(codeline, ASSIGN_ON_UNKNOWN, {v_identifier.GetBase().GetValue()});
 				break;
 			}
 
@@ -333,10 +390,10 @@ class AST {
 
 			case IfStmt: {
 				storages.insert(storages.begin(), Storage());
-				Variable condition = expression[0].Execute(storages);
-				if (condition._t != BOOL)
+				Object condition = expression[0].Execute(storages);
+				if (condition.GetBase()._t != BOOL)
 					ErrHandler().CallErr(codeline, IF_NO_BOOLEAN_CONDITION, {});
-				if (condition.GetValue() == "0") {
+				if (condition.GetBase().GetValue() == "0") {
 					return {0, false};
 				}
 				bool ignoreif = 0;
@@ -361,10 +418,10 @@ class AST {
 
 			case ElifStmt: {
 				storages.insert(storages.begin(), Storage());
-				Variable condition = expression[0].Execute(storages);
-				if (condition._t != BOOL)
+				Object condition = expression[0].Execute(storages);
+				if (condition.GetBase()._t != BOOL)
 					ErrHandler().CallErr(codeline, ELIF_NO_BOOLEAN_CONDITION, {});
-				if (condition.GetValue() == "0") {
+				if (condition.GetBase().GetValue() == "0") {
 					return {0, false};
 				}
 				bool ignoreif = 0;
@@ -410,9 +467,9 @@ class AST {
 			}
 
 			case ForClauseStmt: {
-				for (int idx = std::stoi(expression[0].Execute(storages).GetValue()); idx < std::stoi(expression[1].Execute(storages).GetValue()); idx += std::stoi(expression[2].Execute(storages).GetValue())) {
+				for (int idx = std::stoi(expression[0].Execute(storages).GetBase().GetValue()); idx < std::stoi(expression[1].Execute(storages).GetBase().GetValue()); idx += std::stoi(expression[2].Execute(storages).GetBase().GetValue())) {
 					storages.insert(storages.begin(), Storage());
-					storages[0][argument[0].GetValue()] = Variable(argument[0].GetValue(), std::to_string(idx), INT);
+					storages[0][argument[0].GetBase().GetValue()] = Object(argument[0].GetBase().GetValue(), {}, {}, Variable(argument[0].GetBase().GetValue(), std::to_string(idx), INT), 0, codeline, OK);
 					bool ignoreif = 0;
 					bool flowstmt = 0;
 					for (AST ast: childStmt) {
@@ -440,10 +497,10 @@ class AST {
 			case ForSCStmt: {
 				while (1) {
 					storages.insert(storages.begin(), Storage());
-					Variable condition = expression[0].Execute(storages);
-					if (condition._t != BOOL)
+					Object condition = expression[0].Execute(storages);
+					if (condition.GetBase()._t != BOOL)
 						ErrHandler().CallErr(codeline, FOR_NO_BOOLEAN_CONDITION, {});
-					if (condition.GetValue() == "0") break;
+					if (condition.GetBase().GetValue() == "0") break;
 
 					bool ignoreif = 0;
 					bool flowstmt = 0;
