@@ -52,13 +52,13 @@ typedef std::unordered_map<std::string, Object> Storage;
 class Expr {
 	private:
 	bool constant = 0, variable = 0, call = 0;
-	Variable token;
+	Object token; // base object (variable)
 	std::vector<Expr> children;
 	int codeline;
 
 	public:
 	// constructor
-	Expr(std::vector<bool> t, Variable tkn, int _codeline) {
+	Expr(std::vector<bool> t, Object tkn, int _codeline) {
 		token = tkn, constant = t[0], variable = t[1], call = t[2], codeline = _codeline;
 	}
 
@@ -72,7 +72,7 @@ class Expr {
 
 	// execute from the tree root
 	Object Execute(std::vector<Storage>& storages) {
-		std::string tkn = token.GetValue();
+		std::string tkn = token.GetBase().GetValue();
 
 		if (variable) {
 			auto iter = storages[0].find(tkn);
@@ -91,7 +91,7 @@ class Expr {
 			return iter->second;
 		}
 		if (constant) {
-			return Object("_", {}, {}, token, 0, codeline, OK);
+			return Object("_", {}, {}, token.GetBase(), 0, codeline, OK);
 		}
 		if (call) {
 			Object arg;

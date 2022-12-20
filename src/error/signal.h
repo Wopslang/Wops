@@ -38,6 +38,8 @@ enum Err {
     OBJECT_NOT_MATCHING_DATA,
     OBJECT_WRONG_DIMENSION,
     TOO_HIGH_DIMENSION,
+    UNMATCHED_PARENTHESIS,
+    OPERATION_ONLY_BINARY,
 };
 
 class ErrHandler {
@@ -46,46 +48,46 @@ class ErrHandler {
         std::string errmsg;
         switch (errtype) {
             case OK:
-            errmsg = "OKAY";
+            errmsg = "OKAY.";
             break;
             case ERROR:
-            errmsg = "ERROR";
+            errmsg = "ERROR.";
             break;
             case INTERPRETER_CANNOT_OPEN_FILE:
-            errmsg = "From Interpreter: cannot open the file";
+            errmsg = "From Interpreter: cannot open the file.";
             break;
             case NO_MATCHING_SYNTAX_FOR:
-            errmsg = "No matching syntax: for";
+            errmsg = "No matching syntax: for.";
             break;
             case NO_MATCHING_SYNTAX_IF:
-            errmsg = "No matching syntax: if";
+            errmsg = "No matching syntax: if.";
             break;
             case NO_MATCHING_SYNTAX_ELIF:
-            errmsg = "No matching syntax: elif";
+            errmsg = "No matching syntax: elif.";
             break;
             case NO_MATCHING_SYNTAX_BREAK:
-            errmsg = "No matching syntax: break";
+            errmsg = "No matching syntax: break.";
             break;
             case NO_MATCHING_SYNTAX_CONTINUE:
-            errmsg = "No matching syntax: continue";
+            errmsg = "No matching syntax: continue.";
             break;
             case VARIABLE_HAS_NOT_DECLARED:
-            errmsg = arg[0] + " has not declared yet";
+            errmsg = arg[0] + " has not declared yet.";
             break;
             case VARIABLE_REDECLARE:
-            errmsg = "Redeclare variable " + arg[0];
+            errmsg = "Redeclared variable " + arg[0] + ".";
             break;
             case ERROR_OCCURED_WHILE_CALLING_FUNCTION:
-            errmsg = "Error occured while calling " + arg[0];
+            errmsg = "Error occured while calling " + arg[0] + ".";
             break;
             case BREAK_CONTINUE_ONLY_ALLOWED_FOR:
-            errmsg = "break and continue statement only allowed to be used in for statements";
+            errmsg = "break and continue statement only allowed to be used in for statements.";
             break;
             case ASSIGN_ON_CONSTANT:
-            errmsg = arg[0] + " is constant";
+            errmsg = arg[0] + " is constant.";
             break;
             case ASSIGN_ON_UNKNOWN:
-            errmsg = "Variable " + arg[0] + " hasn't declared yet";
+            errmsg = "Variable " + arg[0] + " hasn't declared yet.";
             break;
             case IF_NO_BOOLEAN_CONDITION:
             errmsg = "If Statement allows only boolean condition expression.";
@@ -97,29 +99,35 @@ class ErrHandler {
             errmsg = "For Statement allows only boolean condition expression.";
             break;
             case CANNOT_LOAD_LIBRARY:
-            errmsg = "Cannot load library: " + arg[0];
+            errmsg = "Cannot load library: " + arg[0] +  ".";
             break;
             case CANNOT_LOAD_SYMBOL:
-            errmsg = "Cannot load symbol: " + arg[0];
+            errmsg = "Cannot load symbol: " + arg[0] + ".";
             break;
             case OBJECT_OVERFLOW:
-            errmsg = "Size of object " + arg[0] + " is over than limit";
+            errmsg = "Size of object " + arg[0] + " is over than limit.";
             break;
             case OBJECT_NOT_MATCHING_DATA:
-            errmsg = "Data of object " + arg[0] + " does not match with declaration";
+            errmsg = "Data of object " + arg[0] + " does not match with declaration.";
             break;
             case OBJECT_WRONG_DIMENSION:
-            errmsg = "Object " + arg[0] + " has wrong dimension (Expected " + arg[1] + ", Found " + arg[2] + ")";
+            errmsg = "Object " + arg[0] + " has wrong dimension (Expected " + arg[1] + ", Found " + arg[2] + ").";
             break;
             case TOO_HIGH_DIMENSION:
-            errmsg = arg[0] + " has too high dimension for job (Expected " + arg[1] + ", Found " + arg[2] + ")";
+            errmsg = arg[0] + " has too high dimension for job (Expected " + arg[1] + ", Found " + arg[2] + ").";
+            break;
+            case UNMATCHED_PARENTHESIS:
+            errmsg = "Unmatched parenthesis.";
+            break;
+            case OPERATION_ONLY_BINARY:
+            errmsg = "Operation " + arg[0] + " cannot be unary.";
             break;
         }
         if (error_pos != -1) {
-            std::cout << "\e[31m"<< "line " << error_pos << ": " << errmsg << "\e[m";
+            std::cout << "\e[31m"<< "line " << error_pos << ": " << errmsg << "\e[m.";
             exit(1);
         }
-        std::cout << "\e[31m"<< "runtime: " << errmsg << "\e[m";
+        std::cout << "\e[31m"<< "runtime: " << errmsg << "\e[m.";
         exit(1);
         return;
     }
@@ -127,10 +135,10 @@ class ErrHandler {
     // Deprecated
     void CallErrDE(int error_pos, std::string errmsg) {
         if (error_pos != -1) {
-            std::cout << "\e[31m"<< "line " << error_pos << ": " << errmsg << "\e[m";
+            std::cout << "\e[31m"<< "line " << error_pos << ": " << errmsg << "\e[m.";
             exit(1);
         }
-        std::cout << "\e[31m"<< "runtime: " << errmsg << "\e[m";
+        std::cout << "\e[31m"<< "runtime: " << errmsg << "\e[m.";
         exit(1);
         return;
     }
