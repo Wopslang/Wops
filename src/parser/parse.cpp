@@ -190,6 +190,8 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
         }
     } 
 
+    // :TODO remove all CallErrDE()
+
     // priority 4
     for (int idx = 0; idx < tokens.size(); idx++) {
         String token = tokens[idx];
@@ -250,7 +252,7 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
         if (!isTarget[idx]) continue;
         if (token == "*") {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErrDE(parsing_line, "operator * cannot be unary");
-            head = Expr({0, 0, 0}, Variable("_", "*", OPERATOR), parsing_line);
+            head = Expr({0, 0, 0}, Object("_", {}, {}, Variable("_", "*", OPERATOR), 0, parsing_line), parsing_line);
             head.SetChildren({
                 ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
                 ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
@@ -259,7 +261,7 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
         }
         if (token == "/") {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErrDE(parsing_line, "operator / cannot be unary");
-            head = Expr({0, 0, 0}, Variable("_", "/", OPERATOR), parsing_line);
+            head = Expr({0, 0, 0}, Object("_", {}, {}, Variable("_", "/", OPERATOR), 0, parsing_line), parsing_line);
             head.SetChildren({
                 ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
                 ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
@@ -268,7 +270,7 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
         }
         if (token == "%") {
             if (idx == 0 || idx == tokens.size()-1) ErrHandler().CallErrDE(parsing_line, "operator % cannot be unary");
-            head = Expr({0, 0, 0}, Variable("_", "%", OPERATOR), parsing_line);
+            head = Expr({0, 0, 0}, Object("_", {}, {}, Variable("_", "%", OPERATOR), 0, parsing_line), parsing_line);
             head.SetChildren({
                 ParseExpr(std::vector<String>(tokens.begin(), tokens.begin()+idx), parsing_line),
                 ParseExpr(std::vector<String>(tokens.begin()+idx+1, tokens.end()), parsing_line)
@@ -283,7 +285,7 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
         if (!isTarget[idx]) continue;
         if (token == "!") {
             if (idx == tokens.size()-1) ErrHandler().CallErrDE(parsing_line, "operator ! cannot appear after identifier");
-            head = Expr({0, 0, 0}, Variable("_", "!", OPERATOR), parsing_line);
+            head = Expr({0, 0, 0}, Object("_", {}, {}, Variable("_", "!", OPERATOR), 0, parsing_line), parsing_line);
             head.SetChildren({
                 ParseExpr({tokens[idx+1]}, parsing_line)
             });
@@ -556,7 +558,7 @@ int Parse(AST& head, std::vector<String> codes) {
                     ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR, {});
 
                 AST for_block(ForClauseStmt, {
-                        Variable("_", token_table[1], OPERATOR),
+                        Object("_", {}, {}, Variable("_", token_table[1], OPERATOR), 0, parsing_line, OK)
                     }, {
                         ParseExpr(std::vector<String>(token_table.begin()+3, token_table.begin()+rangeidx_list[0]), parsing_line),
                         ParseExpr(std::vector<String>(token_table.begin()+rangeidx_list[0]+1, token_table.begin()+rangeidx_list[1]), parsing_line),
@@ -611,7 +613,7 @@ int Parse(AST& head, std::vector<String> codes) {
         // Assignment
         else if (token_table.size() > 2 && token_table[1] == "=") {
             AST assignment(Assignment, {
-                Variable("_", token_table[0], OPERATOR)
+                Object("_", {}, {}, Variable("_", token_table[0], OPERATOR), 0, parsing_line, OK)
             }, { 
                 ParseExpr(std::vector<String>(token_table.begin()+2, token_table.end()), parsing_line)
             }, parsing_line);
@@ -622,8 +624,8 @@ int Parse(AST& head, std::vector<String> codes) {
         // VarDel
         else if (token_table.size() > 3 && token_table[2] == "=") {
             AST vardel(VarDel, {
-                Variable("_", token_table[0], OPERATOR),
-                Variable("_", token_table[1], OPERATOR)
+                Object("_", {}, {}, Variable("_", token_table[0], OPERATOR), 0, parsing_line, OK),
+                Object("_", {}, {}, Variable("_", token_table[1], OPERATOR), 0, parsing_line, OK)
             }, { 
                 ParseExpr(std::vector<String>(token_table.begin()+3, token_table.end()), parsing_line)
             }, parsing_line);
@@ -634,8 +636,8 @@ int Parse(AST& head, std::vector<String> codes) {
         // ConstDel
         else if (token_table.size() > 4 && token_table[0] == "const" && token_table[3] == "=") {
             AST constdel(ConstDel, {
-                Variable("_", token_table[1], OPERATOR),
-                Variable("_", token_table[2], OPERATOR)
+                Object("_", {}, {}, Variable("_", token_table[1], OPERATOR), 0, parsing_line, OK),
+                Object("_", {}, {}, Variable("_", token_table[2], OPERATOR), 0, parsing_line, OK)
             }, { 
                 ParseExpr(std::vector<String>(token_table.begin()+4, token_table.end()), parsing_line)
             }, parsing_line);
