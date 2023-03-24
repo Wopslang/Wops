@@ -1,4 +1,5 @@
-> :construction: We're reviewing every logic in the parser due to too many errors  
+> :mega: **IMPORTANT ANNOUNCEMENT**   
+> Every Wops teammate is a student, preparing for some exams, entrance tests, and more. Now, most developers are living hard as students, not developers. And it is causing delays in updates. However, this project is still onboard, and we always welcome your contributions! Please stay tuned on Wopslang and be with our team.  
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
 [![CI - Ubuntu OS](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml)
