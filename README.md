@@ -16,6 +16,11 @@ func<WholeNewWorld> Wopslang(contributors) {
 ```
 
 ### `#LanguageForAlgorithm` `#WorkingPseudo`
+_**Wopslang**_ is for every computer scientist who needs a **pseudocode-like**, but **working** programming language.  
+_**Simple grammar**_ will highlight your logical ideas. _**Fast-runtime**_ will give you immediate feedback to forward.  
+_Be with our project, using ⭐_
+
+***
 
 ## Infomation
 
