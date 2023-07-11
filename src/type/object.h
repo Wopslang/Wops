@@ -103,7 +103,7 @@ class Object {
 
     // Variable GetBase()
     // Getter function for base
-    Variable GetBase() { 
+    Variable& GetBase() { 
         if (dim) ErrHandler().CallErr(runtime_codeline, TOO_HIGH_DIMENSION, {token, "0", std::to_string(dim)});
         return base; 
     }

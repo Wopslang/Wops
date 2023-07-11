@@ -77,9 +77,11 @@ class Expr {
 		if (variable) {
 			auto iter = storages[0].find(tkn);
 			bool wasErrorOccured = true;
+			Object ret;
 			for (Storage storage: storages) {
 				iter = storage.find(tkn);
 				if (iter != storage.end()) {
+					ret = iter->second;
 					wasErrorOccured = false;
 					break;
 				}
@@ -87,8 +89,8 @@ class Expr {
 			if (wasErrorOccured)  // has variable declared?
 				ErrHandler().CallErr(codeline, VARIABLE_HAS_NOT_DECLARED, {tkn});
 
-			iter->second.runtime_codeline = codeline;
-			return iter->second;
+			ret.runtime_codeline = codeline;
+			return ret;
 		}
 		if (constant) {
 			return Object("_", {}, {}, token.GetBase(), 0, codeline, OK);
