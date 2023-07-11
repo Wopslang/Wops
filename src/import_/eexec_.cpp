@@ -8,21 +8,22 @@
 
 #include "eexec_.h"
 
-// ArrayWithCode EExecFunc(std::string func, Array argv)
+// Object EExecFunc(std::string func, Object argv)
 // Calls a function with argv as a parameter and func as a name.
-ArrayWithCode EExecFunc(std::string func, Array argv) {
+Object EExecFunc(std::string func, Object argv) {
     // EMPTY VARIABLE
-    Array null(Variable("_", "", INT));
+    Object null("_", {}, {}, Variable("_", "", INT), 0);
 
     void* handle = dlopen("lib/library.so", RTLD_LAZY);
 
     if (!handle) {
         ErrHandler().CallErr(-1, CANNOT_LOAD_LIBRARY, {std::string(dlerror())});
-        return {null, ERROR};
+        null.errvalue = CANNOT_LOAD_LIBRARY;
+        return null;
     }
 
     // function pointer
-    typedef ArrayWithCode (*t)(Array);
+    typedef Object (*t)(Object);
 
     // reset errors
     dlerror();
@@ -33,10 +34,11 @@ ArrayWithCode EExecFunc(std::string func, Array argv) {
     if (dlsym_error) {
         ErrHandler().CallErr(-1, CANNOT_LOAD_SYMBOL, {func});
         dlclose(handle);
-        return {null, ERROR};
+        null.errvalue = CANNOT_LOAD_SYMBOL;
+        return null;
     }
 
-    ArrayWithCode ret = fptr(argv);
+    Object ret = fptr(argv);
     dlclose(handle);
     return ret;
 }

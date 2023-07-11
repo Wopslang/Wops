@@ -34,6 +34,12 @@ enum Err {
     FOR_NO_BOOLEAN_CONDITION,
     CANNOT_LOAD_LIBRARY,
     CANNOT_LOAD_SYMBOL,
+    OBJECT_OVERFLOW,
+    OBJECT_NOT_MATCHING_DATA,
+    OBJECT_WRONG_DIMENSION,
+    TOO_HIGH_DIMENSION,
+    UNMATCHED_PARENTHESIS,
+    OPERATION_ONLY_BINARY,
 };
 
 class ErrHandler {
@@ -69,10 +75,10 @@ class ErrHandler {
             errmsg = arg[0] + " has not declared yet";
             break;
             case VARIABLE_REDECLARE:
-            errmsg = "Redeclare variable " + arg[0];
+            errmsg = "Redeclared variable " + arg[0] + "";
             break;
             case ERROR_OCCURED_WHILE_CALLING_FUNCTION:
-            errmsg = "Error occured while calling " + arg[0];
+            errmsg = "Error occured while calling " + arg[0] + "";
             break;
             case BREAK_CONTINUE_ONLY_ALLOWED_FOR:
             errmsg = "break and continue statement only allowed to be used in for statements";
@@ -84,26 +90,44 @@ class ErrHandler {
             errmsg = "Variable " + arg[0] + " hasn't declared yet";
             break;
             case IF_NO_BOOLEAN_CONDITION:
-            errmsg = "If Statement allows only boolean condition expression.";
+            errmsg = "If Statement allows only boolean condition expression";
             break;
             case ELIF_NO_BOOLEAN_CONDITION:
-            errmsg = "Elif Statement allows only boolean condition expression.";
+            errmsg = "Elif Statement allows only boolean condition expression";
             break;
             case FOR_NO_BOOLEAN_CONDITION:
-            errmsg = "For Statement allows only boolean condition expression.";
+            errmsg = "For Statement allows only boolean condition expression";
             break;
             case CANNOT_LOAD_LIBRARY:
-            errmsg = "Cannot load library: " + arg[0];
+            errmsg = "Cannot load library: " + arg[0] +  "";
             break;
             case CANNOT_LOAD_SYMBOL:
-            errmsg = "Cannot load symbol: " + arg[0];
+            errmsg = "Cannot load symbol: " + arg[0] + "";
+            break;
+            case OBJECT_OVERFLOW:
+            errmsg = "Size of object " + arg[0] + " is over than limit";
+            break;
+            case OBJECT_NOT_MATCHING_DATA:
+            errmsg = "Data of object " + arg[0] + " does not match with declaration";
+            break;
+            case OBJECT_WRONG_DIMENSION:
+            errmsg = "Object " + arg[0] + " has wrong dimension (Expected " + arg[1] + ", Found " + arg[2] + ")";
+            break;
+            case TOO_HIGH_DIMENSION:
+            errmsg = arg[0] + " has too high dimension for job (Expected " + arg[1] + ", Found " + arg[2] + ")";
+            break;
+            case UNMATCHED_PARENTHESIS:
+            errmsg = "Unmatched parenthesis";
+            break;
+            case OPERATION_ONLY_BINARY:
+            errmsg = "Operation " + arg[0] + " cannot be unary";
             break;
         }
         if (error_pos != -1) {
-            std::cout << "\e[31m"<< "line " << error_pos << ": " << errmsg << "\e[m";
+            std::cout << "\e[31m"<< "line " << error_pos << ": " << errmsg << "\e[m.";
             exit(1);
         }
-        std::cout << "\e[31m"<< "runtime: " << errmsg << "\e[m";
+        std::cout << "\e[31m"<< "runtime: " << errmsg << "\e[m.";
         exit(1);
         return;
     }
@@ -111,10 +135,10 @@ class ErrHandler {
     // Deprecated
     void CallErrDE(int error_pos, std::string errmsg) {
         if (error_pos != -1) {
-            std::cout << "\e[31m"<< "line " << error_pos << ": " << errmsg << "\e[m";
+            std::cout << "\e[31m"<< "line " << error_pos << ": " << errmsg << "\e[m.";
             exit(1);
         }
-        std::cout << "\e[31m"<< "runtime: " << errmsg << "\e[m";
+        std::cout << "\e[31m"<< "runtime: " << errmsg << "\e[m.";
         exit(1);
         return;
     }

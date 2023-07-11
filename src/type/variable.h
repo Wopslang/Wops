@@ -34,14 +34,14 @@ enum TYPE {
 class Variable {
     private:
     public:
-    std::string value;
-    std::string token;
+    String value;
+    String token;
     bool constant = 0;
     int runtime_codeline; // for error analyzing
     TYPE _t;
 
     // constructor
-    Variable(std::string varname = "_", std::string val = "", TYPE t = OPERATOR, int _runtime_codeline = -1, bool con = 0) {
+    Variable(String varname = "_", String val = "", TYPE t = OPERATOR, int _runtime_codeline = -1, bool con = 0) {
         runtime_codeline = _runtime_codeline;
         _t = t;
         token = varname;
@@ -271,14 +271,14 @@ class Variable {
     }
 
     // management
-    inline Err Substitute(std::string newval); // substitute
-    inline std::string GetValue(); // extract
+    inline Err Substitute(String newval); // substitute
+    inline String GetValue(); // extract
 
     // utility
-    inline std::string trim(std::string s) { s = s.erase(0,1); return s.erase(s.length()-1, 1); }
+    inline String trim(String s) { s = s.erase(0,1); return s.erase(s.length()-1, 1); }
 };
 
-inline Err Variable::Substitute(std::string newval) {
+inline Err Variable::Substitute(String newval) {
     if (newval == "") return OK;
     try {
         switch (_t) {
@@ -308,7 +308,7 @@ inline Err Variable::Substitute(std::string newval) {
     return OK;
 }
 
-inline std::string Variable::GetValue() { return value; }
+inline String Variable::GetValue() { return value; }
 
 // struct VariableWithCode
 // Has Variable class and Err enum as elements.

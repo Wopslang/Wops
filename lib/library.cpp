@@ -14,7 +14,7 @@
 #include <string>
 #include <algorithm>
 #include <regex>
-#include "../src/type/array.h"
+#include "../src/type/object.h"
 #include "../src/type/variable.h"
 
 // Standard I/O Functions
@@ -25,17 +25,17 @@
 * @param [any s]
 * @return none
 */
-extern "C" ArrayWithCode out(Array s) {
-    // EMPTY VARIABLE
-    Array null(Variable("_", "", INT));
-    for (Variable e: s.container) {
-        if (e.GetValue() == "") continue;
-        if (e._t == STRING)
-            std::cout << e.trim(e.GetValue());
+extern "C" Object out(Object s) {
+    for (Object e: s.GetContainer()) {
+        if (e.GetBase().GetValue() == "") continue;
+        if (e.dim) 
+            return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
+        if (e.GetBase()._t == STRING)
+            std::cout << e.GetBase().trim(e.GetBase().GetValue());
         else 
-            std::cout << e.GetValue();
+            std::cout << e.GetBase().GetValue();
     }
-    return {null, OK};
+    return {"_", {}, {}, {}, 0, -1, OK};
 }
 
 /**
@@ -45,10 +45,9 @@ extern "C" ArrayWithCode out(Array s) {
 * @return string s
 * Terminates inputting when space or new line character is entered
 */
-extern "C" ArrayWithCode in(Array _) { 
+extern "C" Object in(Object _) { 
     std::string s; std::cin >> s;
-    Array ret(Variable("_", "\""+s+"\"", STRING));
-    return {ret, OK};
+    return {"_", {}, {}, Variable("_", "\""+s+"\"", STRING), 0, -1, OK};
 }
 
 // Type Function
@@ -58,23 +57,23 @@ extern "C" ArrayWithCode in(Array _) {
 * @param any s
 * @return int r
 */
-extern "C" ArrayWithCode toint(Array s) { 
-    Array ret;
-    if (s.container.size() != 1) return {ret, ERROR};
+extern "C" Object toint(Object s) { 
+    if (s.dim != 1 || s.size[0] != 1) return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
 
-    Variable e = s.container[0];
+    Object cont = s.GetContainer()[0];
+    if (cont.dim) return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
+
+    Variable e = cont.GetBase();
     if (e._t == STRING) {
         if (e.GetValue()[0] != '"'
             || e.GetValue()[e.value.length()-1] != '"'
             || e.value.length() < 2
             || std::regex_match(e.trim(e.value), std::regex("/[+-]?\\d+"))) {
-                return {ret, ERROR};
+                return {"_", {}, {}, {}, 0, -1, OBJECT_NOT_MATCHING_DATA};
         }
-        ret.container.push_back(Variable("_", std::to_string(std::stoi(e.trim(e.value))), INT));
-        return {ret, OK};
+        return {"_", {}, {}, Variable("_", std::to_string(std::stoi(e.trim(e.value)))), 0, -1, OK};
     }
-    ret.container.push_back(Variable("_", std::to_string(std::stoi(e.value)), INT));
-    return {ret, OK};
+    return {"_", {}, {}, Variable("_", std::to_string(std::stoi(e.value)), INT), 0, -1, OK};
 }
 
 /**
@@ -83,45 +82,12 @@ extern "C" ArrayWithCode toint(Array s) {
 * @param any s
 * @return string r
 */
-extern "C" ArrayWithCode tostring(Array s) { 
-    Array ret;
-    if (s.container.size() != 1) return {ret, ERROR};
+extern "C" Object tostring(Object s) { 
+    if (s.dim != 1 || s.size[0] != 1) return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
 
-    Variable e = s.container[0];
-    ret.container.push_back(Variable("_", "\""+e.GetValue()+"\"", STRING));
-    return {ret, OK};
-}
+    Object cont = s.GetContainer()[0];
+    if (cont.dim) return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
 
-// Mathematics Functions
-// These functions will be with v0.15. Check the announcement for detail.
-
-/**
- * @brief int phi(int a): Euler's totient of a
- * @name phi
- * @param int a
- * @return int a
- * @remark This is just a demo code. It'll be with v0.15. 
- */
-extern "C" ArrayWithCode phi(Array a) {
-    Array err(Variable("_", "", INT));
-    if (a.container.size() != 1) return {err, ERROR};
-
-    Variable e = a.container[0];
-    if (e._t != INT) return {err, ERROR};
-
-    Int n = stoi(e.GetValue());
-    if (n < 0) return {err, ERROR};
-
-    Int ret = n;
-    for (Int i = 2; i*i <= n; i++) {
-        if (n % i == 0) {
-            ret -= (ret / i);
-            while (!(n % i)) n /= i;
-        }
-    }
-
-    ret = (n > 1 ? ret - (ret / n) : ret);
-
-    Array res(Variable("_", std::to_string(ret), INT));
-    return {res, OK};
+    Variable e = cont.GetBase();
+    return {"_", {}, {}, Variable("_", "\""+e.GetValue()+"\"", STRING), 0, -1, OK};
 }

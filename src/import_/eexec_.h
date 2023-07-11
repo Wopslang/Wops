@@ -14,16 +14,16 @@
 #include <iostream>
 #include <string>
 #include "../type/variable.h"
-#include "../type/array.h"
+#include "../type/object.h"
 #include "../error/signal.h"
 
 #ifndef WOPS_EEXEC_H
 #define WOPS_EEXEC_H
 
 /*
-ArrayWithCode EExecFunc(std::string func, Array argv)
+Object EExecFunc(std::string func, Object argv)
 Calls a function with argv as a parameter and func as a name.
 */
-ArrayWithCode EExecFunc(std::string func, Array argv);
+Object EExecFunc(std::string func, Object argv);
 
 #endif
