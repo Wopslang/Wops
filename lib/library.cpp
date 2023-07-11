@@ -58,9 +58,12 @@ extern "C" Object in(Object _) {
 * @return int r
 */
 extern "C" Object toint(Object s) { 
-    if (s.dim) return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
+    if (s.dim != 1 || s.size[0] != 1) return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
 
-    Variable e = s.GetBase();
+    Object cont = s.GetContainer()[0];
+    if (cont.dim) return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
+
+    Variable e = cont.GetBase();
     if (e._t == STRING) {
         if (e.GetValue()[0] != '"'
             || e.GetValue()[e.value.length()-1] != '"'
@@ -80,8 +83,11 @@ extern "C" Object toint(Object s) {
 * @return string r
 */
 extern "C" Object tostring(Object s) { 
-    if (s.dim) return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
+    if (s.dim != 1 || s.size[0] != 1) return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
 
-    Variable e = s.GetBase();
+    Object cont = s.GetContainer()[0];
+    if (cont.dim) return {"_", {}, {}, {}, 0, -1, TOO_HIGH_DIMENSION};
+
+    Variable e = cont.GetBase();
     return {"_", {}, {}, Variable("_", "\""+e.GetValue()+"\"", STRING), 0, -1, OK};
 }

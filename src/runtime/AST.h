@@ -101,6 +101,7 @@ class Expr {
 			for (Expr child: children) {
 				container.push_back(child.Execute(storages));
 			}
+			arg.runtime_codeline = codeline;
 			arg.dim = 1; arg.ReplaceContainer(container); arg.size = { (Int)container.size() };
 			Object res = EExecFunc(tkn, arg);
 			if (res.errvalue != OK)
