@@ -8,9 +8,9 @@
 ```go
 func<WholeNewWorld> Wopslang(contributors) {
     int newIdea = 0
-    for i in contributors {
+    for i in contributors $
         newIdea += 100
-    }
+    ;
     return bindAll(newIdea, Whops)
 }
 ```
