@@ -20,6 +20,7 @@
   - [Boolean Literal]
 - [Types]
 - [Variables]
+- [Objects]
 - [Expressions]
   - [Blocks]
   - [Declarations]
@@ -143,7 +144,7 @@ The following character sequences represent operators (including assignment oper
 +    &&    ==    !=    (    )
 -    ||    <     <=    [    ]
 *    >     >=    /     :    =
-           ;     %     !            
+~    ;     %     !            
 ```
 
 ### Integer Literal
@@ -269,6 +270,28 @@ int ooo = -1
 
 string poo = "result: " + tostring(woo + ooo)
 string soo = poo
+```
+## Objects
+
+:warning: ***WARNING! OBJECT IS ON DEVELOPMENT SO THE SPEC CAN BE CHANGED ANY TIME***  
+An object is a general storage for various data structures. Objects store data in their *container*.
+
+### Object Types
+Some types, called *object types*, can be used to represent what the object stores in their container. Three types of object types can be used in Wopslang v0.2: *Array*, *Func*, and *Object*. *Array* and *Func* are the predefined object types and represent a list of values and a function, respectively. You can define your objects by using *Object* object type.
+
+```ebnf
+ObjectType = ("Array" | "Func" | "Object") "<" { Type } ">"
+```
+### Defining Object
+NOT CONFIRMED YET. STAY TUNED.
+### Declaring Object
+There are two types of object which can be used in Wopslang v0.2: *constant object, modifiable object*. You can declare constant object as adding const keyword in object declare expression. Also, you should add initial value to declare constant object. Interpreter can emit the error if initial value is not compatible with the container of the object.
+
+```go
+/* WARNING: NOT CONFIRMED YET*/
+
+Array<int> arr <- {1 ~ 5}
+Func<int int int> sum <- {int a, int b, { return a+b }}
 ```
 
 ## Expressions
@@ -519,6 +542,7 @@ Redirect to [here][ext-link-1]
 [Lexical Elements]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#lexical-elements
 [Types]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#types
 [Variables]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#variables
+[Objects]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#objects
 [Expressions]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#expressions
 [Statements]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#statements
 [If Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if-statement
