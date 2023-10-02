@@ -20,6 +20,7 @@
   - [Boolean Literal]
 - [Types]
 - [Variables]
+- [Containers]
 - [Objects]
   - [Object Types]
   - [Defining Object]
@@ -147,7 +148,7 @@ The following character sequences represent operators (including assignment oper
 +    &&    ==    !=    (    )
 -    ||    <     <=    [    ]
 *    >     >=    /     :    =
-~    ;     %     !     <-       
+~    ;     %     !     <-   ,    
 ```
 
 ### Integer Literal
@@ -274,6 +275,30 @@ int ooo = -1
 string poo = "result: " + tostring(woo + ooo)
 string soo = poo
 ```
+
+## Containers
+
+A container is an array-structure storage for holding multiple values.
+There is no need for every element to have the same type, so the container has no specific type.
+Values in the container can be a variable, a container, or even statements.
+Containers can be represented like following code.
+
+```go
+{1, 2, {3, 4}, 5}
+```
+
+Because objects use containers to store their data, you can assign a container to an object instead of assigning an object to it. 
+You can also use a container instantly in for statement.
+However, you can't declare a container directly and use it.
+
+```go
+Array<int> arr <- {1 ~ 9}
+for i in arr $
+    for j in {1 ~ 9} $
+        out(i, "*", j, "=", i*j)
+    ;
+;
+```
 ## Objects
 
 An object is a general storage for various data structures. Objects store data in their *container*.
@@ -282,19 +307,33 @@ An object is a general storage for various data structures. Objects store data i
 Some types, called *object types*, can be used to represent what the object stores in their container. Three types of object types can be used in Wopslang v0.2: *Array*, *Func*, and *Object*. *Array* and *Func* are the predefined object types and represent a list of values and a function, respectively. You can define your objects by using *Object* object type.
 
 ```ebnf
-ObjectType = ("Array" | "Func" | "Object") TypeBlock
+ObjectType = ("Array" | "Func" | "Object") ObjType
 ```
+
+If the object type has argument type, you can add argument types like
+
+```go
+<type1 type2 {type3, type4}>  // {} is a type container
+```
+For example,
+```go
+Array<int> arr_dim1  // 1-dim array
+Array<int, int> arr_dim2  // 2-dim array
+Func<{int, int}, int> fun_2_int_arg_1_int_ret  // (int, int) -> int
+```
+
 ### Defining Object
 NOT CONFIRMED YET. STAY TUNED.
 
 ### Declaring Object
-There are two types of object which can be used in Wopslang v0.2: *constant object, modifiable object*. You can declare constant object as adding const keyword in object declare expression. Also, you should add initial value to declare constant object. Interpreter can emit the error if initial value is not compatible with the container of the object.
+There are two ways of assigning a value to an object used in Wopslang v0.2: *Assigning an object directly*, and *Assigning a container into the object's container*.
+The former uses the regular operator *=* and works the same with assigning variables. 
+Latter uses the special operator *<-* only available in Object. 
+As for adding const keyword, of course, you can declare a constant object with a mandatory initial value.
 
 ```go
-/* WARNING: NOT CONFIRMED YET*/
-
 Array<int> arr <- {1 ~ 5}
-Func<int int int> sum <- {int a, int b, { return a+b }}
+Func<{int, int} int> sum <- {int a, int b, { return a+b }}
 ```
 
 ## Expressions
@@ -307,8 +346,6 @@ A block is an empty sequence of declarations and statements within : and ;.
 Block = ":" [ Statements ] ";" .
 IfBlock = "?" [ Statements ] ";" .
 ForBlock = "$" [ Statements ] ";" .
-ObjectBlock = "{" { ObjectStmt ","} [ ObjectStmt ] "}" .
-TypeBlock = "<" { ObjectStmt } ">" .
 Statements = { Statement } .
 ```
 
@@ -323,8 +360,8 @@ Every identifier in a program must be declared, and no identifier may be declare
 Declaration = ConstVarDel | VarDel | ConstObjDel | ObjDel .
 ConstVarDel = "const" Type identifiers "=" Expression .
 VarDel = Type identifiers [ "=" Expression ] .
-ConstObjDel = "const" ObjectType identifiers ( "<-" ObjectBlock | "=" Expression ).
-ObjDel = ObjectType identifiers [ "<-" ObjectBlock | "=" Expression ] .
+ConstObjDel = "const" ObjectType identifiers ( "<-" Container | "=" Expression ) .
+ObjDel = ObjectType identifiers [ "<-" Container | "=" Expression ] .
 ```
 
 To find syntax defination of `Expression`, see [Operators] for more.
@@ -334,9 +371,11 @@ To find syntax defination of `Expression`, see [Operators] for more.
 Operands represent the elementary values in an expression. It can be a *literal*, a *function*, or a *variable*.
 
 ```ebnf
-Operand = Literal | OpndName | "(" Expression ")" .
+Operand = Literal | OpndName | "(" Expression ")" | Container | ObjType.
 Literal = integer_lit | float_lit | rune_lit | string_lit .
 OpndName = identifier .
+Container = "{" { (Container | Statement) "," } [Container | Statement] "}" .
+ObjType = "<" {Container | Type} ">" .
 ```
 
 Also, there are some unit expression groups:
@@ -355,11 +394,12 @@ foo
 boo
 (3 + 0.25)
 out("Hello, World!\n", "Nice to meet you :D")
+{"this", "is", {"a", "container"}}
 ```
 
 ### Calls
 
-> We'll support user-made function very soon (maybe next version). Stay tuned.
+> Defining function will be supported with Func object.
 
 Here is the basic formation of function:
 
@@ -429,7 +469,6 @@ Statement =
          BreakStmt | ContinueStmt |
          IfStmt | ForStmt .
 
-ObjectStmt = ObjectBlock | Statement .
 SimpleStmt = Blank | Expression | Assignment .
 ```
 
@@ -446,15 +485,18 @@ Blank = .
 The assignment statement assigns a value to the specified variable.
 
 ```ebnf
-Assignment = identifiers "=" Expression .
+Assignment = identifiers "=" Expression | identifiers "<-" Container .
 ```
 
-Left-side operand should be lvalue. Also, left-side and right-side operand should share matching type(same type, double-int, ...).
+For `=` assignment, Left-side operand should be lvalue.
+Also, left-side and right-side operand should share matching type(same type, double-int, ...).
+For `<-` assignment, right-side should be a container matching with left-side operand's type.
 
 ```go
 a = "Hello, " + in()
-b = 30 * (50 / 27)  <- b = 30
+b = 30 * (50 / 27)  // b = 30
 c = 0.5 - 1.3
+d <- {1 ~ 5}  // d = {1, 2, 3, 4, 5}
 ```
 
 ### If Statement
@@ -542,44 +584,45 @@ Redirect to [here][ext-link-1]
 
 <!-- Link -->
 [Introduction]: #introduction
-[Notation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#notation
-[Source Code Representation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#source-code-representation
-[Lexical Elements]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#lexical-elements
-[Types]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#types
-[Variables]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#variables
-[Objects]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#objects
-[Expressions]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#expressions
-[Statements]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#statements
-[If Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if-statement
-[For Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#for-statement
-[Builtin functions]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#builtin-functions
-[Tokens]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#tokens
-[Predeclared Identifiers]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#predeclared-identifiers
+[Notation]: #notation
+[Source Code Representation]: #source-code-representation
+[Lexical Elements]: #lexical-elements
+[Types]: #types
+[Variables]: #variables
+[Containers]: #containers
+[Objects]: #objects
+[Expressions]: #expressions
+[Statements]: #statements
+[If Statement]: #if-statement
+[For Statement]: #for-statement
+[Builtin functions]: #builtin-functions
+[Tokens]: #tokens
+[Predeclared Identifiers]: #predeclared-identifiers
 [UTF-8]: https://en.wikipedia.org/wiki/UTF-8
-[Characters]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#characters
-[Letter and Digits]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#letter-and-digits
-[Comments]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#comments
-[Semicolons]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#semicolons
-[Identifiers]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#identifiers
-[Keywords]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#keywords
-[Operators and Punctuation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#operators-and-punctuation
-[Integer Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#integer-literal
-[Floating-point Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#floating-point-literal
-[Rune Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#rune-literal
-[String Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#string-literal
-[Boolean Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#boolean-literal
-[Blocks]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#blocks
-[Declarations]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#declarations
-[Operands]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#operands
-[Calls]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#calls
-[Operators]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#operators
-[Arithmetic Operators]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#arithmetic-operators
-[Conversion]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#conversion
-[Blank Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#blank-statement
-[Assignment]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#assignment
-[If Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if-statement
-[For Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#for-statement
-[Break and Continue Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#break-and-continue-statement
+[Characters]: #characters
+[Letter and Digits]: #letter-and-digits
+[Comments]: #comments
+[Semicolons]: #semicolons
+[Identifiers]: #identifiers
+[Keywords]: #keywords
+[Operators and Punctuation]: #operators-and-punctuation
+[Integer Literal]: #integer-literal
+[Floating-point Literal]: #floating-point-literal
+[Rune Literal]: #rune-literal
+[String Literal]: #string-literal
+[Boolean Literal]: #boolean-literal
+[Blocks]: #blocks
+[Declarations]: #declarations
+[Operands]: #operands
+[Calls]: #calls
+[Operators]: #operators
+[Arithmetic Operators]: #arithmetic-operators
+[Conversion]: #conversion
+[Blank Statement]: #blank-statement
+[Assignment]: #assignment
+[If Statement]: #if-statement
+[For Statement]: #for-statement
+[Break and Continue Statement]: #break-and-continue-statement
 [ext-link-1]: https://github.com/Wopslang/Wops/blob/main/lib/functions.md
 
 © 2021 Wops Team
