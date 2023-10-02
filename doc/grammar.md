@@ -21,6 +21,9 @@
 - [Types]
 - [Variables]
 - [Objects]
+  - [Object Types]
+  - [Defining Object]
+  - [Declaring Object]
 - [Expressions]
   - [Blocks]
   - [Declarations]
@@ -144,7 +147,7 @@ The following character sequences represent operators (including assignment oper
 +    &&    ==    !=    (    )
 -    ||    <     <=    [    ]
 *    >     >=    /     :    =
-~    ;     %     !            
+~    ;     %     !     <-       
 ```
 
 ### Integer Literal
@@ -273,17 +276,17 @@ string soo = poo
 ```
 ## Objects
 
-:warning: ***WARNING! OBJECT IS ON DEVELOPMENT SO THE SPEC CAN BE CHANGED ANY TIME***  
 An object is a general storage for various data structures. Objects store data in their *container*.
 
 ### Object Types
 Some types, called *object types*, can be used to represent what the object stores in their container. Three types of object types can be used in Wopslang v0.2: *Array*, *Func*, and *Object*. *Array* and *Func* are the predefined object types and represent a list of values and a function, respectively. You can define your objects by using *Object* object type.
 
 ```ebnf
-ObjectType = ("Array" | "Func" | "Object") "<" { Type } ">"
+ObjectType = ("Array" | "Func" | "Object") TypeBlock
 ```
 ### Defining Object
 NOT CONFIRMED YET. STAY TUNED.
+
 ### Declaring Object
 There are two types of object which can be used in Wopslang v0.2: *constant object, modifiable object*. You can declare constant object as adding const keyword in object declare expression. Also, you should add initial value to declare constant object. Interpreter can emit the error if initial value is not compatible with the container of the object.
 
@@ -298,12 +301,14 @@ Func<int int int> sum <- {int a, int b, { return a+b }}
 
 ### Blocks
 
-A block is an empty sequence of declarations and statements within matching brace({,})s.
+A block is an empty sequence of declarations and statements within : and ;.
 
 ```ebnf
-Block = ":" Statements ";" .
-IfBlock = "?" Statements ";" .
-ForBlock = "$" Statements ";" .
+Block = ":" [ Statements ] ";" .
+IfBlock = "?" [ Statements ] ";" .
+ForBlock = "$" [ Statements ] ";" .
+ObjectBlock = "{" { ObjectStmt ","} [ ObjectStmt ] "}" .
+TypeBlock = "<" { ObjectStmt } ">" .
 Statements = { Statement } .
 ```
 
@@ -315,9 +320,11 @@ A declaration bind *identifiers* and *value* to a constant or [variable][Variabl
 Every identifier in a program must be declared, and no identifier may be declared twice in the same block. See [Variables] to get more information.
 
 ```ebnf
-Declaration = ConstDel | VarDel .
-ConstDel = "const" Type identifiers "=" Expression .
+Declaration = ConstVarDel | VarDel | ConstObjDel | ObjDel .
+ConstVarDel = "const" Type identifiers "=" Expression .
 VarDel = Type identifiers [ "=" Expression ] .
+ConstObjDel = "const" ObjectType identifiers ( "<-" ObjectBlock | "=" Expression ).
+ObjDel = ObjectType identifiers [ "<-" ObjectBlock | "=" Expression ] .
 ```
 
 To find syntax defination of `Expression`, see [Operators] for more.
@@ -392,9 +399,7 @@ Each operator has a different priority for parsing. For instance, unary operator
 |4|`+`, `-`|
 |3|`==`, `!=`, `<`, `<=`, `>`, `>=`|
 |2|`&&`|
-|1|binary_op OR |
-
-> binary_op OR : `||`
+|1|`\|\|`|
 
 The leftmost operator in the same priority has a higher priority. For instance, a+b-c is the same with (a+b)-c.
 
@@ -424,6 +429,7 @@ Statement =
          BreakStmt | ContinueStmt |
          IfStmt | ForStmt .
 
+ObjectStmt = ObjectBlock | Statement .
 SimpleStmt = Blank | Expression | Assignment .
 ```
 
@@ -535,8 +541,7 @@ ContinueStmt = "continue" .
 Redirect to [here][ext-link-1]
 
 <!-- Link -->
-
-[Introduction]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#introduction
+[Introduction]: #introduction
 [Notation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#notation
 [Source Code Representation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#source-code-representation
 [Lexical Elements]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#lexical-elements
