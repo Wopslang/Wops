@@ -67,4 +67,4 @@ Special Thanks to @jhhan128
 
 ![Wopslang Logo](https://emoji.slack-edge.com/T01MFM2TJ07/wopsfull/7fe35e7cbecd2d4d.png)
 
-2022, Wops Team
+2023, Wops Team
