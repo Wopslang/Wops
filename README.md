@@ -5,12 +5,13 @@
 [![Badge](https://img.shields.io/badge/Slack-Join_our_chat-critical.svg?link=https://join.slack.com/t/wopslangcommunity/shared_invite/zt-nkcy12cy-n8YlAPnOT~ErPODF6k3jOw&logo=slack)](https://join.slack.com/t/wopslangcommunity/shared_invite/zt-nkcy12cy-n8YlAPnOT~ErPODF6k3jOw)
 
 ```go
-func<WholeNewWorld> Wopslang(contributors) {
-    int newIdea = 0
-    for i in contributors {
-        newIdea += 100
+func<people WholeNewWorld> Wopslang = {contributors, {
+        int newIdea = 0
+        for i in contributors $
+            newIdea += 100
+        ;
+        return bindAll(newIdea, Whops)
     }
-    return bindAll(newIdea, Whops)
 }
 ```
 
