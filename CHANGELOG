@@ -4,6 +4,21 @@
   - add more function  
   - support Array(based on `std::vector`)  
 
+=== v0.1.6: 9b2d6a9 ===
+THIS IS INTERNAL UPDATE: THERE IS NO NEW FEATURE
+
+improvement
+  - deprecated Array class
+  - developed Object class for v0.2
+  - big improvement on error handler
+
+v0.1 checklist
+- Better parser (inline code & multiline statement)
+
+v0.2 checklist
+- Object (Array, Func) (user-definable Object will be in v0.2.1)
+- Third party library & changing library code into `.wops`
+
 === v0.1.5: 239dd25 ===
 
 - feature
