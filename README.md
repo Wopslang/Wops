@@ -25,7 +25,7 @@ _Be with our project, using ⭐_
 
 ## Infomation
 
-Version: **Wopslang v0.1.5 alpha**  
+Version: **Wopslang v0.1.6 alpha**  
 License: Apache License 2.0  
 [⚒️ Official Documentation](./doc/README.md)  
 [➕ VSCode Extension](https://github.com/Wopslang/vscode-wops)
