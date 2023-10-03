@@ -20,6 +20,11 @@
   - [Boolean Literal]
 - [Types]
 - [Variables]
+- [Containers]
+- [Objects]
+  - [Object Types]
+  - [Defining Object]
+  - [Declaring Object]
 - [Expressions]
   - [Blocks]
   - [Declarations]
@@ -80,7 +85,7 @@ digit     = "0" ... "9" .
 
 Comments can be represented with a form:  
 
-- Full-line comments start with the character sequence // and stop at the end of the line.
+- Full-line comments start with `//` and stop at the end of the line.
 
 For example, this form will be allowed:
 
@@ -125,8 +130,6 @@ Some identifiers cannot be used. See [Predeclared Identifiers] for more detail.
 
 The following keywords are reserved and may not be used as identifiers.
 
-> We only put keywords which work on v0.1 alpha, so it can be updated.
-
 ```text
 break        const        continue
 elif         else         for
@@ -137,23 +140,21 @@ if           range
 
 The following character sequences represent operators (including assignment operators) and punctuation.
 
-> We only put operators and punctuation which work on v0.1 alpha, so it can be updated.
-
 ```text
 +    &&    ==    !=    (    )
 -    ||    <     <=    [    ]
 *    >     >=    /     :    =
-           ;     %     !            
+~    ;     %     !     <-   ,    
 ```
 
 ### Integer Literal
 
 An integer literal is a sequence of digits representing an integer constant.
 
-> In version v0.1, only decimal is allowed to use.
+> In version v0.x, only decimal is allowed to use.
 
 ```ebnf
-integer_lit    = "0" | ( "1" … "9" ) [ decimal_digits ] .
+integer_lit    = "0" | ("1" … "9") [ decimal_digits ] .
 decimal_digits = { digit } .
 ```
 
@@ -173,10 +174,10 @@ a56bc // (x)
 
 ### Boolean Literal
 
-boolean literal is a bit representing boolean constant: *true, and false*.
+boolean literal is a bit representing boolean constant: *true `1`, and false `0`*.
 
 ```ebnf
-bool_lit = "0" |  "1".
+bool_lit = "0" | "1".
 ```
 
 ### Floating-point Literal
@@ -249,10 +250,10 @@ There are four kind of type: *Integer, Floating-Point, String, and Boolean*. And
 
 |Identifier|Matching Type|Description|
 |---|---|--|
-|int|Integer|signed 32-bit integers (-2147483648 ~ 2147483647)|
-|double|Floating-Point|IEEE-754 64-bit floating-point numbers|
-|string|String|[same with string literal][String Literal]|
-|bool|Boolean|[same with boolean literal][Boolean Literal]|
+|`int`|Integer|signed 32-bit integers (-2147483648 ~ 2147483647)|
+|`double`|Floating-Point|IEEE-754 64-bit floating-point numbers|
+|`string`|String|[same with string literal][String Literal]|
+|`bool`|Boolean|[same with boolean literal][Boolean Literal]|
 
 ```ebnf
 Type = "int" | "double" | "string" | "bool" .
@@ -271,16 +272,86 @@ string poo = "result: " + tostring(woo + ooo)
 string soo = poo
 ```
 
+## Containers
+
+A container is an array-structure storage for holding multiple values.
+There is no need for every element to have the same type, so the container has no specific type.
+Values in the container can be a variable, a container, or even statements.
+Containers can be represented like following code.
+
+```go
+{1, 2, {3, 4}, 5}
+```
+
+Special operator (only available in container) `~` denotes the arithmetic integer sequence when it is used in a container.
+Basicaly, `a~b` denotes a sequence from `a` to `b` with interval `1`. You can also decide specific interval `c` using `a~b~c`.
+
+```go
+{0 ~ 10}  // {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+{1 ~ 10 ~ 3}  // {1,4,7,10}
+```
+
+You should aware that `~` contains last element.
+
+Because objects use containers to store their data, you can assign a container to an object instead of assigning an object to it. 
+You can also use a container instantly in for statement.
+However, you can't declare a container directly and use it.
+
+```go
+Array<int> arr <- {1 ~ 9}
+for i in arr $
+    for j in {1 ~ 9} $
+        out(i, "*", j, "=", i*j)
+    ;
+;
+```
+## Objects
+
+An object is a general storage for various data structures. Objects store data in their *container*.
+
+### Object Types
+Some types, called *object types*, can be used to represent what the object stores in their container. Three types of object types can be used in Wopslang v0.2: `Array`, `Func`, and `Object`. `Array` and `Func` are the predefined object types and represent a list of values and a function, respectively. You can define your objects by using `Object` object type.
+
+```ebnf
+ObjectType = ( "Array" | "Func" | "Object" ) ObjType
+```
+
+If the object type has argument type, you can add argument types like
+
+```go
+<type1 type2 {type3, type4}>  // {} is a type container
+```
+For example,
+```go
+Array<int> arr_dim1  // 1-dim array
+Array<int, int> arr_dim2  // 2-dim array
+Func<{int, int}, int> fun_2_int_arg_1_int_ret  // (int, int) -> int
+```
+
+### Defining Object
+NOT CONFIRMED YET. STAY TUNED.
+
+### Declaring Object
+There are two ways of assigning a value to an object used in Wopslang v0.2: *Assigning an object directly*, and *Assigning a container into the object's container*.
+The former uses the regular operator `=` and works the same with assigning variables. 
+Latter uses the special operator `<-` only available in Object. 
+As for adding const keyword, of course, you can declare a constant object with a mandatory initial value.
+
+```go
+Array<int> arr <- {1 ~ 5}
+Func<{int, int} int> sum <- {int a, int b, { return a+b }}
+```
+
 ## Expressions
 
 ### Blocks
 
-A block is an empty sequence of declarations and statements within matching brace({,})s.
+A block is an empty sequence of declarations and statements within `:` and `;`.
 
 ```ebnf
-Block = ":" Statements ";" .
-IfBlock = "?" Statements ";" .
-ForBlock = "$" Statements ";" .
+Block = ":" [ Statements ] ";" .
+IfBlock = "?" [ Statements ] ";" .
+ForBlock = "$" [ Statements ] ";" .
 Statements = { Statement } .
 ```
 
@@ -292,9 +363,11 @@ A declaration bind *identifiers* and *value* to a constant or [variable][Variabl
 Every identifier in a program must be declared, and no identifier may be declared twice in the same block. See [Variables] to get more information.
 
 ```ebnf
-Declaration = ConstDel | VarDel .
-ConstDel = "const" Type identifiers "=" Expression .
+Declaration = ConstVarDel | VarDel | ConstObjDel | ObjDel .
+ConstVarDel = "const" Type identifiers "=" Expression .
 VarDel = Type identifiers [ "=" Expression ] .
+ConstObjDel = "const" ObjectType identifiers ( "<-" Container | "=" Expression ) .
+ObjDel = ObjectType identifiers [ "<-" Container | "=" Expression ] .
 ```
 
 To find syntax defination of `Expression`, see [Operators] for more.
@@ -304,9 +377,13 @@ To find syntax defination of `Expression`, see [Operators] for more.
 Operands represent the elementary values in an expression. It can be a *literal*, a *function*, or a *variable*.
 
 ```ebnf
-Operand = Literal | OpndName | "(" Expression ")" .
+Operand = Literal | OpndName | "(" Expression ")" | Container | ObjType.
 Literal = integer_lit | float_lit | rune_lit | string_lit .
 OpndName = identifier .
+Container = ConGrp | ConRan .
+ConGrp = "{" { ( Container | Statement ) "," } [ Container | Statement ] "}" .
+ConRan = "{" Expression "~" Expression [ "~" Expression ] "}" .
+ObjType = "<" {Container | Type} ">" .
 ```
 
 Also, there are some unit expression groups:
@@ -315,7 +392,7 @@ Also, there are some unit expression groups:
 UnitExpr = Operand |
            UnitExpr Arguments .
 
-Arguments = "(" ([Expression] | { Expression "," } Expression ) ")" .
+Arguments = "(" ( [ Expression ] | { Expression "," } Expression ) ")" .
 ```
 
 For example:
@@ -325,11 +402,10 @@ foo
 boo
 (3 + 0.25)
 out("Hello, World!\n", "Nice to meet you :D")
+{"this", "is", {"a", "container"}}
 ```
 
 ### Calls
-
-> We'll support user-made function very soon (maybe next version). Stay tuned.
 
 Here is the basic formation of function:
 
@@ -369,23 +445,22 @@ Each operator has a different priority for parsing. For instance, unary operator
 |4|`+`, `-`|
 |3|`==`, `!=`, `<`, `<=`, `>`, `>=`|
 |2|`&&`|
-|1|binary_op OR |
+|1|`\|\|`|
 
-> binary_op OR : `||`
-
-The leftmost operator in the same priority has a higher priority. For instance, a+b-c is the same with (a+b)-c.
+The leftmost operator in the same priority has a higher priority.
+For instance, `a+b-c` is the same with `(a+b)-c`.
 
 ### Arithmetic Operators
 
 |Operator|Matching Literals|
 |--------|-----------------|
-|+|integer, float, string|
-|-|integer, float|
-|*|integer, float|
-|/|integer, float|
-|%|integer|
+|`+`|integer, float, string|
+|`-`|integer, float|
+|`*`|integer, float|
+|`/`|integer, float|
+|`%`|integer|
 
-If you divide by zero(A/0 or A%0, A:expression), interpreter will emit the error. Also, ***If you divide with integers, the result will be integer, too.***
+If you divide by zero(`A/0` or `A%0`, A:expression), interpreter will emit the error. Also, ***If you divide with integers, the result will be integer, too.***
 
 ### Conversion
 
@@ -417,20 +492,23 @@ Blank = .
 The assignment statement assigns a value to the specified variable.
 
 ```ebnf
-Assignment = identifiers "=" Expression .
+Assignment = identifiers "=" Expression | identifiers "<-" Container .
 ```
 
-Left-side operand should be lvalue. Also, left-side and right-side operand should share matching type(same type, double-int, ...).
+For `=` assignment, Left-side operand should be lvalue.
+Also, left-side and right-side operand should share matching type(same type, double-int, ...).
+For `<-` assignment, right-side should be a container matching with left-side operand's type.
 
 ```go
 a = "Hello, " + in()
-b = 30 * (50 / 27)  <- b = 30
+b = 30 * (50 / 27)  // b = 30
 c = 0.5 - 1.3
+d <- {1 ~ 5}  // d = {1, 2, 3, 4, 5}
 ```
 
 ### If Statement
 
-*If* statements specify the conditional execution of more than two branches according to the value of a boolean expression. If value is true, "if" branches will be executed, otherwise, highest "elif" branches will be executed. If every "if" and "elif" branches' expression is false, "else" branch will be executed.  
+*If* statements specify the conditional execution of more than two branches according to the value of a boolean expression. If value is true, `if` branches will be executed, otherwise, highest `elif` branches will be executed. If every `if` and `elif` branches' expression is false, `else` branch will be executed.  
 
 For example:
 
@@ -451,22 +529,21 @@ If a is 1, `A`'ll be executed. If a is larger than 1, `B`'ll be executed. For `C
 ```ebnf
 IfStmt = "if" Expression IfBlock
       { ";" Expression IfBlock }
-      [";" IfBlock]
+      [ ";" IfBlock ]
 ```
 
 ### For Statement
 
-*For* statement represent repeating execution of a block. There are three forms: *a single condition, a "for" clause*.
-
-> Note: there isn't a "range" clause because there isn't any array system in Wopslang v0.1.
+*For* statement represents repeating execution of a block.
+There are two types of for statement: *using a single condition*, and *using an array*.
 
 ```ebnf
-ForStmt = "for" ( Expression | ForClause ) ForBlock .
+ForStmt = "for" ( Expression | ArrayClause ) ForBlock .
 ```
 
 #### For statement with single condition
 
-A *for* statement with single condition represent repeating execution of a block as long as a boolean condition evaluates to true. The condition is evaluated before each iteration.
+A *for* statement with single condition represents repeating execution of a block as long as a boolean condition evaluates to true. The condition is evaluated before each iteration.
 
 ```go
 for a % 2 $
@@ -474,26 +551,30 @@ for a % 2 $
 ;
 ```
 
-#### For statement with for clause
+#### For statement with an array
 
-A *for* statement with for clause is based on `range` function. There are three arguments of `range` function: *start, end, and step*. Then, `range` function create an array which is [start, end) when step is one(it's almost same with *python's range function*). Finally, *for* statement repeat execution of a block with that array. **Remember that range function doesn't include end index's element**
+A *for* statement with an array assigns one element from the array to a local variable in order at every iteration.
 
 ```ebnf
-ForClause = identifiers "in" Expression "~" Expression "~" Expression" .
+ArrayClause = identifiers "in" Expression.
 ```
 
 ```go
-for i in 0~6~2 $
-    out(tostring(i) + "\n")
+Array<int> arr <- {0 ~ 4 ~ 2}
+for i in arr $
+    for j in {"a", "b", "c"} $
+        out(tostring(i) + j + " ")
+    ;
+    out("\n")
 ;
 ```
 
 Output:
 
 ```text
-0
-2
-4
+0a 0b 0c
+2a 2b 2c
+4a 4b 4c
 ```
 
 ### Break and Continue Statement
@@ -512,45 +593,49 @@ ContinueStmt = "continue" .
 Redirect to [here][ext-link-1]
 
 <!-- Link -->
-
-[Introduction]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#introduction
-[Notation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#notation
-[Source Code Representation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#source-code-representation
-[Lexical Elements]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#lexical-elements
-[Types]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#types
-[Variables]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#variables
-[Expressions]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#expressions
-[Statements]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#statements
-[If Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if-statement
-[For Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#for-statement
-[Builtin functions]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#builtin-functions
-[Tokens]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#tokens
-[Predeclared Identifiers]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#predeclared-identifiers
+[Introduction]: #introduction
+[Notation]: #notation
+[Source Code Representation]: #source-code-representation
+[Lexical Elements]: #lexical-elements
+[Types]: #types
+[Variables]: #variables
+[Containers]: #containers
+[Objects]: #objects
+[Object Types]: #object-types
+[Defining Object]: #defining-object
+[Declaring Object]: #declaring-object
+[Expressions]: #expressions
+[Statements]: #statements
+[If Statement]: #if-statement
+[For Statement]: #for-statement
+[Builtin functions]: #builtin-functions
+[Tokens]: #tokens
+[Predeclared Identifiers]: #predeclared-identifiers
 [UTF-8]: https://en.wikipedia.org/wiki/UTF-8
-[Characters]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#characters
-[Letter and Digits]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#letter-and-digits
-[Comments]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#comments
-[Semicolons]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#semicolons
-[Identifiers]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#identifiers
-[Keywords]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#keywords
-[Operators and Punctuation]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#operators-and-punctuation
-[Integer Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#integer-literal
-[Floating-point Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#floating-point-literal
-[Rune Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#rune-literal
-[String Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#string-literal
-[Boolean Literal]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#boolean-literal
-[Blocks]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#blocks
-[Declarations]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#declarations
-[Operands]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#operands
-[Calls]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#calls
-[Operators]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#operators
-[Arithmetic Operators]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#arithmetic-operators
-[Conversion]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#conversion
-[Blank Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#blank-statement
-[Assignment]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#assignment
-[If Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#if-statement
-[For Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#for-statement
-[Break and Continue Statement]: https://github.com/Wopslang/Wops/blob/main/doc/grammar.md#break-and-continue-statement
+[Characters]: #characters
+[Letter and Digits]: #letter-and-digits
+[Comments]: #comments
+[Semicolons]: #semicolons
+[Identifiers]: #identifiers
+[Keywords]: #keywords
+[Operators and Punctuation]: #operators-and-punctuation
+[Integer Literal]: #integer-literal
+[Floating-point Literal]: #floating-point-literal
+[Rune Literal]: #rune-literal
+[String Literal]: #string-literal
+[Boolean Literal]: #boolean-literal
+[Blocks]: #blocks
+[Declarations]: #declarations
+[Operands]: #operands
+[Calls]: #calls
+[Operators]: #operators
+[Arithmetic Operators]: #arithmetic-operators
+[Conversion]: #conversion
+[Blank Statement]: #blank-statement
+[Assignment]: #assignment
+[If Statement]: #if-statement
+[For Statement]: #for-statement
+[Break and Continue Statement]: #break-and-continue-statement
 [ext-link-1]: https://github.com/Wopslang/Wops/blob/main/lib/functions.md
 
-© 2021 Wops Team
+© 2023 Wops Team
