@@ -1,4 +1,4 @@
-# Official Wopslang Language Reference `v0.1`
+# Official Wopslang Language Reference `v0.2`
 
 ## Index
 
@@ -43,7 +43,7 @@
 
 ## Introduction
 
-It is the official Wopslang language reference for v0.1 alpha.
+It is the official Wopslang language reference for v0.2 alpha.
 Because this version is a test version, so lots of stuff in here can be changed.
 Of course, lots of new grammar can be added to Wopslang.
 So, make sure to check this page when you updated Wopslang to the newest version.
@@ -588,7 +588,7 @@ ContinueStmt = "continue" .
 
 ## Builtin Functions
 
-> Note: there are only four basic functions in Wopslang v0.1. We'll add more function very soon.
+> Note: there are only four basic functions in Wopslang v0.2. We'll add more function very soon.
 
 Redirect to [here][ext-link-1]
 
