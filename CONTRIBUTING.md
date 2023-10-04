@@ -23,7 +23,7 @@ If you already have a solution for it, PR suits you.
 Code style should satisfy these checklist.
 
 - [ ] [Google C++ Coding Style Guide #General Naming Rules](https://google.github.io/styleguide/cppguide.html#General_Naming_Rules)  
-- [ ] K&R Indentation style  
+- [ ] K&R Indentation Style  
 - [ ] Use Boilerplate Code :  
 
 ```c++
@@ -41,6 +41,15 @@ Code style should satisfy these checklist.
 /* your code */
 
 #endif
+```
+
+All commit messages should satisfy these checklist.
+- [ ] Description Starts with Lowercase Character
+- [ ] No Emoji
+- [ ] Use Boilerplate Code :
+
+```
+<file name/path>: <description>
 ```
 
 Also, your PR can be rejected by these reasons:
