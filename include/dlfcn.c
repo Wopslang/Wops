@@ -2,7 +2,7 @@
  * include/dlfcn.cpp
  * Wopslang DLFCN-WIN Sourcefile
  *
- * 2021, Wops Team
+ * 2023, Wops Team
  * */
 
 #include <inttypes.h>

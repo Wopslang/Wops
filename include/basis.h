@@ -1,8 +1,8 @@
 /*
  * include/basis.h
- * Wopslang Must-Be-INCLUDED Headerfile
+ * Wopslang MUST-BE-INCLUDED Headerfile
  *
- * 2021, Wops Team
+ * 2023, Wops Team
  * */
 
 #ifndef WOPSLANG_BASIS_H

@@ -1,9 +1,6 @@
-> :mega: **IMPORTANT ANNOUNCEMENT**   
-> Every Wops teammate is a student, preparing for some exams, entrance tests, and more. Now, most developers are living hard as students, not developers. And it is causing delays in updates. However, this project is still onboard, and we always welcome your contributions! Please stay tuned on Wopslang and be with our team.  
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
 [![CI - Ubuntu OS](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/Wopslang/Wops/actions/workflows/ubuntu.yml)
-[![Badge](https://img.shields.io/badge/Slack-Join_our_chat-critical.svg?link=https://join.slack.com/t/wopslangcommunity/shared_invite/zt-nkcy12cy-n8YlAPnOT~ErPODF6k3jOw&logo=slack)](https://join.slack.com/t/wopslangcommunity/shared_invite/zt-nkcy12cy-n8YlAPnOT~ErPODF6k3jOw)
 
 ```go
 func<people WholeNewWorld> Wopslang = {contributors, {
@@ -21,11 +18,10 @@ _**Wopslang**_ is for every computer scientist who needs a **pseudocode-like**, 
 _**Simple grammar**_ will highlight your logical ideas. _**Fast-runtime**_ will give you immediate feedback to forward.  
 _Be with our project, using ⭐_
 
-***
 
 ## Infomation
 
-Version: **Wopslang v0.1.6 alpha**  
+Version: **Wopslang v0.1 alpha**  
 License: Apache License 2.0  
 [⚒️ Official Documentation](./doc/README.md)  
 [➕ VSCode Extension](https://github.com/Wopslang/vscode-wops)

@@ -2,7 +2,7 @@
  * include/dlfcn.h
  * Wopslang DLFCN-WIN headerfile 
  *
- * 2021, Wops Team
+ * 2023, Wops Team
  * */
 
 #ifndef WOPS_DLFCN_H

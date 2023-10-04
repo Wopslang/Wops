@@ -20,11 +20,6 @@
   - [Boolean Literal]
 - [Types]
 - [Variables]
-- [Containers]
-- [Objects]
-  - [Object Types]
-  - [Defining Object]
-  - [Declaring Object]
 - [Expressions]
   - [Blocks]
   - [Declarations]
@@ -85,7 +80,7 @@ digit     = "0" ... "9" .
 
 Comments can be represented with a form:  
 
-- Full-line comments start with `//` and stop at the end of the line.
+- comments start with `//` and stop at the end of the line.
 
 For example, this form will be allowed:
 
@@ -100,7 +95,7 @@ And these forms won't be allowed:
 /*
 Bad :(
 */
-out(":(")  // Bad :(
+out(":(")
 ```
 
 ### Tokens
@@ -124,7 +119,7 @@ _WopsV01
 αβ
 ```
 
-Some identifiers cannot be used. See [Predeclared Identifiers] for more detail.
+Some identifiers cannot be used. See [Keywords] for more detail.
 
 ### Keywords
 
@@ -144,7 +139,7 @@ The following character sequences represent operators (including assignment oper
 +    &&    ==    !=    (    )
 -    ||    <     <=    [    ]
 *    >     >=    /     :    =
-~    ;     %     !     <-   ,    
+~    ;     %     ,     !
 ```
 
 ### Integer Literal
@@ -272,76 +267,6 @@ string poo = "result: " + tostring(woo + ooo)
 string soo = poo
 ```
 
-## Containers
-
-A container is an array-structure storage for holding multiple values.
-There is no need for every element to have the same type, so the container has no specific type.
-Values in the container can be a variable, a container, or even statements.
-Containers can be represented like following code.
-
-```go
-{1, 2, {3, 4}, 5}
-```
-
-Special operator (only available in container) `~` denotes the arithmetic integer sequence when it is used in a container.
-Basicaly, `a~b` denotes a sequence from `a` to `b` with interval `1`. You can also decide specific interval `c` using `a~b~c`.
-
-```go
-{0 ~ 10}  // {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-{1 ~ 10 ~ 3}  // {1,4,7,10}
-```
-
-You should aware that `~` contains last element.
-
-Because objects use containers to store their data, you can assign a container to an object instead of assigning an object to it. 
-You can also use a container instantly in for statement.
-However, you can't declare a container directly and use it.
-
-```go
-Array<int> arr <- {1 ~ 9}
-for i in arr $
-    for j in {1 ~ 9} $
-        out(i, "*", j, "=", i*j)
-    ;
-;
-```
-## Objects
-
-An object is a general storage for various data structures. Objects store data in their *container*.
-
-### Object Types
-Some types, called *object types*, can be used to represent what the object stores in their container. Three types of object types can be used in Wopslang v0.2: `Array`, `Func`, and `Object`. `Array` and `Func` are the predefined object types and represent a list of values and a function, respectively. You can define your objects by using `Object` object type.
-
-```ebnf
-ObjectType = ( "Array" | "Func" | "Object" ) ObjType
-```
-
-If the object type has argument type, you can add argument types like
-
-```go
-<type1 type2 {type3, type4}>  // {} is a type container
-```
-For example,
-```go
-Array<int> arr_dim1  // 1-dim array
-Array<int, int> arr_dim2  // 2-dim array
-Func<{int, int}, int> fun_2_int_arg_1_int_ret  // (int, int) -> int
-```
-
-### Defining Object
-NOT CONFIRMED YET. STAY TUNED.
-
-### Declaring Object
-There are two ways of assigning a value to an object used in Wopslang v0.2: *Assigning an object directly*, and *Assigning a container into the object's container*.
-The former uses the regular operator `=` and works the same with assigning variables. 
-Latter uses the special operator `<-` only available in Object. 
-As for adding const keyword, of course, you can declare a constant object with a mandatory initial value.
-
-```go
-Array<int> arr <- {1 ~ 5}
-Func<{int, int} int> sum <- {int a, int b, { return a+b }}
-```
-
 ## Expressions
 
 ### Blocks
@@ -363,11 +288,9 @@ A declaration bind *identifiers* and *value* to a constant or [variable][Variabl
 Every identifier in a program must be declared, and no identifier may be declared twice in the same block. See [Variables] to get more information.
 
 ```ebnf
-Declaration = ConstVarDel | VarDel | ConstObjDel | ObjDel .
+Declaration = ConstVarDel | VarDel .
 ConstVarDel = "const" Type identifiers "=" Expression .
 VarDel = Type identifiers [ "=" Expression ] .
-ConstObjDel = "const" ObjectType identifiers ( "<-" Container | "=" Expression ) .
-ObjDel = ObjectType identifiers [ "<-" Container | "=" Expression ] .
 ```
 
 To find syntax defination of `Expression`, see [Operators] for more.
@@ -377,13 +300,9 @@ To find syntax defination of `Expression`, see [Operators] for more.
 Operands represent the elementary values in an expression. It can be a *literal*, a *function*, or a *variable*.
 
 ```ebnf
-Operand = Literal | OpndName | "(" Expression ")" | Container | ObjType.
+Operand = Literal | OpndName | "(" Expression ")" .
 Literal = integer_lit | float_lit | rune_lit | string_lit .
 OpndName = identifier .
-Container = ConGrp | ConRan .
-ConGrp = "{" { ( Container | Statement ) "," } [ Container | Statement ] "}" .
-ConRan = "{" Expression "~" Expression [ "~" Expression ] "}" .
-ObjType = "<" {Container | Type} ">" .
 ```
 
 Also, there are some unit expression groups:
@@ -402,7 +321,6 @@ foo
 boo
 (3 + 0.25)
 out("Hello, World!\n", "Nice to meet you :D")
-{"this", "is", {"a", "container"}}
 ```
 
 ### Calls
@@ -492,7 +410,7 @@ Blank = .
 The assignment statement assigns a value to the specified variable.
 
 ```ebnf
-Assignment = identifiers "=" Expression | identifiers "<-" Container .
+Assignment = identifiers "=" Expression .
 ```
 
 For `=` assignment, Left-side operand should be lvalue.
@@ -503,7 +421,6 @@ For `<-` assignment, right-side should be a container matching with left-side op
 a = "Hello, " + in()
 b = 30 * (50 / 27)  // b = 30
 c = 0.5 - 1.3
-d <- {1 ~ 5}  // d = {1, 2, 3, 4, 5}
 ```
 
 ### If Statement
@@ -538,7 +455,7 @@ IfStmt = "if" Expression IfBlock
 There are two types of for statement: *using a single condition*, and *using an array*.
 
 ```ebnf
-ForStmt = "for" ( Expression | ArrayClause ) ForBlock .
+ForStmt = "for" ( Expression | ForClause ) ForBlock .
 ```
 
 #### For statement with single condition
@@ -551,30 +468,31 @@ for a % 2 $
 ;
 ```
 
-#### For statement with an array
+#### For statement with for clause
 
-A *for* statement with an array assigns one element from the array to a local variable in order at every iteration.
+A *for* statement with for clause use special operator `~` to denote a sequence.
+Special operator (only available in for clause) `~` denotes the arithmetic integer sequence.
+Basicaly, `a~b` denotes a sequence from `a` to `b-1` with interval `1`.
+You can also decide specific interval c using `a~b~c`.
+Operator `~` has the lowest priority in the whole operators.
+Finally, *for* statement repeat execution of a block with that sequence.
 
 ```ebnf
-ArrayClause = identifiers "in" Expression.
+ForClause = identifiers "in" Expression "~" Expression [ "~" Expression ].
 ```
 
 ```go
-Array<int> arr <- {0 ~ 4 ~ 2}
-for i in arr $
-    for j in {"a", "b", "c"} $
-        out(tostring(i) + j + " ")
-    ;
-    out("\n")
+for i in 0~6~2 $
+    out(tostring(i) + "\n")
 ;
 ```
 
 Output:
 
 ```text
-0a 0b 0c
-2a 2b 2c
-4a 4b 4c
+0
+2
+4
 ```
 
 ### Break and Continue Statement
@@ -638,4 +556,4 @@ Redirect to [here][ext-link-1]
 [Break and Continue Statement]: #break-and-continue-statement
 [ext-link-1]: https://github.com/Wopslang/Wops/blob/main/lib/functions.md
 
-© 2023 Wops Team
+2023, Wops Team

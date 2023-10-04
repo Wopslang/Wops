@@ -7,7 +7,7 @@
  * We'll put only I/O functions in Ver 0.1 alpha.
  * Built-in function development is on the way. Stay tuned.
  * 
- * 2021, Wops Team
+ * 2023, Wops Team
  * */
 
 #include <iostream>

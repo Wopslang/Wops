@@ -59,7 +59,7 @@ Finally, your PR branch's name should be in one of these forms:
 
 Wopslang managers mediate the overheated community, review the issues and pull requests, and lead the development of Wopslang. Of course, this job requires not only deep knowledge of Wopslang, but also conversation skill. Also, Wopslang managers should be in Wops team; Wopslang managers should be inside Wopers.  
 
-If you want to contribute as the Wopslang manager, join the [Wops Community Slack](https://join.slack.com/t/wopslangcommunity/shared_invite/zt-nkcy12cy-n8YlAPnOT~ErPODF6k3jOw) and send DM to Wopslang managers. We'll prepare the interview for you.
+We're not recruiting the Wopslang manager for now.
 
 #### Wopslang manager list
 
@@ -69,13 +69,4 @@ If you want to contribute as the Wopslang manager, join the [Wops Community Slac
 |@rdxxer|@codenstory|
 |@pokmui|@pokmui|
 
-## :white_check_mark: TODO
-
-**Contributes about things in TODO list will have higher priority than normal one.**  
-
-- Nothing
-
-
-
-
-2022, Wops Team
+2023, Wops Team

@@ -1,8 +1,8 @@
 //
 // sample/fizzbuzz.wops
-// Wopslang Sample for v0.1.x
+// Wopslang Sample for v0.1
 // 
-// 2021, Wops Team
+// 2023, Wops Team
 //
 
 int n = 100 
