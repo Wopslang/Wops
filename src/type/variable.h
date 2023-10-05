@@ -2,7 +2,7 @@
  * src/type/variable.h
  * Wopslang Variable Template Headerfile
  *
- * 2021, Wops Team
+ * 2023, Wops Team
  * */
 
 #ifndef WOPS_VARIABLE_H

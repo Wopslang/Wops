@@ -2,7 +2,7 @@
  * src/type/object.h
  * Wopslang Object Template Headerfile
  *
- * 2021, Wops Team
+ * 2023, Wops Team
  * */
 
 #ifndef WOPS_OBJECT_H

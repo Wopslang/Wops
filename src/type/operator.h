@@ -2,7 +2,7 @@
  * src/type/operator.h
  * Wopslang Variable Operation Master Headerfile
  *
- * 2021, Wops Team
+ * 2023, Wops Team
  * */
 
 #ifndef WOPS_OPERATOR_H
@@ -31,13 +31,5 @@ enum op_ {
 	LNOT, // !
 	LAND, // &&
 	LOR, // ||
-
-	// Bit (will be updated soon)
-	BNOT, // ~
-	BAND, // &
-	BOR, // |
-	BXOR, // ^
-	BLSH, // <<
-	BRSH, // >>
 };
 #endif
