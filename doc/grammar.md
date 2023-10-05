@@ -14,6 +14,7 @@
   - [Keywords]
   - [Operators and Punctuation]
   - [Integer Literal]
+  - [Boolean Literal]
   - [Floating-point Literal]
   - [Rune Literal]
   - [String Literal]
@@ -170,6 +171,8 @@ a56bc // (x)
 ### Boolean Literal
 
 boolean literal is a bit representing boolean constant: *true `1`, and false `0`*.
+You can treat a boolean literal like an integer, but it can only denote `1` or `0`.
+If you assign other integer, it will be stored as `1`.
 
 ```ebnf
 bool_lit = "0" | "1".
@@ -538,6 +541,7 @@ Redirect to [here][ext-link-1]
 [Keywords]: #keywords
 [Operators and Punctuation]: #operators-and-punctuation
 [Integer Literal]: #integer-literal
+[Boolean Literal]: #boolean-literal
 [Floating-point Literal]: #floating-point-literal
 [Rune Literal]: #rune-literal
 [String Literal]: #string-literal

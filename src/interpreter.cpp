@@ -2,7 +2,7 @@
  * src/interpreter.cpp
  * Wopslang Interpreter Sourcefile
  *
- * 2021, Wops Team
+ * 2023, Wops Team
  *
  * */
 

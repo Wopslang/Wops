@@ -2,7 +2,7 @@
  * src/import_/eexec_.cpp
  * Wopslang External Function Executor Sourcefile
  *
- * 2021, Wops Team
+ * 2023, Wops Team
  * */
 
 

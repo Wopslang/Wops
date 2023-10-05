@@ -2,7 +2,7 @@
  * src/import_/eexec_.h
  * Wopslang External Function Executor Headerfile
  *
- * 2021, Wops Team
+ * 2023, Wops Team
  * */
 
 #ifdef _WIN32

@@ -20,6 +20,7 @@ enum TYPE {
     OPERATOR // +, -, *, ...
 };
 
+const std::string type_strname[] = {"INT", "DOUBLE", "STRING", "BOOL", "OPERATOR"};
 /**
  * class Variable
  * Variable container class: each variable has a single value.
@@ -47,33 +48,33 @@ class Variable {
         token = varname;
         constant = con;
 
-        if (varname == "") ErrHandler().CallErrDE(runtime_codeline, "Name of variable should not be blank. How about using '_'?");
-        if (Substitute(val) == ERROR) ErrHandler().CallErrDE(runtime_codeline, "Type of value does not match with declaration");
+        if (varname == "") ErrHandler().CallErr(runtime_codeline, BLANK_VARIABLE_NAME, {});
+        if (Substitute(val) == ERROR) ErrHandler().CallErr(runtime_codeline, NOT_MATCHING_TYPE_WITH_DEF, {varname, type_strname[t]});
     }
 
     // operation
     Variable operator + (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", _t);
 
         switch (_t) {
             case BOOL:
             case INT:
-                if (operand._t == STRING) ErrHandler().CallErrDE(runtime_codeline, "No matching operation between int and string was found.");
+                if (operand._t == STRING) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"+", "int", "string"});
                 if (operand._t == DOUBLE)
                     res.Substitute(std::to_string((Int)(std::stoi(value)+std::stod(operand.value))));
                 else
                     res.Substitute(std::to_string(std::stoi(value)+std::stoi(operand.value)));
                 break;
             case DOUBLE:
-                if (operand._t == STRING) ErrHandler().CallErrDE(runtime_codeline, "No matching operation between double and string was found.");
+                if (operand._t == STRING) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"+", "double", "string"});
                 if (operand._t == DOUBLE)
                     res.Substitute(std::to_string(std::stod(value)+std::stod(operand.value)));
                 else
                     res.Substitute(std::to_string(std::stod(value)+std::stoi(operand.value)));
                 break;
             case STRING:
-                if (operand._t != STRING) ErrHandler().CallErrDE(runtime_codeline, "The only string can operate with string.");
+                if (operand._t != STRING) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"+", "string", type_strname[operand._t]});
                 res.Substitute("\""+trim(value)+trim(operand.value)+"\"");
                 break;
         }
@@ -81,10 +82,10 @@ class Variable {
     }
     
     Variable operator - (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", _t);
 
-        if (operand._t == STRING || _t == STRING) ErrHandler().CallErrDE(runtime_codeline, "No matching operation with string and any was found.");
+        if (operand._t == STRING || _t == STRING) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"-", type_strname[_t], type_strname[operand._t]});
         switch (_t) {
             case BOOL:
             case INT:
@@ -104,10 +105,10 @@ class Variable {
     }
 
     Variable operator * (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", _t);
 
-        if (operand._t == STRING || _t == STRING) ErrHandler().CallErrDE(runtime_codeline, "No matching operation with string and any was found.");
+        if (operand._t == STRING || _t == STRING) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"*", type_strname[_t], type_strname[operand._t]});
         switch (_t) {
             case BOOL:
             case INT:
@@ -127,11 +128,11 @@ class Variable {
     }
 
     Variable operator / (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", _t);
 
-        if (operand._t == STRING || _t == STRING) ErrHandler().CallErrDE(runtime_codeline, "No matching operation with string and any was found.");
-        if (operand.GetValue() == "0") ErrHandler().CallErrDE(runtime_codeline, "Not allowed to divide with zero");
+        if (operand._t == STRING || _t == STRING) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"/", type_strname[_t], type_strname[operand._t]});
+        if (operand.GetValue() == "0") ErrHandler().CallErr(runtime_codeline, DIVIDING_WITH_ZERO, {});
         switch (_t) {
             case BOOL:
             case INT:
@@ -151,11 +152,11 @@ class Variable {
     }
 
     Variable operator % (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", _t);
 
-        if (operand._t == STRING || _t == STRING) ErrHandler().CallErrDE(runtime_codeline, "No matching operation with string and any was found.");
-        if (operand.GetValue() == "0") ErrHandler().CallErrDE(runtime_codeline, "Not allowed to divide with zero");
+        if (operand._t == STRING || _t == STRING) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"%", type_strname[_t], type_strname[operand._t]});
+        if (operand.GetValue() == "0") ErrHandler().CallErr(runtime_codeline, DIVIDING_WITH_ZERO, {});
         switch (_t) {
             case INT:
                 res.Substitute(std::to_string(std::stoi(value)%std::stoi(operand.value)));
@@ -165,76 +166,76 @@ class Variable {
     }
 
     Variable operator == (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", BOOL);
 
-        if (operand._t != _t) ErrHandler().CallErrDE(runtime_codeline, "Not allowed to compare between different type variables.");
+        if (operand._t != _t) ErrHandler().CallErr(runtime_codeline, NOT_MATCHING_TYPE_WHEN_COMP, {type_strname[_t], type_strname[operand._t]});
         res.Substitute(std::to_string(operand.GetValue()==GetValue()));
 
         return res;
     }
 
     Variable operator != (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", BOOL);
 
-        if (operand._t != _t) ErrHandler().CallErrDE(runtime_codeline, "Not allowed to compare between different type variables.");
+        if (operand._t != _t) ErrHandler().CallErr(runtime_codeline, NOT_MATCHING_TYPE_WHEN_COMP, {type_strname[_t], type_strname[operand._t]});
         res.Substitute(std::to_string(operand.GetValue()!=GetValue()));
 
         return res;
     }
 
     Variable operator > (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", BOOL);
 
         try {
             res.Substitute(std::to_string(operand.GetValue()>GetValue()));
         }
         catch(const std::exception& e) {
-            ErrHandler().CallErrDE(runtime_codeline, "Something went wrong :(");
+            ErrHandler().CallErr(runtime_codeline, ERROR_OCCURED_WHILE_CALLING_FUNCTION, {">"});
         }
 
         return res;
     }
 
     Variable operator < (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", BOOL);
 
         try {
             res.Substitute(std::to_string(operand.GetValue()<GetValue()));
         }
         catch(const std::exception& e) {
-            ErrHandler().CallErrDE(runtime_codeline, "Something went wrong :(");
+            ErrHandler().CallErr(runtime_codeline, ERROR_OCCURED_WHILE_CALLING_FUNCTION, {"<"});
         }
 
         return res;
     }
 
     Variable operator >= (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", BOOL);
 
         try {
             res.Substitute(std::to_string(operand.GetValue()>=GetValue()));
         }
         catch(const std::exception& e) {
-            ErrHandler().CallErrDE(runtime_codeline, "Something went wrong :(");
+            ErrHandler().CallErr(runtime_codeline, ERROR_OCCURED_WHILE_CALLING_FUNCTION, {">="});
         }
 
         return res;
     }
 
     Variable operator <= (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", BOOL);
 
         try {
             res.Substitute(std::to_string(operand.GetValue()<=GetValue()));
         }
         catch(const std::exception& e) {
-            ErrHandler().CallErrDE(runtime_codeline, "Something went wrong :(");
+            ErrHandler().CallErr(runtime_codeline, ERROR_OCCURED_WHILE_CALLING_FUNCTION, {"<="});
         }
 
         return res;
@@ -243,7 +244,7 @@ class Variable {
     Variable operator ! () {
         Variable res = Variable("_", "", BOOL);
 
-        if (_t != BOOL) ErrHandler().CallErrDE(runtime_codeline, "Operation ! allows only boolean variables.");
+        if (_t != BOOL) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE_UNARY, {"!"});
         res.Substitute(std::to_string(
             !(std::stoi(GetValue()))
         ));
@@ -251,9 +252,9 @@ class Variable {
     }
 
     Variable operator && (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", BOOL);
-        if (_t != BOOL || operand._t != BOOL) ErrHandler().CallErrDE(runtime_codeline, "Operation && allows only boolean variables.");
+        if (_t != BOOL || operand._t != BOOL) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"&&", type_strname[_t], type_strname[operand._t]});
 
         res.Substitute(std::to_string(std::stoi(operand.GetValue())&&std::stoi(GetValue())));
 
@@ -261,9 +262,9 @@ class Variable {
     }
 
     Variable operator || (Variable operand) {
-        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErrDE(runtime_codeline, "Operand should not be blank.");
+        if (operand.GetValue() == "" || GetValue() == "") ErrHandler().CallErr(runtime_codeline, BLANK_OPERAND, {});
         Variable res = Variable("_", "", BOOL);
-        if (_t != BOOL || operand._t != BOOL) ErrHandler().CallErrDE(runtime_codeline, "Operation || allows only boolean variables.");
+        if (_t != BOOL || operand._t != BOOL) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"||", type_strname[_t], type_strname[operand._t]});
 
         res.Substitute(std::to_string(std::stoi(operand.GetValue())||std::stoi(GetValue())));
 

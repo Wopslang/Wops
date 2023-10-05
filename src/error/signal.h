@@ -2,7 +2,7 @@
  * src/error/signal.h
  * Wopslang Error Signal Headerfile
  *
- * 2021, Wops Team
+ * 2023, Wops Team
  * */
 
 #ifndef WOPS_ERRORSIGNAL_H
@@ -18,11 +18,17 @@ enum Err {
     OK,
     ERROR,
     INTERPRETER_CANNOT_OPEN_FILE,
+    BLANK_VARIABLE_NAME,
+    BLANK_OPERAND,
+    NO_OPERATION_MATCHING_TYPE,
+    NO_OPERATION_MATCHING_TYPE_UNARY,
     NO_MATCHING_SYNTAX_FOR,
     NO_MATCHING_SYNTAX_IF,
     NO_MATCHING_SYNTAX_ELIF,
     NO_MATCHING_SYNTAX_BREAK,
     NO_MATCHING_SYNTAX_CONTINUE,
+    NOT_MATCHING_TYPE_WITH_DEF,
+    NOT_MATCHING_TYPE_WHEN_COMP,
     VARIABLE_HAS_NOT_DECLARED,
     VARIABLE_REDECLARE,
     ERROR_OCCURED_WHILE_CALLING_FUNCTION,
@@ -40,6 +46,7 @@ enum Err {
     TOO_HIGH_DIMENSION,
     UNMATCHED_PARENTHESIS,
     OPERATION_ONLY_BINARY,
+    DIVIDING_WITH_ZERO,
 };
 
 class ErrHandler {
@@ -56,6 +63,18 @@ class ErrHandler {
             case INTERPRETER_CANNOT_OPEN_FILE:
             errmsg = "From Interpreter: cannot open the file";
             break;
+            case BLANK_VARIABLE_NAME:
+            errmsg = "Name of variable should not be blank";
+            break;
+            case BLANK_OPERAND:
+            errmsg = "Operand should not be blank";
+            break;
+            case NO_OPERATION_MATCHING_TYPE:
+            errmsg = "Operator " + arg[0] + " doesn't have operation between " + arg[1] + " and " + arg[2];
+            break;
+            case NO_OPERATION_MATCHING_TYPE_UNARY:
+            errmsg = "Operator " + arg[0] + " doesn't have operation with " + arg[1];
+            break;
             case NO_MATCHING_SYNTAX_FOR:
             errmsg = "No matching syntax: for";
             break;
@@ -70,6 +89,12 @@ class ErrHandler {
             break;
             case NO_MATCHING_SYNTAX_CONTINUE:
             errmsg = "No matching syntax: continue";
+            break;
+            case NOT_MATCHING_TYPE_WITH_DEF:
+            errmsg = "Type of " + arg[0] + " doesn't match with definition, " + arg[1];
+            break;
+            case NOT_MATCHING_TYPE_WHEN_COMP:
+            errmsg = "Comparing with different type variables is not allowed (" + arg[0] + ", " + arg[1] + ")";
             break;
             case VARIABLE_HAS_NOT_DECLARED:
             errmsg = arg[0] + " has not declared yet";
@@ -121,6 +146,9 @@ class ErrHandler {
             break;
             case OPERATION_ONLY_BINARY:
             errmsg = "Operation " + arg[0] + " cannot be unary";
+            break;
+            case DIVIDING_WITH_ZERO:
+            errmsg = "Dividing with zero is not allowed";
             break;
         }
         if (error_pos != -1) {
