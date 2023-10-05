@@ -171,8 +171,9 @@ a56bc // (x)
 ### Boolean Literal
 
 boolean literal is a bit representing boolean constant: *true `1`, and false `0`*.
-You can treat a boolean literal like an integer, but it can only denote `1` or `0`.
-If you assign other integer, it will be stored as `1`.
+If you assign other integer on a boolean literal, it will be stored as `1`.
+Also, the operation between a boolean and an integer is regarded as one between integers but will end up as `1` unless the result is `0`.
+Any operation between a boolean and a floating-point or assigning a floating-point to a boolean is prohibited (same with string).
 
 ```ebnf
 bool_lit = "0" | "1".

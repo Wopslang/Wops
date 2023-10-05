@@ -59,6 +59,9 @@ class Variable {
 
         switch (_t) {
             case BOOL:
+                if (operand._t == STRING || operand._t == DOUBLE) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"+", "boolean", type_strname[operand._t]});
+                res.Substitute(std::to_string(std::stoi(value)+std::stoi(operand.value) != 0));
+                break;
             case INT:
                 if (operand._t == STRING) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"+", "int", "string"});
                 if (operand._t == DOUBLE)
@@ -88,6 +91,9 @@ class Variable {
         if (operand._t == STRING || _t == STRING) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"-", type_strname[_t], type_strname[operand._t]});
         switch (_t) {
             case BOOL:
+                if (operand._t == STRING || operand._t == DOUBLE) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"-", "boolean", type_strname[operand._t]});
+                res.Substitute(std::to_string(std::stoi(value)-std::stoi(operand.value) != 0));
+                break;
             case INT:
                 if (operand._t == DOUBLE)
                     res.Substitute(std::to_string((Int)(std::stoi(value)-std::stod(operand.value))));
@@ -111,6 +117,9 @@ class Variable {
         if (operand._t == STRING || _t == STRING) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"*", type_strname[_t], type_strname[operand._t]});
         switch (_t) {
             case BOOL:
+                if (operand._t == STRING || operand._t == DOUBLE) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"*", "boolean", type_strname[operand._t]});
+                res.Substitute(std::to_string(std::stoi(value)*std::stoi(operand.value) != 0));
+                break;
             case INT:
                 if (operand._t == DOUBLE)
                     res.Substitute(std::to_string((Int)(std::stoi(value)*std::stod(operand.value))));
@@ -135,6 +144,9 @@ class Variable {
         if (operand.GetValue() == "0") ErrHandler().CallErr(runtime_codeline, DIVIDING_WITH_ZERO, {});
         switch (_t) {
             case BOOL:
+                if (operand._t == STRING || operand._t == DOUBLE) ErrHandler().CallErr(runtime_codeline, NO_OPERATION_MATCHING_TYPE, {"/", "boolean", type_strname[operand._t]});
+                res.Substitute(std::to_string(std::stoi(value)/std::stoi(operand.value) != 0));
+                break;
             case INT:
                 if (operand._t == DOUBLE)
                     res.Substitute(std::to_string((Int)(std::stoi(value)/std::stod(operand.value))));
