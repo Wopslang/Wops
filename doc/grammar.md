@@ -128,8 +128,7 @@ The following keywords are reserved and may not be used as identifiers.
 
 ```text
 break        const        continue
-elif         else         for
-if           range        
+for          if           in
 ```
 
 ### Operators and Punctuation
@@ -138,9 +137,9 @@ The following character sequences represent operators (including assignment oper
 
 ```text
 +    &&    ==    !=    (    )
--    ||    <     <=    [    ]
-*    >     >=    /     :    =
-~    ;     %     ,     !
+-    ||    <     <=    *    >
+>=   /     :     =     ~    ;
+%    ,     !
 ```
 
 ### Integer Literal
