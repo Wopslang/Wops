@@ -30,8 +30,10 @@ enum StmtType {
 	IfStmt,
 	ElifStmt,
 	ElseStmt,
+	ForStmt, // todo: integrate ForClauseStmt & ForSCStmt
 	ForClauseStmt,
 	ForSCStmt, // For statement with single condition
+	BracketBlock, // ()
 };
 
 typedef std::unordered_map<std::string, Object> Storage;
