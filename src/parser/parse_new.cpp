@@ -467,7 +467,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
             }
             switch (head.GetStmt()) {
                 // if-family statement
-                case Main:
+                case Main: {
                     if (token_table[idx] == "if") {
                         AST if_block(IfStmt, {}, {}, parsing_line);
                         std::pair<int, int> res = Parse(if_block, Token_table, idx+1, 1, token_storage);
@@ -585,9 +585,10 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         AST continue_stmt(ContinueStmt, {}, {}, parsing_line);
                         head.AddChild(continue_stmt);
                     }
+                }
 
                 // if-family statement
-                case IfStmt:
+                case IfStmt: {
                     if (token_table[idx] == "?") {
                         if (arg_idx == 1) {
                             head.AddExpr(
@@ -603,6 +604,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         }
                     }
                     break;
+                }
                 
                 case ElifStmt:
                 case ElseStmt:
@@ -610,10 +612,10 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         return {parsing_line, idx};
                     }
                     break;
-
+                
 
                 // for statement
-                case ForStmt:
+                case ForStmt: {
                     if (token_table[idx] == "in") {
                         if (arg_idx == 1 && token_storage.size() == 1) {
                             head.AddArg(Object("_", {}, {}, {"_", "C"}, 0, parsing_line));
@@ -653,9 +655,10 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             return {parsing_line, idx};
                         }
                     }
+                }
                 
                 // const variable declaration
-                case ConstDel:
+                case ConstDel: {
                     if (token_table[idx] == "=") {
                         if (token_storage.size() == 2) { // declaration
                             head.AddArg(
@@ -669,6 +672,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             return Parse(head, Token_table, idx+1, 2, token_storage);
                         }
                     }
+                }
 
             }
             token_storage.push_back(token_table[idx]);
