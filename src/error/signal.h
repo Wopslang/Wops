@@ -22,13 +22,16 @@ enum Err {
     BLANK_OPERAND,
     NO_OPERATION_MATCHING_TYPE,
     NO_OPERATION_MATCHING_TYPE_UNARY,
+    NO_MATCHING_SYNTAX_EXPRESSION,
     NO_MATCHING_SYNTAX_FOR,
     NO_MATCHING_SYNTAX_IF,
     NO_MATCHING_SYNTAX_ELIF,
+    NO_MATCHING_STRUCTURE_IF,
     NO_MATCHING_SYNTAX_BREAK,
     NO_MATCHING_SYNTAX_CONTINUE,
     NOT_MATCHING_TYPE_WITH_DEF,
     NOT_MATCHING_TYPE_WHEN_COMP,
+    NOT_CLOSED_BLOCK,
     VARIABLE_HAS_NOT_DECLARED,
     VARIABLE_REDECLARE,
     ERROR_OCCURED_WHILE_CALLING_FUNCTION,
@@ -75,6 +78,9 @@ class ErrHandler {
             case NO_OPERATION_MATCHING_TYPE_UNARY:
             errmsg = "Operator " + arg[0] + " doesn't have operation with " + arg[1];
             break;
+            case NO_MATCHING_SYNTAX_EXPRESSION:
+            errmsg = "No matching syntax: expression";
+            break;
             case NO_MATCHING_SYNTAX_FOR:
             errmsg = "No matching syntax: for";
             break;
@@ -83,6 +89,9 @@ class ErrHandler {
             break;
             case NO_MATCHING_SYNTAX_ELIF:
             errmsg = "No matching syntax: elif";
+            break;
+            case NO_MATCHING_STRUCTURE_IF:
+            errmsg = "No matching structure: if-elif-else";
             break;
             case NO_MATCHING_SYNTAX_BREAK:
             errmsg = "No matching syntax: break";
@@ -95,6 +104,9 @@ class ErrHandler {
             break;
             case NOT_MATCHING_TYPE_WHEN_COMP:
             errmsg = "Comparing with different type variables is not allowed (" + arg[0] + ", " + arg[1] + ")";
+            break;
+            case NOT_CLOSED_BLOCK:
+            errmsg = "Block is not closed";
             break;
             case VARIABLE_HAS_NOT_DECLARED:
             errmsg = arg[0] + " has not declared yet";
