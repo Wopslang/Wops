@@ -1,0 +1,31 @@
+//
+// sample/multiline.wops
+// Wopslang Sample for v0.1
+// 
+// 2023, Wops Team
+//
+// THIS IS ONLY A TOY CODE TO TEST PARSING SYSTEM
+// 
+// Pretier code:
+//
+// int a = 100 * toint(in())
+// for i in 0~a+1 $
+//     out(tostring(i) + ", ")
+// ;
+// out("Wonderful ", "Parser!")
+//
+
+int a = (
+    100
+    *
+    toint(
+        in()        
+    )
+)
+
+for i in 0~(a
+    + 1) $
+    out(tostring(i) 
+        + ", "
+    ); out("Wonderful ",
+    "Parser!")

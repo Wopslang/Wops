@@ -615,6 +615,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                 ParseExpr(token_storage, parsing_line)
                             );
                             token_storage = {};
+                            head.codeline = parsing_line;
                             return Parse(head, Token_table, idx+1, 2, token_storage);
                         } else {
                             if (prev_stmt == IfStmt || prev_stmt == ElifStmt) {
@@ -1015,6 +1016,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                 ParseExpr(token_storage, parsing_line)
                             );
                             token_storage = {};
+                            head.codeline = parsing_line;
                             return Parse(head, Token_table, idx+1, 5, token_storage);
                         }
                         if (arg_idx == 3) { // omission of <step>
@@ -1023,6 +1025,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             );
                             head.AddExpr(Expr({1, 0, 0}, Object("_", {}, {}, {"_", "1", INT}), parsing_line));
                             token_storage = {};
+                            head.codeline = parsing_line;
                             return Parse(head, Token_table, idx+1, 5, token_storage);
                         }
                         if (arg_idx == 4) {
@@ -1030,6 +1033,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                 ParseExpr(token_storage, parsing_line)
                             );
                             token_storage = {};
+                            head.codeline = parsing_line;
                             return Parse(head, Token_table, idx+1, 5, token_storage);
                         }
                         ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR, {});
