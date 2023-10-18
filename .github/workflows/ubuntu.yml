@@ -46,7 +46,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: make
-      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/; echo "1" > input
+      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
     - name: run
-      run: cd sample; tree; ./Wopslang multiline.wops debug < input > out;
+      run: cd sample; echo "1" > input; tree; ./Wopslang multiline.wops debug < input > out;
   
