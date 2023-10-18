@@ -23,6 +23,7 @@
 - [Variables]
 - [Expressions]
   - [Blocks]
+  - [Parenthesis]
   - [Declarations]
   - [Operands]
   - [Calls]
@@ -284,6 +285,17 @@ Statements = { Statement } .
 ```
 
 if and for expression is considered to be in its own block.
+
+### Parenthesis
+
+Typically, every expression is inline only. However, you can use multiline expressions by wrapping expressions with parenthesis `()`.
+
+```go
+out("Hello, ", "World!", "\n")
+out("Hello, ",
+    "World!",
+    "\n")
+```
 
 ### Declarations
 
@@ -547,6 +559,7 @@ Redirect to [here][ext-link-1]
 [String Literal]: #string-literal
 [Boolean Literal]: #boolean-literal
 [Blocks]: #blocks
+[Parenthesis]: #parenthesis
 [Declarations]: #declarations
 [Operands]: #operands
 [Calls]: #calls

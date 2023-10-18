@@ -461,6 +461,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
 
                 parsing_line = res.first;
                 idx = res.second;
+                token_table = Token_table[parsing_line-1];
                 continue;
             }
             if (token_table[idx] == ")") {
@@ -540,6 +541,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             parsing_line = res.first;
                             idx = res.second;
                             prev_stmt = Assignment;
+                            token_table = Token_table[parsing_line-1];
                             token_storage = {};
                             continue;
                         }
@@ -553,6 +555,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             parsing_line = res.first;
                             idx = res.second;
                             prev_stmt = Assignment;
+                            token_table = Token_table[parsing_line-1];
                             token_storage = {};
                             continue;
                         }
@@ -568,6 +571,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = ConstDel;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {};
                         continue;
                     }
@@ -672,6 +676,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             parsing_line = res.first;
                             idx = res.second;
                             prev_stmt = Assignment;
+                            token_table = Token_table[parsing_line-1];
                             token_storage = {};
                             continue;
                         }
@@ -685,6 +690,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             parsing_line = res.first;
                             idx = res.second;
                             prev_stmt = Assignment;
+                            token_table = Token_table[parsing_line-1];
                             token_storage = {};
                             continue;
                         }
@@ -701,6 +707,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = ConstDel;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {};
                         continue;
                     }
@@ -803,6 +810,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             parsing_line = res.first;
                             idx = res.second;
                             prev_stmt = Assignment;
+                            token_table = Token_table[parsing_line-1];
                             token_storage = {};
                             continue;
                         }
@@ -816,6 +824,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             parsing_line = res.first;
                             idx = res.second;
                             prev_stmt = Assignment;
+                            token_table = Token_table[parsing_line-1];
                             token_storage = {};
                             continue;
                         }
@@ -831,6 +840,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = ConstDel;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {};
                         continue;
                     }
@@ -932,6 +942,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             parsing_line = res.first;
                             idx = res.second;
                             prev_stmt = Assignment;
+                            token_table = Token_table[parsing_line-1];
                             token_storage = {};
                             continue;
                         }
@@ -945,6 +956,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             parsing_line = res.first;
                             idx = res.second;
                             prev_stmt = Assignment;
+                            token_table = Token_table[parsing_line-1];
                             token_storage = {};
                             continue;
                         }
@@ -961,6 +973,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = ConstDel;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {};
                         continue;
                     }
