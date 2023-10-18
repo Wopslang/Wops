@@ -31,8 +31,6 @@ enum StmtType {
 	ElifStmt,
 	ElseStmt,
 	ForStmt, 
-	ForClauseStmt,
-	ForSCStmt, // For statement with single condition
 	BracketBlock, // ()
 };
 
@@ -530,66 +528,6 @@ class AST {
 					}
 					break;
 				}
-			}
-
-			case ForClauseStmt: {
-				for (int idx = std::stoi(expression[0].Execute(storages).GetBase().GetValue()); idx < std::stoi(expression[1].Execute(storages).GetBase().GetValue()); idx += std::stoi(expression[2].Execute(storages).GetBase().GetValue())) {
-					storages.insert(storages.begin(), Storage());
-					storages[0][argument[0].GetBase().GetValue()] = Object(argument[0].GetBase().GetValue(), {}, {}, Variable(argument[0].GetBase().GetValue(), std::to_string(idx), INT), 0, codeline, OK);
-					bool ignoreif = 0;
-					bool flowstmt = 0;
-					for (AST ast: childStmt) {
-						if (ignoreif) {
-							if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
-							ignoreif = 0;
-						}
-						std::pair<int, bool> res = ast.Execute(storages);
-						if (res.first == 2) {
-						    flowstmt = 1;
-                            break;
-						} 
-						if (res.first == 1) break;
-						if (res.second) {
-							ignoreif = 1;
-							continue;
-						}
-					}
-					storages.erase(storages.begin());
-					if (flowstmt) break;
-				}
-				break;
-			}
-
-			case ForSCStmt: {
-				while (1) {
-					storages.insert(storages.begin(), Storage());
-					Object condition = expression[0].Execute(storages);
-					if (condition.GetBase()._t != BOOL)
-						ErrHandler().CallErr(codeline, FOR_NO_BOOLEAN_CONDITION, {});
-					if (condition.GetBase().GetValue() == "0") break;
-
-					bool ignoreif = 0;
-					bool flowstmt = 0;
-					for (AST ast: childStmt) {
-						if (ignoreif) {
-							if (ast._t == ElifStmt || ast._t == ElseStmt) continue;
-							ignoreif = 0;
-						}
-						std::pair<int, bool> res = ast.Execute(storages);
-						if (res.first == 2) {
-						    flowstmt = 1;
-						    break;
-                        }
-						if (res.first == 1) break;
-						if (res.second) {
-							ignoreif = 1;
-							continue;
-						}
-					}
-					storages.erase(storages.begin());
-					if (flowstmt) break;
-				}
-				break;
 			}
 		}
 		return {0, false};

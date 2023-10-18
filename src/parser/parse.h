@@ -17,7 +17,7 @@
 #ifndef WOPS_PARSE_H
 #define WOPS_PARSE_H
 
-int Parse(AST& head, std::vector<String> codes);
+std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_table, int parse_start, int arg_idx, std::vector<String>& token_storage);
 Expr ParseExpr(std::vector<std::string> tokens, int parsing_line);
 std::vector<String> GetTokenTable(String code);
 

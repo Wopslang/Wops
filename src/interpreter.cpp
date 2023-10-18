@@ -29,22 +29,26 @@ int main(int argc, char **argv) {
         
         // interpret
         std::vector<Storage> stor;
+        std::vector<String> Token_storage;
+        std::vector<std::vector<String>> token_table;
+
+        for (String s: code) token_table.push_back(GetTokenTable(s));
         stor.push_back(Storage());
         AST main(Main, {}, {}, 0);
 
         if (argc == 3 && String(argv[2]) == "debug") {
             std::clock_t end, start = clock();
-            Parse(main, code);
+            Parse(main, token_table, 0, 0, Token_storage);
             main.Execute(stor);
             end = clock();
             std::cout << "\n=== DEBUG ===\n\e[32m" << "Running Time(ms): " << (double)(end-start) * 1000 / CLOCKS_PER_SEC << "\e[m\n";
             return 0;
         }
         if (argc == 3 && String(argv[2]) == "check") {
-            Parse(main, code);
+            Parse(main, token_table, 0, 0, Token_storage);
             return 0;
         }
-        Parse(main, code);
+        Parse(main, token_table, 0, 0, Token_storage);
         main.Execute(stor);
     } else {
         std::cout << "\e[93m" << "Incorrect command structure. Use command 'Wopslang <filepath>'" << "\e[m\n";
