@@ -1,3 +1,11 @@
+<!--
+   CONTRIBUTING.md
+   Wopslang Contribute guide
+   
+   2023, Wops Team
+
+-->
+
 # :page_with_curl: Contribute Guideline
 
 ## :wave: Welcome, new Wopers  

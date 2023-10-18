@@ -1,3 +1,11 @@
+<!--
+   doc/howto.md
+   Official Wopslang Install Guideline
+   
+   2023, Wops Team
+
+-->
+
 # :rocket: How to Launch Wopslang
 
 ## Introduction

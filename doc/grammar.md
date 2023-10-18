@@ -1,3 +1,11 @@
+<!--
+   doc/grammar.md
+   Official Wopslang Language Reference
+   
+   2023, Wops Team
+
+-->
+
 # Official Wopslang Language Reference `v0.1`
 
 ## Index
