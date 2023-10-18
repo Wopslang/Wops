@@ -20,8 +20,11 @@ enum Err {
     INTERPRETER_CANNOT_OPEN_FILE,
     BLANK_VARIABLE_NAME,
     BLANK_OPERAND,
+    BLANK_PARAMETER,
+    NO_IDENTIFIER_AFTER_OPERATOR,
     NO_OPERATION_MATCHING_TYPE,
     NO_OPERATION_MATCHING_TYPE_UNARY,
+    NO_MATCHING_UNARY_OPERATION_FORM,
     NO_MATCHING_SYNTAX_EXPRESSION,
     NO_MATCHING_SYNTAX_FOR,
     NO_MATCHING_SYNTAX_IF,
@@ -72,11 +75,20 @@ class ErrHandler {
             case BLANK_OPERAND:
             errmsg = "Operand should not be blank";
             break;
+            case BLANK_PARAMETER:
+            errmsg = "Parameter should not be blank";
+            break;
+            case NO_IDENTIFIER_AFTER_OPERATOR:
+            errmsg = "Operator " + arg[0] + " cannot appear after identifer";
+            break;
             case NO_OPERATION_MATCHING_TYPE:
             errmsg = "Operator " + arg[0] + " doesn't have operation between " + arg[1] + " and " + arg[2];
             break;
             case NO_OPERATION_MATCHING_TYPE_UNARY:
             errmsg = "Operator " + arg[0] + " doesn't have operation with " + arg[1];
+            break;
+            case NO_MATCHING_UNARY_OPERATION_FORM:
+            errmsg = "No matching unary operation form: " + arg[0];
             break;
             case NO_MATCHING_SYNTAX_EXPRESSION:
             errmsg = "No matching syntax: expression";

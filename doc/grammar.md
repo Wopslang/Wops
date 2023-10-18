@@ -382,6 +382,7 @@ Each operator has a different priority for parsing. For instance, unary operator
 
 The leftmost operator in the same priority has a higher priority.
 For instance, `a+b-c` is the same with `(a+b)-c`.
+Also, the unary operator `+` and `-` is different from the binary operator `+` and `-` respectively. These unary operators only represent operand's sign.
 
 ### Arithmetic Operators
 
