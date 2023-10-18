@@ -139,8 +139,8 @@ The following character sequences represent operators (including assignment oper
 ```text
 +    &&    ==    !=    (    )
 -    ||    <     <=    *    >
->=   /     :     =     ~    ;
-%    ,     !
+>=   /     =     ~     ;    %
+,    !
 ```
 
 ### Integer Literal
