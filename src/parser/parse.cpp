@@ -36,6 +36,8 @@ std::vector<String> funcs {"in", "out", "tostring", "toint"};
 Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
     Expr head({0,0,0},
         Object("_", {}, {}, Variable("_", "", OPERATOR), 0, parsing_line, OK), parsing_line);
+    
+    if (tokens.size() == 0) ErrHandler().CallErrDE(parsing_line, "No operand");
 
     if (tokens.size() >= 3 && std::find(funcs.begin(), funcs.end(), tokens[0]) != funcs.end() && 
             tokens[1] == "(" && tokens[tokens.size()-1] == ")") {
@@ -76,7 +78,6 @@ Expr ParseExpr(std::vector<String> tokens, int parsing_line) {
             tokens = std::vector<String>(tokens.begin()+1, tokens.end()-1);
     }
 
-    if (tokens.size() == 0) ErrHandler().CallErrDE(parsing_line, "No operand");
     if (tokens.size() == 1) {
         if (std::regex_match(tokens[0], std::regex("[0-9]+"))) {
             head = Expr({1, 0, 0}, Object("_", {}, {}, Variable("_", tokens[0], INT), 0, parsing_line), parsing_line);
@@ -443,10 +444,10 @@ std::vector<String> GetTokenTable(String code) {
 // int Parse(AST& head, std::vector<std::vector<String>> Token_table, int parse_start, int arg_idx, std::vector<String>& token_storage)
 // ** return value is a pair of the end of line of parsing block and parsing index **
 std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_table, int parse_start, int arg_idx, std::vector<String>& token_storage) {
-    int parsing_line = head.codeline; // base parsing line = 0
+    int parsing_line = head.codeline; // base parsing line = 1
     StmtType prev_stmt = Main;
-    for (; parsing_line < Token_table.size(); parsing_line++) {
-        std::vector<String> token_table = Token_table[parsing_line];
+    for (; parsing_line <= Token_table.size(); parsing_line++) {
+        std::vector<String> token_table = Token_table[parsing_line-1];
 
         for (int idx = parse_start; idx < token_table.size(); idx++) {
             if (token_table[idx] == "//") break;
@@ -463,11 +464,11 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                 continue;
             }
             if (token_table[idx] == ")") {
+                token_storage.push_back(")");
                 return {parsing_line, idx};
             }
             switch (head.GetStmt()) {
                 case Main: {
-                    if (prev_stmt == ContinueStmt) 
                     // if-family statement
                     if (token_table[idx] == "if") {
                         AST if_block(IfStmt, {}, {}, parsing_line);
@@ -477,12 +478,13 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = IfStmt;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {}; // if not need -> remove
                         continue;
                     }
 
                     if (token_table[idx] == "?") {
-                        if (prev_stmt == IfStmt) {
+                        if (prev_stmt == IfStmt || prev_stmt == ElifStmt) {
                             if (token_storage.empty()) {  // else
                                 AST else_block(ElseStmt, {}, {}, parsing_line);
                                 std::pair<int, int> res = Parse(else_block, Token_table, idx+1, 0, token_storage);
@@ -491,6 +493,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                 parsing_line = res.first;
                                 idx = res.second;
                                 prev_stmt = ElseStmt;
+                                token_table = Token_table[parsing_line-1];
                                 token_storage = {}; // if not need -> remove
                                 continue;
                             } else { // elif
@@ -503,18 +506,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                 idx = res.second;
                                 prev_stmt = ElifStmt;
                                 token_storage = {}; // if not need -> remove
-                                continue;
-                            }
-                        } else if (prev_stmt == ElifStmt) {
-                            if (token_storage.empty()) {  // else
-                                AST else_block(ElseStmt, {}, {}, parsing_line);
-                                std::pair<int, int> res = Parse(else_block, Token_table, idx+1, 0, token_storage);
-                                head.AddChild(else_block);
-
-                                parsing_line = res.first;
-                                idx = res.second;
-                                prev_stmt = ElseStmt;
-                                token_storage = {}; // if not need -> remove
+                                token_table = Token_table[parsing_line-1];
                                 continue;
                             }
                         }
@@ -530,9 +522,12 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = ForStmt;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {}; // if not need -> remove
                         continue;
                     }
+
+                    if (token_table[idx] == "$") ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_EXPRESSION, {});
 
                     if (token_table[idx] == "=") {
                         if (token_storage.size() == 1) { // assignment
@@ -590,6 +585,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         head.AddChild(continue_stmt);
                         prev_stmt = ContinueStmt;
                     }
+                    break;
                 }
 
                 // if-family statement
@@ -604,6 +600,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = IfStmt;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {}; // if not need -> remove
                         continue;
                     }
@@ -616,7 +613,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                             token_storage = {};
                             return Parse(head, Token_table, idx+1, 2, token_storage);
                         } else {
-                            if (prev_stmt == IfStmt) {
+                            if (prev_stmt == IfStmt || prev_stmt == ElifStmt) {
                                 if (token_storage.empty()) {  // else
                                     AST else_block(ElseStmt, {}, {}, parsing_line);
                                     std::pair<int, int> res = Parse(else_block, Token_table, idx+1, 0, token_storage);
@@ -625,6 +622,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                     parsing_line = res.first;
                                     idx = res.second;
                                     prev_stmt = ElseStmt;
+                                    token_table = Token_table[parsing_line-1];
                                     token_storage = {}; // if not need -> remove
                                     continue;
                                 } else { // elif
@@ -636,18 +634,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                     parsing_line = res.first;
                                     idx = res.second;
                                     prev_stmt = ElifStmt;
-                                    token_storage = {}; // if not need -> remove
-                                    continue;
-                                }
-                            } else if (prev_stmt == ElifStmt) {
-                                if (token_storage.empty()) {  // else
-                                    AST else_block(ElseStmt, {}, {}, parsing_line);
-                                    std::pair<int, int> res = Parse(else_block, Token_table, idx+1, 0, token_storage);
-                                    head.AddChild(else_block);
-
-                                    parsing_line = res.first;
-                                    idx = res.second;
-                                    prev_stmt = ElseStmt;
+                                    token_table = Token_table[parsing_line-1];
                                     token_storage = {}; // if not need -> remove
                                     continue;
                                 }
@@ -666,10 +653,13 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = ForStmt;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {}; // if not need -> remove
                         continue;
                     }
                     
+                    if (token_table[idx] == "$") ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_EXPRESSION, {});
+
                     if (token_table[idx] == "=") {
                         if (arg_idx == 1) ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_IF, {});
                         if (token_storage.size() == 1) { // assignment
@@ -732,7 +722,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                     if (token_table[idx] == ";") {
                         if (arg_idx == 1) ErrHandler().CallErr(parsing_line, NO_MATCHING_STRUCTURE_IF, {});
                         if (token_storage.size() != 0) {
-                            AST expression(Expression, {}, {ParseExpr(token_table, parsing_line)}, parsing_line);
+                            AST expression(Expression, {}, {ParseExpr(token_storage, parsing_line)}, parsing_line);
                             head.AddChild(expression);
                         }
                         return {parsing_line, idx};
@@ -751,12 +741,13 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = IfStmt;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {}; // if not need -> remove
                         continue;
                     }
 
                     if (token_table[idx] == "?") {
-                        if (prev_stmt == IfStmt) {
+                        if (prev_stmt == IfStmt || prev_stmt == ElifStmt) {
                             if (token_storage.empty()) {  // else
                                 AST else_block(ElseStmt, {}, {}, parsing_line);
                                 std::pair<int, int> res = Parse(else_block, Token_table, idx+1, 0, token_storage);
@@ -765,6 +756,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                 parsing_line = res.first;
                                 idx = res.second;
                                 prev_stmt = ElseStmt;
+                                token_table = Token_table[parsing_line-1];
                                 token_storage = {}; // if not need -> remove
                                 continue;
                             } else { // elif
@@ -776,18 +768,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                 parsing_line = res.first;
                                 idx = res.second;
                                 prev_stmt = ElifStmt;
-                                token_storage = {}; // if not need -> remove
-                                continue;
-                            }
-                        } else if (prev_stmt == ElifStmt) {
-                            if (token_storage.empty()) {  // else
-                                AST else_block(ElseStmt, {}, {}, parsing_line);
-                                std::pair<int, int> res = Parse(else_block, Token_table, idx+1, 0, token_storage);
-                                head.AddChild(else_block);
-
-                                parsing_line = res.first;
-                                idx = res.second;
-                                prev_stmt = ElseStmt;
+                                token_table = Token_table[parsing_line-1];
                                 token_storage = {}; // if not need -> remove
                                 continue;
                             }
@@ -804,9 +785,12 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = ForStmt;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {}; // if not need -> remove
                         continue;
                     }
+
+                    if (token_table[idx] == "$") ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_EXPRESSION, {});
 
                     if (token_table[idx] == "=") {
                         if (token_storage.size() == 1) { // assignment
@@ -865,7 +849,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
 
                     if (token_table[idx] == ";") {
                         if (token_storage.size() != 0) {
-                            AST expression(Expression, {}, {ParseExpr(token_table, parsing_line)}, parsing_line);
+                            AST expression(Expression, {}, {ParseExpr(token_storage, parsing_line)}, parsing_line);
                             head.AddChild(expression);
                         }
                         return {parsing_line, idx};
@@ -885,13 +869,14 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         parsing_line = res.first;
                         idx = res.second;
                         prev_stmt = IfStmt;
+                        token_table = Token_table[parsing_line-1];
                         token_storage = {}; // if not need -> remove
                         continue;
                     }
 
                     if (token_table[idx] == "?") {
                         if (arg_idx != 5) ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR, {});
-                        if (prev_stmt == IfStmt) {
+                        if (prev_stmt == IfStmt || prev_stmt == ElifStmt) {
                             if (token_storage.empty()) {  // else
                                 AST else_block(ElseStmt, {}, {}, parsing_line);
                                 std::pair<int, int> res = Parse(else_block, Token_table, idx+1, 0, token_storage);
@@ -900,6 +885,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                 parsing_line = res.first;
                                 idx = res.second;
                                 prev_stmt = ElseStmt;
+                                token_table = Token_table[parsing_line-1];
                                 token_storage = {}; // if not need -> remove
                                 continue;
                             } else { // elif
@@ -911,18 +897,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                                 parsing_line = res.first;
                                 idx = res.second;
                                 prev_stmt = ElifStmt;
-                                token_storage = {}; // if not need -> remove
-                                continue;
-                            }
-                        } else if (prev_stmt == ElifStmt) {
-                            if (token_storage.empty()) {  // else
-                                AST else_block(ElseStmt, {}, {}, parsing_line);
-                                std::pair<int, int> res = Parse(else_block, Token_table, idx+1, 0, token_storage);
-                                head.AddChild(else_block);
-
-                                parsing_line = res.first;
-                                idx = res.second;
-                                prev_stmt = ElseStmt;
+                                token_table = Token_table[parsing_line-1];
                                 token_storage = {}; // if not need -> remove
                                 continue;
                             }
@@ -941,6 +916,7 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                         idx = res.second;
                         prev_stmt = ForStmt;
                         token_storage = {}; // if not need -> remove
+                        token_table = Token_table[parsing_line-1];
                         continue;
                     }
 
@@ -1048,18 +1024,19 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
                     if (token_table[idx] == ";") {
                         if (arg_idx != 5) ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR, {});
                         if (token_storage.size() != 0) {
-                            AST expression(Expression, {}, {ParseExpr(token_table, parsing_line)}, parsing_line);
+                            AST expression(Expression, {}, {ParseExpr(token_storage, parsing_line)}, parsing_line);
                             head.AddChild(expression);
                         }
                         return {parsing_line, idx};
                     }
+                    break;
                 }
                 
                 // const variable declaration
                 case ConstDel: {
                     if (token_table[idx] == "if" || token_table[idx] == "?" ||
                         token_table[idx] == "for" || token_table[idx] == "continue" || 
-                        token_table[idx] == "const" || token_table[idx] == "break")
+                        token_table[idx] == "const" || token_table[idx] == "break" || token_table[idx] == "$" || token_table[idx] == ";")
                         ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_EXPRESSION, {});
                     if (token_table[idx] == "=") {
                         if (token_storage.size() == 2) { // declaration
@@ -1080,26 +1057,30 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
             }
             token_storage.push_back(token_table[idx]);
         }
-
+        
+        parse_start = 0;
         switch (head.GetStmt()) {
             case ElifStmt:
             case ElseStmt:
             case Main: {
-                AST expression(Expression, {}, {ParseExpr(token_table, parsing_line)}, parsing_line);
+                if (token_storage.size() == 0) continue;
+                AST expression(Expression, {}, {ParseExpr(token_storage, parsing_line)}, parsing_line);
                 head.AddChild(expression);
                 token_storage = {};
                 break;
             }
             case IfStmt: {
                 if (arg_idx == 1) ErrHandler().CallErr(parsing_line, NO_MATCHING_STRUCTURE_IF, {});
-                AST expression(Expression, {}, {ParseExpr(token_table, parsing_line)}, parsing_line);
+                if (token_storage.size() == 0) continue;
+                AST expression(Expression, {}, {ParseExpr(token_storage, parsing_line)}, parsing_line);
                 head.AddChild(expression);
                 token_storage = {};
                 break;
             }
             case ForStmt: {
                 if (arg_idx != 5) ErrHandler().CallErr(parsing_line, NO_MATCHING_SYNTAX_FOR, {});
-                AST expression(Expression, {}, {ParseExpr(token_table, parsing_line)}, parsing_line);
+                if (token_storage.size() == 0) continue;
+                AST expression(Expression, {}, {ParseExpr(token_storage, parsing_line)}, parsing_line);
                 head.AddChild(expression);
                 token_storage = {};
                 break;
@@ -1114,7 +1095,6 @@ std::pair<int, int> Parse(AST& head, std::vector<std::vector<String>> Token_tabl
             }
         }
         prev_stmt = Expression;
-
     }
     switch (head.GetStmt()) {
         case BracketBlock:

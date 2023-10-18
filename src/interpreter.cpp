@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
 
         for (String s: code) token_table.push_back(GetTokenTable(s));
         stor.push_back(Storage());
-        AST main(Main, {}, {}, 0);
+        AST main(Main, {}, {}, 1);
 
         if (argc == 3 && String(argv[2]) == "debug") {
             std::clock_t end, start = clock();
