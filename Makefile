@@ -1,4 +1,10 @@
-# Makefile
+#
+#  Makefile
+#  Wopslang Makefile
+#   
+#  2023, Wops Team
+#
+#
 
 ifeq ($(OS), Windows_NT)
 	OPTION=include/dlfcn.c src/import_/eexec_.cpp -std=c++11
