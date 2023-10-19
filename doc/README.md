@@ -10,14 +10,14 @@ func<Question Answer> Documentation = {question, {
 
 ## 📜 Language Reference
 
-*[Official Reference for v0.1](grammar.md)*
+_[Official Reference for v0.1](grammar.md)_
 
 ## ⚡️ Built-in Function
 
-*[Wopslang Builtin Functions for v0.1](../lib/functions.md)*
+_[Wopslang Builtin Functions for v0.1](../lib/functions.md)_
 
 ## 📓 Guidebook
 
-*[How to install and launch Wopslang](howto.md)*
+_[How to install and launch Wopslang](howto.md)_
 
 2023, Wops Team

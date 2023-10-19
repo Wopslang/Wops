@@ -14,10 +14,10 @@ func<people WholeNewWorld> Wopslang = {contributors, {
 ```
 
 ### `#LanguageForAlgorithm` `#WorkingPseudo`
+
 _**Wopslang**_ is for every computer scientist who needs a **pseudocode-like**, but **working** programming language.  
 _**Simple grammar**_ will highlight your logical ideas. _**Fast-runtime**_ will give you immediate feedback to forward.  
 _Be with our project, using ⭐_
-
 
 ## Infomation
 
@@ -54,16 +54,16 @@ Check [howto.md](doc/howto.md) for more detail
 
 See [sample folder](./sample) :sparkles:
 
-## Credit 
+## Credit
 
-|Github Username|Slack Username|Role|
-|---|---|---|
-|**@RedoC-github**|**@RedoC**|**Lead Programmer of Interpreter**|
-|**@pokmui**|**@pokmui**|**Programmer of Interpreter, Admin of Slack**|
-|@byunjaewoo|@byunjaewoo|Lead Programmer of Data Structure
-|@happybean4|@khanjhy|Planner of Grammar|
-|**@rdxxer**|**@codenstory**|**Programmer of Interpreter**|
-|@dddddd1234-creator|@dddddd|Lead Programmer of Builtin Function|
+| Github Username     | Slack Username  | Role                                          |
+| ------------------- | --------------- | --------------------------------------------- |
+| **@RedoC-github**   | **@RedoC**      | **Lead Programmer of Interpreter**            |
+| **@pokmui**         | **@pokmui**     | **Programmer of Interpreter, Admin of Slack** |
+| @byunjaewoo         | @byunjaewoo     | Lead Programmer of Data Structure             |
+| @happybean4         | @khanjhy        | Planner of Grammar                            |
+| **@rdxxer**         | **@codenstory** | **Programmer of Interpreter**                 |
+| @dddddd1234-creator | @dddddd         | Lead Programmer of Builtin Function           |
 
 **Bold user** is the Wopslang manager.  
 Special Thanks to @jhhan128

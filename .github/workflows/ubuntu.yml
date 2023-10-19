@@ -9,51 +9,52 @@ name: CI - Ubuntu OS
 
 on:
   push:
-    branches: [ main, lab ]
+    branches: [main, lab]
   pull_request:
-    branches: [ main, lab ]
+    branches: [main, lab]
+
+permissions: read-all
 
 jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: make
-      run: mkdir sample/lib; make CI-TEST-Wopslang;
+      - uses: actions/checkout@v2
+      - name: make
+        run: mkdir sample/lib; make CI-TEST-Wopslang;
   Fizzbuzz:
     needs: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: make
-      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
-    - name: run
-      run: cd sample; ./Wopslang fizzbuzz.wops debug > out;
+      - uses: actions/checkout@v2
+      - name: make
+        run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
+      - name: run
+        run: cd sample; ./Wopslang fizzbuzz.wops debug > out;
   Hailstone_Sequence:
     needs: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: make
-      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
-    - name: run
-      run: cd sample; tree; ./Wopslang hailstone_sequence.wops debug > out;
+      - uses: actions/checkout@v2
+      - name: make
+        run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
+      - name: run
+        run: cd sample; tree; ./Wopslang hailstone_sequence.wops debug > out;
   Hello_Wopslang:
     needs: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: make
-      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
-    - name: run
-      run: cd sample; tree; ./Wopslang hello_wopslang.wops debug > out;
+      - uses: actions/checkout@v2
+      - name: make
+        run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
+      - name: run
+        run: cd sample; tree; ./Wopslang hello_wopslang.wops debug > out;
   Multiline:
     needs: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: make
-      run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
-    - name: run
-      run: cd sample; echo "1" > input; tree; ./Wopslang multiline.wops debug < input > out;
-  
+      - uses: actions/checkout@v2
+      - name: make
+        run: mkdir sample/lib; make CI-TEST-Wopslang; mv Wopslang sample/;
+      - name: run
+        run: cd sample; echo "1" > input; tree; ./Wopslang multiline.wops debug < input > out;

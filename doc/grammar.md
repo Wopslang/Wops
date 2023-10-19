@@ -1,7 +1,7 @@
 <!--
    doc/grammar.md
    Official Wopslang Language Reference
-   
+
    2023, Wops Team
 
 -->
@@ -26,7 +26,6 @@
   - [Floating-point Literal]
   - [Rune Literal]
   - [String Literal]
-  - [Boolean Literal]
 - [Types]
 - [Variables]
 - [Expressions]
@@ -55,7 +54,7 @@ So, make sure to check this page when you updated Wopslang to the newest version
 
 > Our language is based on an idea: simple, but powerful.
 > And because our grammar was also designed with this idea, we developed only the most important expressions.
-> However, we know that our standard of *importance* can be different from your standard.
+> However, we know that our standard of _importance_ can be different from your standard.
 > So, please tell us your idea of what to put into Wopslang.
 > We would love to hear your voice.
 
@@ -88,7 +87,7 @@ digit     = "0" ... "9" .
 
 ### Comments
 
-Comments can be represented with a form:  
+Comments can be represented with a form:
 
 - comments start with `//` and stop at the end of the line.
 
@@ -110,7 +109,7 @@ out(":(")
 
 ### Tokens
 
-Token is the word which can be used in Wopslang. There are four types: *Identifiers, Keywords, Operators, Punctuation, and Literals*. White space, formed from spaces (U+0020), horizontal tabs (U+0009), carriage returns (U+000D), and newlines (U+000A), is ignored except as it separates tokens that would otherwise combine into a single token.
+Token is the word which can be used in Wopslang. There are four types: _Identifiers, Keywords, Operators, Punctuation, and Literals_. White space, formed from spaces (U+0020), horizontal tabs (U+0009), carriage returns (U+000D), and newlines (U+000A), is ignored except as it separates tokens that would otherwise combine into a single token.
 
 ### Identifiers
 
@@ -139,6 +138,8 @@ The following keywords are reserved and may not be used as identifiers.
 break        const        continue
 for          if           in
 ```
+
+also, all type identifiers could not be used as identifiers too.
 
 ### Operators and Punctuation
 
@@ -178,7 +179,7 @@ a56bc // (x)
 
 ### Boolean Literal
 
-boolean literal is a bit representing boolean constant: *true `1`, and false `0`*.
+boolean literal is a bit representing boolean constant: _true `1`, and false `0`_.
 If you assign other integer on a boolean literal, it will be stored as `1`.
 Also, the operation between a boolean and an integer is regarded as one between integers but will end up as `1` unless the result is `0`.
 Any operation between a boolean and a floating-point or assigning a floating-point to a boolean is prohibited (same with string).
@@ -213,18 +214,18 @@ A rune literal represents a rune constant, an integer value identifying a Unicod
 
 After a backslash, certain single-character escapes represent special values:
 
-|Literal|Unicode|Description|
-|---|---|--|
-|`\a`|U+0007|alert or bell|
-|`\b`|U+0008|backspace|
-|`\f`|U+000C|form feed|
-|`\n`|U+000A|line feed or newline|
-|`\r`|U+0007|carriage return|
-|`\t`|U+0007|horizontal tab|
-|`\v`|U+0007|vertical tab|
-|`\\`|U+0007|backslash|
-|`\'`|U+0007|single quote|
-|`\"`|U+0007|double quote|
+| Literal | Unicode | Description          |
+| ------- | ------- | -------------------- |
+| `\a`    | U+0007  | alert or bell        |
+| `\b`    | U+0008  | backspace            |
+| `\f`    | U+000C  | form feed            |
+| `\n`    | U+000A  | line feed or newline |
+| `\r`    | U+0007  | carriage return      |
+| `\t`    | U+0007  | horizontal tab       |
+| `\v`    | U+0007  | vertical tab         |
+| `\\`    | U+0007  | backslash            |
+| `\'`    | U+0007  | single quote         |
+| `\"`    | U+0007  | double quote         |
 
 ```ebnf
 rune_lit      = "'" uni_value "'" .
@@ -253,14 +254,14 @@ Example:
 ## Types
 
 A data type or simply type is an attribute which notate a particular kind of data item.  
-There are four kind of type: *Integer, Floating-Point, String, and Boolean*. And it can be notated with these [predeclared identifiers][Predeclared Identifiers]:
+There are four kind of type: _Integer, Floating-Point, String, and Boolean_. And it can be notated with these identifiers:
 
-|Identifier|Matching Type|Description|
-|---|---|--|
-|`int`|Integer|signed 32-bit integers (-2147483648 ~ 2147483647)|
-|`double`|Floating-Point|IEEE-754 64-bit floating-point numbers|
-|`string`|String|[same with string literal][String Literal]|
-|`bool`|Boolean|[same with boolean literal][Boolean Literal]|
+| Identifier | Matching Type  | Description                                       |
+| ---------- | -------------- | ------------------------------------------------- |
+| `int`      | Integer        | signed 32-bit integers (-2147483648 ~ 2147483647) |
+| `double`   | Floating-Point | IEEE-754 64-bit floating-point numbers            |
+| `string`   | String         | [same with string literal][String Literal]        |
+| `bool`     | Boolean        | [same with boolean literal][Boolean Literal]      |
 
 ```ebnf
 Type = "int" | "double" | "string" | "bool" .
@@ -269,7 +270,7 @@ Type = "int" | "double" | "string" | "bool" .
 ## Variables
 
 A variable is a storage for holding a value. The set of available values is determined by the variable's [type][Types].
-There are two types of variable which can be used in Wopslang v0.1: *constant variable, modifiable variable*. You can declare constant variable as adding const keyword in variable declare expression. Also, you should add initial value to declare constant variable and you won't be able to reassign its value. Interpreter can emit the error if value's representing type doesn't match with variable's type.
+There are two types of variable which can be used in Wopslang v0.1: _constant variable, modifiable variable_. You can declare constant variable as adding const keyword in variable declare expression. Also, you should add initial value to declare constant variable and you won't be able to reassign its value. Interpreter can emit the error if value's representing type doesn't match with variable's type.
 
 ```go
 int woo = toint(in())
@@ -307,7 +308,7 @@ out("Hello, ",
 
 ### Declarations
 
-A declaration bind *identifiers* and *value* to a constant or [variable][Variables].
+A declaration bind _identifiers_ and _value_ to a constant or [variable][Variables].
 Every identifier in a program must be declared, and no identifier may be declared twice in the same block. See [Variables] to get more information.
 
 ```ebnf
@@ -320,7 +321,7 @@ To find syntax defination of `Expression`, see [Operators] for more.
 
 ### Operands
 
-Operands represent the elementary values in an expression. It can be a *literal*, a *function*, or a *variable*.
+Operands represent the elementary values in an expression. It can be a _literal_, a _function_, or a _variable_.
 
 ```ebnf
 Operand = Literal | OpndName | "(" Expression ")" .
@@ -380,13 +381,13 @@ unary_op   = "!" | "+" | "-" .
 
 Each operator has a different priority for parsing. For instance, unary operators have the highest priority.
 
-|Priority|Operators|
-|--------|---------|
-|5|`*`, `/`, `%`|
-|4|`+`, `-`|
-|3|`==`, `!=`, `<`, `<=`, `>`, `>=`|
-|2|`&&`|
-|1|`\|\|`|
+| Priority | Operators                        |
+| -------- | -------------------------------- |
+| 5        | `*`, `/`, `%`                    |
+| 4        | `+`, `-`                         |
+| 3        | `==`, `!=`, `<`, `<=`, `>`, `>=` |
+| 2        | `&&`                             |
+| 1        | `\|\|`                           |
 
 The leftmost operator in the same priority has a higher priority.
 For instance, `a+b-c` is the same with `(a+b)-c`.
@@ -394,15 +395,15 @@ Also, the unary operator `+` and `-` is different from the binary operator `+` a
 
 ### Arithmetic Operators
 
-|Operator|Matching Literals|
-|--------|-----------------|
-|`+`|integer, float, string|
-|`-`|integer, float|
-|`*`|integer, float|
-|`/`|integer, float|
-|`%`|integer|
+| Operator | Matching Literals      |
+| -------- | ---------------------- |
+| `+`      | integer, float, string |
+| `-`      | integer, float         |
+| `*`      | integer, float         |
+| `/`      | integer, float         |
+| `%`      | integer                |
 
-If you divide by zero(`A/0` or `A%0`, A:expression), interpreter will emit the error. Also, ***If you divide with integers, the result will be integer, too.***
+If you divide by zero(`A/0` or `A%0`, A:expression), interpreter will emit the error. Also, **_If you divide with integers, the result will be integer, too._**
 
 ### Conversion
 
@@ -449,7 +450,7 @@ c = 0.5 - 1.3
 
 ### If Statement
 
-*If* statements specify the conditional execution of more than two branches according to the value of a boolean expression. If value is true, `if` branches will be executed, otherwise, highest `elif` branches will be executed. If every `if` and `elif` branches' expression is false, `else` branch will be executed.  
+_If_ statements specify the conditional execution of more than two branches according to the value of a boolean expression. If value is true, `if` branches will be executed, otherwise, highest `elif` branches will be executed. If every `if` and `elif` branches' expression is false, `else` branch will be executed.
 
 For example:
 
@@ -475,8 +476,8 @@ IfStmt = "if" Expression IfBlock
 
 ### For Statement
 
-*For* statement represents repeating execution of a block.
-There are two types of for statement: *using a single condition*, and *using an array*.
+_For_ statement represents repeating execution of a block.
+There are two types of for statement: _using a single condition_, and _using an array_.
 
 ```ebnf
 ForStmt = "for" ( Expression | ForClause ) ForBlock .
@@ -484,7 +485,7 @@ ForStmt = "for" ( Expression | ForClause ) ForBlock .
 
 #### For statement with single condition
 
-A *for* statement with single condition represents repeating execution of a block as long as a boolean condition evaluates to true. The condition is evaluated before each iteration.
+A _for_ statement with single condition represents repeating execution of a block as long as a boolean condition evaluates to true. The condition is evaluated before each iteration.
 
 ```go
 for a % 2 $
@@ -494,12 +495,12 @@ for a % 2 $
 
 #### For statement with for clause
 
-A *for* statement with for clause use special operator `~` to denote a sequence.
+A _for_ statement with for clause use special operator `~` to denote a sequence.
 Special operator (only available in for clause) `~` denotes the arithmetic integer sequence.
 Basicaly, `a~b` denotes a sequence from `a` to `b-1` with interval `1`.
 You can also decide specific interval c using `a~b~c`.
 Operator `~` has the lowest priority in the whole operators.
-Finally, *for* statement repeat execution of a block with that sequence.
+Finally, _for_ statement repeat execution of a block with that sequence.
 
 ```ebnf
 ForClause = identifiers "in" Expression "~" Expression [ "~" Expression ].
@@ -521,7 +522,7 @@ Output:
 
 ### Break and Continue Statement
 
-A *break* or *continue* statement terminates or passes execution of innermost `for` statement.
+A _break_ or _continue_ statement terminates or passes execution of innermost `for` statement.
 
 ```ebnf
 BreakStmt = "break" .
@@ -535,29 +536,23 @@ ContinueStmt = "continue" .
 Redirect to [here][ext-link-1]
 
 <!-- Link -->
+
 [Introduction]: #introduction
 [Notation]: #notation
 [Source Code Representation]: #source-code-representation
 [Lexical Elements]: #lexical-elements
 [Types]: #types
 [Variables]: #variables
-[Containers]: #containers
-[Objects]: #objects
-[Object Types]: #object-types
-[Defining Object]: #defining-object
-[Declaring Object]: #declaring-object
 [Expressions]: #expressions
 [Statements]: #statements
 [If Statement]: #if-statement
 [For Statement]: #for-statement
 [Builtin functions]: #builtin-functions
 [Tokens]: #tokens
-[Predeclared Identifiers]: #predeclared-identifiers
 [UTF-8]: https://en.wikipedia.org/wiki/UTF-8
 [Characters]: #characters
 [Letter and Digits]: #letter-and-digits
 [Comments]: #comments
-[Semicolons]: #semicolons
 [Identifiers]: #identifiers
 [Keywords]: #keywords
 [Operators and Punctuation]: #operators-and-punctuation
@@ -566,7 +561,6 @@ Redirect to [here][ext-link-1]
 [Floating-point Literal]: #floating-point-literal
 [Rune Literal]: #rune-literal
 [String Literal]: #string-literal
-[Boolean Literal]: #boolean-literal
 [Blocks]: #blocks
 [Parenthesis]: #parenthesis
 [Declarations]: #declarations

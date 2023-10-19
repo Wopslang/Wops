@@ -6,13 +6,14 @@
  * */
 
 #include <algorithm>
+#include <queue>
+#include <regex>
+#include <string>
 #include <utility>
 #include <vector>
-#include <string>
-#include <regex>
-#include <queue>
-#include "../runtime/AST.h"
+
 #include "../error/signal.h"
+#include "../runtime/AST.h"
 
 #ifndef WOPS_PARSE_H
 #define WOPS_PARSE_H

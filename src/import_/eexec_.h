@@ -13,9 +13,10 @@
 
 #include <iostream>
 #include <string>
-#include "../type/variable.h"
-#include "../type/object.h"
+
 #include "../error/signal.h"
+#include "../type/object.h"
+#include "../type/variable.h"
 
 #ifndef WOPS_EEXEC_H
 #define WOPS_EEXEC_H
