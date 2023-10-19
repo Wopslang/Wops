@@ -4,6 +4,17 @@
   - add more function  
   - support Array(based on `std::vector`)  
 
+=== v0.1: 691dffb ===
+THIS VERSION IS THE FINAL VERSION OF v0.1.x
+
+- feature
+  - more flexible grammar (inline statements, multiline expressions)
+  - unified error message
+
+- improvement
+  - parser now parses code word by word (big improvement)
+  - deprecated old error handler
+
 === v0.1.6: 9b2d6a9 ===
 THIS IS INTERNAL UPDATE: THERE IS NO NEW FEATURE
 
