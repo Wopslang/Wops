@@ -8,16 +8,20 @@ func<Question Answer> Documentation = {question, {
 }
 ```
 
-## 📜 Language Reference
+## :scroll: Language Reference
 
 _[Official Reference for v0.1](grammar.md)_
 
-## ⚡️ Built-in Function
+## :zap: Built-in Function
 
 _[Wopslang Builtin Functions for v0.1](../lib/functions.md)_
 
-## 📓 Guidebook
+## :notebook: Guidebook
 
 _[How to install and launch Wopslang](howto.md)_
+
+## :hammer_and_wrench: For Contributors
+
+_[Documentation for Contributors](devdoc.md)_
 
 2023, Wops Team

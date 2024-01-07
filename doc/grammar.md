@@ -6,7 +6,7 @@
 
 -->
 
-# Official Wopslang Language Reference `v0.1`
+# :scroll: Official Wopslang Language Reference `v0.1`
 
 ## Index
 
