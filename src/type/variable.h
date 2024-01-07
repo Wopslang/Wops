@@ -323,11 +323,4 @@ inline Err Variable::Substitute(String newval) {
 
 inline String Variable::GetValue() { return value; }
 
-// struct VariableWithCode
-// Has Variable class and Err enum as elements.
-struct VariableWithCode {
-  Variable var;
-  Err error;
-};
-
 #endif
