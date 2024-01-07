@@ -141,20 +141,50 @@ src
 
 ### Functions
 
-#### *Object* EExecFunc(std::string func, Object argv)
+#### *Object* EExecFunc(func, argv)
 
-#### *std::pair<int, int>* Parse(AST& head, std::vector<std::vector<String>> Token_table, int parse_start, int arg_idx, std::vector<String>& token_storage)
+#### *std::pair<int, int>* Parse(head, Token_table, parse_start, arg_idx, token_storage)
 
-#### *Expr* ParseExpr(std::vector<std::string> tokens, int parsing_line)
+#### *Expr* ParseExpr(tokens, parsing_line)
 
-#### *std::vector<String>* GetTokenTable(String code)
+#### *std::vector<String>* GetTokenTable(code)
 
 ### Variables
 
-#### `*const std::string* type_strname[]`
+#### *const std::string* type_strname[]
 
 
 [Introduction]: #introduction
 [How Does Wopslang Interpreter Work?]: #how-does-wopslang-interpreter-work
 [Structure of Source Codes]: #structure-of-source-codes
 [What Should You Learn to Contribute?]: #what-should-you-learn-to-contribute
+[References]: #references
+[Source Codes]: https://github.com/Wopslang/Wops/blob/doc/doc/devdoc.md#source-codes
+[interpreter.cpp]: https://github.com/Wopslang/Wops/blob/doc/doc/devdoc.md#interpretercpp
+[import_/eexec_.cpp]: #import_eexeccpp
+[parser/parse.cpp]: #parserparsecpp
+[Header Files]: #header-files
+[error/signal.h]: #errorsignalh
+[import_/eexec_.h]: https://github.com/Wopslang/Wops/blob/doc/doc/devdoc.md#import_eexec_h
+[parser/parse.h]: #parserparseh
+[runtime/AST.h]: #runtimeasth
+[type/object.h]: #typeobjecth
+[type/operator.h]: #typeoperatorh
+[type/variable.h]: #typevariableh
+[Classes]: #classes
+[AST]: #class-ast
+[ErrHandler]: #class-errhandler
+[Expr]: #class-expr
+[Variable]: #class-variable
+[Enums]: #enums
+[Err]: #enum-err
+[op_]: #enum-op_
+[StmtType]: #enum-stmttype
+[TYPE]: #enum-type
+[Functions]: #functions
+[EExecFunc]: #object-eexecfuncfunc-argv
+[GetTokenTable]: #stdvector-gettokentablecode
+[Parse]: #stdpairint-int-parsehead-token_table-parse_start-arg_idx-token_storage
+[ParseExpr]: #expr-parseexprtokens-parsing_line
+[Variables]: #variables
+[type_strname]: #const-stdstring-type_strname
