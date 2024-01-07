@@ -9,7 +9,7 @@
 
 ## Index
 <details>
-<summary>Click this to unfold the index</summary>
+<summary>Index</summary>
 
 - [Introduction]
     - [How Does Wopslang Interpreter Work?]
@@ -152,6 +152,14 @@ src
 ### Variables
 
 #### *const std::string* type_strname[]
+
+```cpp
+const std::string type_strname[] = {"INT", "DOUBLE", "STRING", "BOOL", "OPERATOR"};
+```
+> - Declaration: [type/variable.h]
+> - Type: `const std::string`
+
+An array which includes every type's name in string form.
 
 
 [Introduction]: #introduction
