@@ -220,12 +220,12 @@ After a backslash, certain single-character escapes represent special values:
 | `\b`    | U+0008  | backspace            |
 | `\f`    | U+000C  | form feed            |
 | `\n`    | U+000A  | line feed or newline |
-| `\r`    | U+0007  | carriage return      |
-| `\t`    | U+0007  | horizontal tab       |
-| `\v`    | U+0007  | vertical tab         |
-| `\\`    | U+0007  | backslash            |
-| `\'`    | U+0007  | single quote         |
-| `\"`    | U+0007  | double quote         |
+| `\r`    | U+000D  | carriage return      |
+| `\t`    | U+0009  | horizontal tab       |
+| `\v`    | U+000B  | vertical tab         |
+| `\\`    | U+005C  | backslash            |
+| `\'`    | U+0027  | single quote         |
+| `\"`    | U+0022  | double quote         |
 
 ```ebnf
 rune_lit      = "'" uni_value "'" .
