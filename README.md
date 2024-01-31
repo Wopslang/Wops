@@ -61,7 +61,7 @@ See [sample folder](./sample) :sparkles:
 
 | Github Username     | Slack Username  | Role                                          |
 | ------------------- | --------------- | --------------------------------------------- |
-| **@RedoC-github**   | **@RedoC**      | **Lead Programmer of Interpreter**            |
+| **@redocmath**   | **@RedoC**      | **Lead Programmer of Interpreter**            |
 | **@pokmui**         | **@pokmui**     | **Programmer of Interpreter, Admin of Slack** |
 | @byunjaewoo         | @byunjaewoo     | Lead Programmer of Data Structure             |
 | @happybean4         | @khanjhy        | Planner of Grammar                            |
