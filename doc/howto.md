@@ -80,6 +80,12 @@ Done!
 
 The library file(`library.so`) should be placed in the path `${ExecutableFilePath}/lib/library.so`.
 
+- Windows
+```bash
+./Wopslang.exe <file directory>.wops
+```
+
+- Others
 ```bash
 ./Wopslang <file directory>.wops
 ```
