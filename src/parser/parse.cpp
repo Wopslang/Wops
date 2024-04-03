@@ -8,16 +8,16 @@
 
 #include "parse.h"
 
-std::vector<char> oprs{
+const std::vector<char> oprs{
     '+', '-', '*', '/', '%', '=', '>', '<', '!', '&', '|', '(', ')', '[', ']', ';', ',', '?', '$', '~',
 };
 
-std::vector<String> operators{"+", "-", "*", "/", "%", "=", "==", "!=", ">", "<", ">=", "<=", "!", "&&", "||", "//"};
+const std::vector<String> operators{"+", "-", "*", "/", "%", "=", "==", "!=", ">", "<", ">=", "<=", "!", "&&", "||", "//"};
 
-std::vector<std::pair<String, String>> runes{{"\a", "a"}, {"\b", "b"}, {"\f", "f"}, {"\n", "n"}, {"\r", "r"}, {"\t", "t"}, {"\v", "v"}, {"\\", "\\"}, {"\'", "'"}, {"\"", "\""}};
+const std::vector<std::pair<String, String>> runes{{"\a", "a"}, {"\b", "b"}, {"\f", "f"}, {"\n", "n"}, {"\r", "r"}, {"\t", "t"}, {"\v", "v"}, {"\\", "\\"}, {"\'", "'"}, {"\"", "\""}};
 
 // TODO: improve library system
-std::vector<String> funcs{"in", "out", "tostring", "toint"};
+const std::vector<String> funcs{"in", "out", "tostring", "toint"};
 
 // TODO: develop this function
 // Expr ParseExpr(std::vector<String> tokens, int parsing_line)
