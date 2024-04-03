@@ -41,6 +41,6 @@ Done!
 
 ## Windows OS
 
-Use Windows Installer provided in [here](installer/wopsinstaller.exe).
+Use Windows Installer provided in [here](../installer/wopsinstaller.exe).
 
 2024, Wops Team
