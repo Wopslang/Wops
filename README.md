@@ -59,18 +59,18 @@ See [sample folder](./sample) :sparkles:
 
 ## Credit
 
-| Github Username     | Slack Username  | Role                                          |
-| ------------------- | --------------- | --------------------------------------------- |
-| **@redocmath**   | **@RedoC**      | **Lead Programmer of Interpreter**            |
-| **@pokmui**         | **@pokmui**     | **Programmer of Interpreter, Admin of Slack** |
-| @byunjaewoo         | @byunjaewoo     | Lead Programmer of Data Structure             |
-| @happybean4         | @khanjhy        | Planner of Grammar                            |
-| **@rdxxer**         | **@codenstory** | **Programmer of Interpreter**                 |
-| @dddddd1234-creator | @dddddd         | Lead Programmer of Builtin Function           |
+| Github Username     | Role                                          |
+| ------------------- | --------------------------------------------- |
+| **@redocmath**      | **Lead Programmer of Interpreter**            |
+| **@pokmui**         | **Programmer of Interpreter, Admin of Slack** |
+| @byunjaewoo         | Lead Programmer of Data Structure             |
+| @happybean4         | Planner of Grammar                            |
+| **@rdxxer**         | **Programmer of Interpreter**                 |
+| @dddddd1234-creator | Lead Programmer of Builtin Function           |
 
 **Bold user** is the Wopslang manager.  
 Special Thanks to @jhhan128
 
 ![Wopslang Logo](https://emoji.slack-edge.com/T01MFM2TJ07/wopsfull/7fe35e7cbecd2d4d.png)
 
-2023, Wops Team
+2024, Wops Team
