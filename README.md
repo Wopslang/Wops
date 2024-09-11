@@ -1,5 +1,4 @@
-> :mega: **IMPORTANT ANNOUNCEMENT**   
-> Every Wops teammate is a student preparing for some exams, entrance tests, and more. Now, most developers are living hard as students, not developers. And it is causing delays in updates. However, this project is still onboard, and we always welcome your contributions! Please stay tuned on Wopslang and be with our team.
+> :mega: **BIG UPDATES are comming!**  
 
 # :hammer_and_wrench: Working Pseudocode, Wopslang
 
