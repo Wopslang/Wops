@@ -156,3 +156,22 @@ f:{<param>}->{<return>} => (
 ### Block vs Expression
 - `{}`: for Expressions
 - `()`: for Blocks
+
+
+### INF
+
+Let's make new Types to introduce the concept of infinity. It is impossible to create an infinitely big number, so we define a new type INF.
+
+Infinity
+: bigger than any numbers
+```js
+x := Infty as INF
+```
+
+Infinitysmall
+bigger than zero, smaller than any positive numbers (= 1/inf)
+```js
+x := Inftysmall as INF
+```
+
+
